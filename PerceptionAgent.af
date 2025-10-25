@@ -1,0 +1,401 @@
+{
+  "agents": [
+    {
+      "name": "PerceptionAgent",
+      "memory_blocks": [],
+      "tools": [],
+      "tool_ids": [
+        "tool-0",
+        "tool-1",
+        "tool-2"
+      ],
+      "source_ids": [],
+      "block_ids": [],
+      "tool_rules": [],
+      "tags": [],
+      "system": "\"\"\"\nYou are a vision analysis expert. When given an image description from GPT-4 Vision, extract structured data.\n\n\nExtract:\n1. Objects (people, animals, nature, objects)\n2. Number of people and their positions\n3. Spatial layout (left/right/center/foreground/background)\n4. Scene type and setting\n5. Colors and lighting\n\n\nALWAYS respond with valid JSON:\n{\n \"objects\": [\"person\", \"person\", \"beach\", \"sunset\", \"waves\"],\n \"people_count\": 2,\n \"people_details\": [\n   {\"position\": \"left\", \"description\": \"person looking at ocean\", \"apparent_age\": \"adult\", \"apparent_mood\": \"contemplative\"},\n   {\"position\": \"right\", \"description\": \"person with arms raised\", \"apparent_age\": \"adult\", \"apparent_mood\": \"joyful\"}\n ],\n \"layout\": {\n   \"left\": \"ocean waves crashing\",\n   \"center\": \"two people standing\",\n   \"right\": \"palm trees swaying\",\n   \"background\": \"orange sunset sky\",\n   \"foreground\": \"sandy beach\"\n },\n \"scene_type\": \"outdoor_beach\",\n \"setting\": \"tropical beach at sunset\",\n \"colors\": [\"orange\", \"blue\", \"gold\", \"white\"],\n \"lighting\": \"warm golden hour\",\n \"ambient_sounds\": [\"waves\", \"seagulls\", \"wind\"]\n}\n\n\nDo not include any text outside the JSON.\n\"\"\"",
+      "agent_type": "letta_v1_agent",
+      "llm_config": {
+        "model": "gpt-4o-mini",
+        "display_name": null,
+        "model_endpoint_type": "openai",
+        "model_endpoint": "https://api.openai.com/v1",
+        "provider_name": "openai",
+        "provider_category": "base",
+        "model_wrapper": null,
+        "context_window": 32000,
+        "put_inner_thoughts_in_kwargs": false,
+        "handle": "openai/gpt-4o-mini",
+        "temperature": 0.3,
+        "max_tokens": null,
+        "enable_reasoner": false,
+        "reasoning_effort": null,
+        "max_reasoning_tokens": 0,
+        "frequency_penalty": 1.0,
+        "compatibility_type": null,
+        "verbosity": null,
+        "tier": null,
+        "parallel_tool_calls": false
+      },
+      "embedding_config": {
+        "embedding_endpoint_type": "openai",
+        "embedding_endpoint": "https://api.openai.com/v1",
+        "embedding_model": "text-embedding-3-small",
+        "embedding_dim": 2000,
+        "embedding_chunk_size": 300,
+        "handle": "openai/text-embedding-3-small",
+        "batch_size": 1024,
+        "azure_endpoint": null,
+        "azure_version": null,
+        "azure_deployment": null
+      },
+      "initial_message_sequence": null,
+      "include_base_tools": false,
+      "include_multi_agent_tools": false,
+      "include_base_tool_rules": false,
+      "include_default_source": false,
+      "description": "A blank slate for you to create your own agent from scratch.",
+      "metadata": null,
+      "model": null,
+      "embedding": null,
+      "context_window_limit": null,
+      "embedding_chunk_size": null,
+      "max_tokens": null,
+      "max_reasoning_tokens": null,
+      "enable_reasoner": false,
+      "reasoning": null,
+      "from_template": null,
+      "template": false,
+      "project": null,
+      "tool_exec_environment_variables": {},
+      "secrets": null,
+      "memory_variables": null,
+      "project_id": null,
+      "template_id": null,
+      "base_template_id": null,
+      "identity_ids": null,
+      "message_buffer_autoclear": false,
+      "enable_sleeptime": false,
+      "response_format": null,
+      "timezone": "UTC",
+      "max_files_open": 5,
+      "per_file_view_window_char_limit": 15000,
+      "hidden": null,
+      "parallel_tool_calls": false,
+      "id": "agent-0",
+      "in_context_message_ids": [
+        "message-0",
+        "message-1",
+        "message-2",
+        "message-3",
+        "message-4"
+      ],
+      "messages": [
+        {
+          "type": "message",
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "\"\"\"\nYou are a vision analysis expert. When given an image description from GPT-4 Vision, extract structured data.\n\n\nExtract:\n1. Objects (people, animals, nature, objects)\n2. Number of people and their positions\n3. Spatial layout (left/right/center/foreground/background)\n4. Scene type and setting\n5. Colors and lighting\n\n\nALWAYS respond with valid JSON:\n{\n \"objects\": [\"person\", \"person\", \"beach\", \"sunset\", \"waves\"],\n \"people_count\": 2,\n \"people_details\": [\n   {\"position\": \"left\", \"description\": \"person looking at ocean\", \"apparent_age\": \"adult\", \"apparent_mood\": \"contemplative\"},\n   {\"position\": \"right\", \"description\": \"person with arms raised\", \"apparent_age\": \"adult\", \"apparent_mood\": \"joyful\"}\n ],\n \"layout\": {\n   \"left\": \"ocean waves crashing\",\n   \"center\": \"two people standing\",\n   \"right\": \"palm trees swaying\",\n   \"background\": \"orange sunset sky\",\n   \"foreground\": \"sandy beach\"\n },\n \"scene_type\": \"outdoor_beach\",\n \"setting\": \"tropical beach at sunset\",\n \"colors\": [\"orange\", \"blue\", \"gold\", \"white\"],\n \"lighting\": \"warm golden hour\",\n \"ambient_sounds\": [\"waves\", \"seagulls\", \"wind\"]\n}\n\n\nDo not include any text outside the JSON.\n\"\"\"\n\n\n\n<memory_metadata>\n- The current system date is: October 25, 2025\n- Memory blocks were last modified: 2025-10-25 05:08:32 AM UTC+0000\n- -1 previous messages between you and the user are stored in recall memory (use tools to access them)\n</memory_metadata>",
+              "signature": null
+            }
+          ],
+          "name": null,
+          "otid": null,
+          "sender_id": null,
+          "batch_item_id": null,
+          "group_id": null,
+          "id": "message-0",
+          "model": "gpt-4o-mini",
+          "agent_id": "agent-0",
+          "tool_calls": null,
+          "tool_call_id": null,
+          "tool_returns": [],
+          "created_at": "2025-10-25T05:04:29.945773+00:00",
+          "approve": null,
+          "approval_request_id": null,
+          "denial_reason": null,
+          "approvals": []
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "hi",
+              "signature": null
+            }
+          ],
+          "name": null,
+          "otid": null,
+          "sender_id": null,
+          "batch_item_id": null,
+          "group_id": null,
+          "id": "message-1",
+          "model": null,
+          "agent_id": "agent-0",
+          "tool_calls": null,
+          "tool_call_id": null,
+          "tool_returns": [],
+          "created_at": "2025-10-25T05:06:59.359590+00:00",
+          "approve": null,
+          "approval_request_id": null,
+          "denial_reason": null,
+          "approvals": []
+        },
+        {
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"objects\":[],\"people_count\":0,\"people_details\":[],\"layout\":{},\"scene_type\":\"\",\"setting\":\"\",\"colors\":[],\"lighting\":\"\"}",
+              "signature": null
+            }
+          ],
+          "name": null,
+          "otid": null,
+          "sender_id": null,
+          "batch_item_id": null,
+          "group_id": null,
+          "id": "message-2",
+          "model": "gpt-4o-mini",
+          "agent_id": "agent-0",
+          "tool_calls": null,
+          "tool_call_id": null,
+          "tool_returns": [],
+          "created_at": "2025-10-25T05:07:00.589795+00:00",
+          "approve": null,
+          "approval_request_id": null,
+          "denial_reason": null,
+          "approvals": []
+        },
+        {
+          "type": "message",
+          "role": "user",
+          "content": [
+            {
+              "type": "image",
+              "source": {
+                "type": "letta",
+                "file_id": "file-18d0fdf4-0c2c-471e-a0bc-92094905ec06",
+                "media_type": "image/jpeg",
+                "data": "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",
+                "detail": null
+              }
+            }
+          ],
+          "name": null,
+          "otid": null,
+          "sender_id": null,
+          "batch_item_id": null,
+          "group_id": null,
+          "id": "message-3",
+          "model": null,
+          "agent_id": "agent-0",
+          "tool_calls": null,
+          "tool_call_id": null,
+          "tool_returns": [],
+          "created_at": "2025-10-25T05:08:32.724850+00:00",
+          "approve": null,
+          "approval_request_id": null,
+          "denial_reason": null,
+          "approvals": []
+        },
+        {
+          "type": "message",
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"objects\": [\"person\", \"person\", \"ocean\", \"sand\"],\n  \"people_count\": 2,\n  \"people_details\": [\n    {\"position\": \"left\", \"description\": \"person with long hair in a striped top\", \"apparent_age\": \"child/adult\", \"apparent_mood\": \"\"},\n    {\"position\": \"right\", \"description\": \"person with short hair, back facing camera\", \"apparent_age\": \"child/adult\", \"apparent_mood\": \"\"}\n  ],\n  \"layout\": {\n    \"left\": \"\",\n    \"center\": \"\",\n    \"right\": \"\",\n    \"background\": \"\",\n    \"foreground\":\"two people sitting on the beach\"\n  },\n  \"scene_type\":\"outdoor_beach\",\n  'setting': 'beach during daytime',\n  'colors': ['blue', 'tan', 'white'],\n  'lighting': 'bright sunlight'\n}",
+              "signature": null
+            }
+          ],
+          "name": null,
+          "otid": null,
+          "sender_id": null,
+          "batch_item_id": null,
+          "group_id": null,
+          "id": "message-4",
+          "model": "gpt-4o-mini",
+          "agent_id": "agent-0",
+          "tool_calls": null,
+          "tool_call_id": null,
+          "tool_returns": [],
+          "created_at": "2025-10-25T05:08:39.365442+00:00",
+          "approve": null,
+          "approval_request_id": null,
+          "denial_reason": null,
+          "approvals": []
+        }
+      ],
+      "files_agents": [],
+      "group_ids": []
+    }
+  ],
+  "groups": [],
+  "blocks": [],
+  "files": [],
+  "sources": [],
+  "tools": [
+    {
+      "id": "tool-1",
+      "tool_type": "letta_core",
+      "description": "Search prior conversation history using hybrid search (text + semantic similarity).\n\nExamples:\n        # Search all messages\n        conversation_search(query=\"project updates\")\n\n        # Search only assistant messages\n        conversation_search(query=\"error handling\", roles=[\"assistant\"])\n\n        # Search with date range (inclusive of both dates)\n        conversation_search(query=\"meetings\", start_date=\"2024-01-15\", end_date=\"2024-01-20\")\n        # This includes all messages from Jan 15 00:00:00 through Jan 20 23:59:59\n\n        # Search messages from a specific day (inclusive)\n        conversation_search(query=\"bug reports\", start_date=\"2024-09-04\", end_date=\"2024-09-04\")\n        # This includes ALL messages from September 4, 2024\n\n        # Search with specific time boundaries\n        conversation_search(query=\"deployment\", start_date=\"2024-01-15T09:00\", end_date=\"2024-01-15T17:30\")\n        # This includes messages from 9 AM to 5:30 PM on Jan 15\n\n        # Search with limit\n        conversation_search(query=\"debugging\", limit=10)\n\n    Returns:\n        str: Query result string containing matching messages with timestamps and content.",
+      "source_type": "python",
+      "name": "conversation_search",
+      "tags": [
+        "letta_core"
+      ],
+      "source_code": null,
+      "json_schema": {
+        "name": "conversation_search",
+        "description": "Search prior conversation history using hybrid search (text + semantic similarity).\n\nExamples:\n        # Search all messages\n        conversation_search(query=\"project updates\")\n\n        # Search only assistant messages\n        conversation_search(query=\"error handling\", roles=[\"assistant\"])\n\n        # Search with date range (inclusive of both dates)\n        conversation_search(query=\"meetings\", start_date=\"2024-01-15\", end_date=\"2024-01-20\")\n        # This includes all messages from Jan 15 00:00:00 through Jan 20 23:59:59\n\n        # Search messages from a specific day (inclusive)\n        conversation_search(query=\"bug reports\", start_date=\"2024-09-04\", end_date=\"2024-09-04\")\n        # This includes ALL messages from September 4, 2024\n\n        # Search with specific time boundaries\n        conversation_search(query=\"deployment\", start_date=\"2024-01-15T09:00\", end_date=\"2024-01-15T17:30\")\n        # This includes messages from 9 AM to 5:30 PM on Jan 15\n\n        # Search with limit\n        conversation_search(query=\"debugging\", limit=10)\n\n    Returns:\n        str: Query result string containing matching messages with timestamps and content.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "String to search for using both text matching and semantic similarity."
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "assistant",
+                  "user",
+                  "tool"
+                ]
+              },
+              "description": "Optional list of message roles to filter by."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Maximum number of results to return. Uses system default if not specified."
+            },
+            "start_date": {
+              "type": "string",
+              "description": "Filter results to messages created on or after this date (INCLUSIVE). When using date-only format (e.g., \"2024-01-15\"), includes messages starting from 00:00:00 of that day. ISO 8601 format: \"YYYY-MM-DD\" or \"YYYY-MM-DDTHH:MM\". Examples: \"2024-01-15\" (from start of Jan 15), \"2024-01-15T14:30\" (from 2:30 PM on Jan 15)."
+            },
+            "end_date": {
+              "type": "string",
+              "description": "Filter results to messages created on or before this date (INCLUSIVE). When using date-only format (e.g., \"2024-01-20\"), includes all messages from that entire day. ISO 8601 format: \"YYYY-MM-DD\" or \"YYYY-MM-DDTHH:MM\". Examples: \"2024-01-20\" (includes all of Jan 20), \"2024-01-20T17:00\" (up to 5 PM on Jan 20)."
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      },
+      "args_json_schema": null,
+      "return_char_limit": 50000,
+      "pip_requirements": null,
+      "npm_requirements": null,
+      "default_requires_approval": null,
+      "enable_parallel_execution": true,
+      "created_by_id": "user-5e2134ae-382a-416a-a29e-a5f62a251354",
+      "last_updated_by_id": "user-d95db25d-a60a-4017-9ef5-349e843bf82a",
+      "metadata_": {}
+    },
+    {
+      "id": "tool-2",
+      "tool_type": "letta_sleeptime_core",
+      "description": "The memory_insert command allows you to insert text at a specific location in a memory block.\n\nExamples:\n        # Update a block containing information about the user (append to the end of the block)\n        memory_insert(label=\"customer\", new_str=\"The customer's ticket number is 12345\")\n\n        # Update a block containing information about the user (insert at the beginning of the block)\n        memory_insert(label=\"customer\", new_str=\"The customer's ticket number is 12345\", insert_line=0)\n\n    Returns:\n        Optional[str]: None is always returned as this function does not produce a response.",
+      "source_type": "python",
+      "name": "memory_insert",
+      "tags": [
+        "letta_sleeptime_core"
+      ],
+      "source_code": null,
+      "json_schema": {
+        "name": "memory_insert",
+        "description": "The memory_insert command allows you to insert text at a specific location in a memory block.\n\nExamples:\n        # Update a block containing information about the user (append to the end of the block)\n        memory_insert(label=\"customer\", new_str=\"The customer's ticket number is 12345\")\n\n        # Update a block containing information about the user (insert at the beginning of the block)\n        memory_insert(label=\"customer\", new_str=\"The customer's ticket number is 12345\", insert_line=0)\n\n    Returns:\n        Optional[str]: None is always returned as this function does not produce a response.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "Section of the memory to be edited, identified by its label."
+            },
+            "new_str": {
+              "type": "string",
+              "description": "The text to insert. Do not include line number prefixes."
+            },
+            "insert_line": {
+              "type": "integer",
+              "description": "The line number after which to insert the text (0 for beginning of file). Defaults to -1 (end of the file)."
+            }
+          },
+          "required": [
+            "label",
+            "new_str"
+          ]
+        }
+      },
+      "args_json_schema": null,
+      "return_char_limit": 50000,
+      "pip_requirements": null,
+      "npm_requirements": null,
+      "default_requires_approval": null,
+      "enable_parallel_execution": false,
+      "created_by_id": "user-5e2134ae-382a-416a-a29e-a5f62a251354",
+      "last_updated_by_id": "user-d95db25d-a60a-4017-9ef5-349e843bf82a",
+      "metadata_": {}
+    },
+    {
+      "id": "tool-0",
+      "tool_type": "letta_sleeptime_core",
+      "description": "The memory_replace command allows you to replace a specific string in a memory block with a new string. This is used for making precise edits.\n\nDo NOT attempt to replace long strings, e.g. do not attempt to replace the entire contents of a memory block with a new string.\n\nExamples:\n        # Update a block containing information about the user\n        memory_replace(label=\"human\", old_str=\"Their name is Alice\", new_str=\"Their name is Bob\")\n\n        # Update a block containing a todo list\n        memory_replace(label=\"todos\", old_str=\"- [ ] Step 5: Search the web\", new_str=\"- [x] Step 5: Search the web\")\n\n        # Pass an empty string to\n        memory_replace(label=\"human\", old_str=\"Their name is Alice\", new_str=\"\")\n\n        # Bad example - do NOT add (view-only) line numbers to the args\n        memory_replace(label=\"human\", old_str=\"1: Their name is Alice\", new_str=\"1: Their name is Bob\")\n\n        # Bad example - do NOT include the line number warning either\n        memory_replace(label=\"human\", old_str=\"# NOTE: Line numbers shown below (with arrows like '1→') are to help during editing. Do NOT include line number prefixes in your memory edit tool calls.\\n1→ Their name is Alice\", new_str=\"1→ Their name is Bob\")\n\n        # Good example - no line numbers or line number warning (they are view-only), just the text\n        memory_replace(label=\"human\", old_str=\"Their name is Alice\", new_str=\"Their name is Bob\")\n\n    Returns:\n        str: The success message",
+      "source_type": "python",
+      "name": "memory_replace",
+      "tags": [
+        "letta_sleeptime_core"
+      ],
+      "source_code": null,
+      "json_schema": {
+        "name": "memory_replace",
+        "description": "The memory_replace command allows you to replace a specific string in a memory block with a new string. This is used for making precise edits.\n\nDo NOT attempt to replace long strings, e.g. do not attempt to replace the entire contents of a memory block with a new string.\n\nExamples:\n        # Update a block containing information about the user\n        memory_replace(label=\"human\", old_str=\"Their name is Alice\", new_str=\"Their name is Bob\")\n\n        # Update a block containing a todo list\n        memory_replace(label=\"todos\", old_str=\"- [ ] Step 5: Search the web\", new_str=\"- [x] Step 5: Search the web\")\n\n        # Pass an empty string to\n        memory_replace(label=\"human\", old_str=\"Their name is Alice\", new_str=\"\")\n\n        # Bad example - do NOT add (view-only) line numbers to the args\n        memory_replace(label=\"human\", old_str=\"1: Their name is Alice\", new_str=\"1: Their name is Bob\")\n\n        # Bad example - do NOT include the line number warning either\n        memory_replace(label=\"human\", old_str=\"# NOTE: Line numbers shown below (with arrows like '1→') are to help during editing. Do NOT include line number prefixes in your memory edit tool calls.\\n1→ Their name is Alice\", new_str=\"1→ Their name is Bob\")\n\n        # Good example - no line numbers or line number warning (they are view-only), just the text\n        memory_replace(label=\"human\", old_str=\"Their name is Alice\", new_str=\"Their name is Bob\")\n\n    Returns:\n        str: The success message",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "description": "Section of the memory to be edited, identified by its label."
+            },
+            "old_str": {
+              "type": "string",
+              "description": "The text to replace (must match exactly, including whitespace and indentation)."
+            },
+            "new_str": {
+              "type": "string",
+              "description": "The new text to insert in place of the old text. Do not include line number prefixes."
+            }
+          },
+          "required": [
+            "label",
+            "old_str",
+            "new_str"
+          ]
+        }
+      },
+      "args_json_schema": null,
+      "return_char_limit": 50000,
+      "pip_requirements": null,
+      "npm_requirements": null,
+      "default_requires_approval": null,
+      "enable_parallel_execution": false,
+      "created_by_id": "user-5e2134ae-382a-416a-a29e-a5f62a251354",
+      "last_updated_by_id": "user-d95db25d-a60a-4017-9ef5-349e843bf82a",
+      "metadata_": {}
+    }
+  ],
+  "mcp_servers": [],
+  "metadata": {
+    "revision_id": "f6cd5a1e519d"
+  },
+  "created_at": "2025-10-25T05:10:01.543217+00:00"
+}

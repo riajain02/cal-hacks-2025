@@ -71,7 +71,7 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
             letta_data = letta_response.json()
             ctx.logger.info(f"   📦 Raw API response: {json.dumps(letta_data, indent=2)}")
 
-            perception_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message")), "{}")
+            perception_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
             ctx.logger.info(f"   📝 Extracted assistant content: {perception_text}")
 
             # Parse JSON (handle mixed quotes from Letta AI)

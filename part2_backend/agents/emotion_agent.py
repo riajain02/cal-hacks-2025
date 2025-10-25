@@ -34,12 +34,23 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
             letta_data = letta_response.json()
             emotion_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
 
+            # Parse JSON (handle mixed quotes from Letta AI)
             json_start = emotion_text.find('{')
             json_end = emotion_text.rfind('}') + 1
-            if json_start >= 0:
-                parsed = json.loads(emotion_text[json_start:json_end])
-            else:
-                parsed = {"mood": "neutral", "emotion_tags": [], "tone": "neutral", "intensity": "medium", "voice_characteristics": {}, "ambient_mood": "calm"}
+            if json_start >= 0 and json_end > json_start:
+                json_content = emotion_text[json_start:json_end]
+                # Fix mixed quotes
+                import re
+                json_content = re.sub(r"'([^']*)':", r'"\1":', json_content)  # Keys
+                json_content = re.sub(r": '([^']*)'", r': "\1"', json_content)  # String values
+                json_content = re.sub(r": '([^']*)',", r': "\1",', json_content)  # String values with comma
+                json_content = re.sub(r": '([^']*)'}", r': "\1"}', json_content)  # String values at end
+                json_content = re.sub(r"'([^']*)'", r'"\1"', json_content)  # Fix single quotes in arrays
+
+                try:
+                    parsed = json.loads(json_content)
+                except json.JSONDecodeError:
+                    parsed = {"mood": "neutral", "emotion_tags": [], "tone": "neutral", "intensity": "medium", "voice_characteristics": {}, "ambient_mood": "calm"}
 
         result = EmotionData(
             session_id=msg.session_id,
@@ -52,8 +63,8 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
         )
 
         await ctx.send(sender, result)
-        ctx.logger.info(f"✅ Emotion: {result.mood} ({result.intensity})")
-        ctx.logger.info(f"📊 Emotion JSON: {result.__dict__}")
+        # ctx.logger.info(f"✅ Emotion: {result.mood} ({result.intensity})")
+        # ctx.logger.info(f"📊 Emotion JSON: {result.__dict__}")
 
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")

@@ -36,16 +36,16 @@ async def create_experience(request: Request):
 
         session_id = f"{user_id}_{uuid.uuid4().hex[:8]}"
 
-        # Check if agents are running by trying to connect to bureau
+        # Check if agents are running
         import socket
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        result = sock.connect_ex(('127.0.0.1', 8001))  # Bureau on port 8001
+        result = sock.connect_ex(('127.0.0.1', 8001))
         sock.close()
 
         if result != 0:
             raise HTTPException(
                 status_code=503,
-                detail="Agent bureau not running. Please start agents with 'python3 run_agents.py'"
+                detail="Agent bureau not running. Please start with: python3 run_agents.py"
             )
 
         # Write request to shared file for agents to pick up

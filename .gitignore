@@ -51,7 +51,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp
-test_*.py
 check_*.py
 my_audio.mp3
 

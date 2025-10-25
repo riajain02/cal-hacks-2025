@@ -1,5 +1,5 @@
 # agents/coordinator_agent.py
-from uagents import Agent, Context, Bureau
+from uagents import Agent, Context
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from fetch_models import (
@@ -8,9 +8,6 @@ from fetch_models import (
     AudioMixRequest, AudioMixData, ExperienceComplete, ErrorMessage
 )
 import asyncio
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Agent addresses (hardcoded - deterministic from seeds)
 PERCEPTION_AGENT_ADDRESS = "agent1q26xyx0j7jszd9uhah2s2kvp2my555zvywhnxh7x0dz6u3z354k65229de5"
@@ -25,6 +22,9 @@ coordinator_agent = Agent(
     endpoint=["http://localhost:8006/submit"]
 )
 
+# Global storage for agent responses
+agent_responses = {}
+
 @coordinator_agent.on_event("startup")
 async def introduce(ctx: Context):
     ctx.logger.info(f"🎯 Coordinator Agent started: {coordinator_agent.address}")
@@ -34,131 +34,135 @@ async def introduce(ctx: Context):
     ctx.logger.info(f"  Narration: {NARRATION_AGENT_ADDRESS}")
     ctx.logger.info(f"  Voice: {VOICE_AGENT_ADDRESS}")
     ctx.logger.info(f"  AudioMixer: {AUDIO_MIXER_AGENT_ADDRESS}")
-    ctx.logger.info(f"📁 Monitoring request file: storage/requests.json")
+    ctx.logger.info(f"📁 Monitoring for requests...")
 
-    # Start polling for requests
-    asyncio.create_task(poll_requests(ctx))
+@coordinator_agent.on_message(model=PerceptionData)
+async def handle_perception_response(ctx: Context, sender: str, msg: PerceptionData):
+    """Handle perception agent response"""
+    session_id = msg.session_id
+    agent_responses[f"{session_id}_perception"] = msg
+    ctx.logger.info(f"📸 Received perception data for {session_id}")
 
-async def poll_requests(ctx: Context):
-    """Poll for incoming requests from FastAPI"""
-    import os
-    import json
-    import time
+    # Check if we have both perception and emotion data to proceed
+    await check_and_proceed_with_narration(ctx, session_id)
 
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    request_file = os.path.join(base_dir, "storage", "requests.json")
-    response_dir = os.path.join(base_dir, "storage", "responses")
+@coordinator_agent.on_message(model=EmotionData)
+async def handle_emotion_response(ctx: Context, sender: str, msg: EmotionData):
+    """Handle emotion agent response"""
+    session_id = msg.session_id
+    agent_responses[f"{session_id}_emotion"] = msg
+    ctx.logger.info(f"😊 Received emotion data for {session_id}")
 
-    while True:
-        try:
-            ctx.logger.info(f"🔍 Checking for request file: {request_file}")
-            if os.path.exists(request_file):
-                ctx.logger.info(f"📁 Found request file!")
-                # Read request
-                with open(request_file, "r") as f:
-                    request_data = json.load(f)
+    # Check if we have both perception and emotion data to proceed
+    await check_and_proceed_with_narration(ctx, session_id)
 
-                session_id = request_data["session_id"]
-                photo_url = request_data["photo_url"]
+@coordinator_agent.on_message(model=NarrationData)
+async def handle_narration_response(ctx: Context, sender: str, msg: NarrationData):
+    """Handle narration agent response"""
+    session_id = msg.session_id
+    agent_responses[f"{session_id}_narration"] = msg
+    ctx.logger.info(f"📝 Received narration data for {session_id}")
 
-                ctx.logger.info(f"📨 Processing request for session {session_id}: {photo_url}")
+    # Proceed with voice synthesis
+    await proceed_with_voice_synthesis(ctx, session_id)
 
-                # Remove the request file so we don't process it again
-                os.remove(request_file)
-                ctx.logger.info(f"🗑️  Removed request file")
+@coordinator_agent.on_message(model=VoiceData)
+async def handle_voice_response(ctx: Context, sender: str, msg: VoiceData):
+    """Handle voice agent response"""
+    session_id = msg.session_id
+    agent_responses[f"{session_id}_voice"] = msg
+    ctx.logger.info(f"🎤 Received voice data for {session_id}")
 
-                # Process the request through the agent pipeline
-                try:
-                    result = await process_experience(ctx, photo_url, session_id)
+    # Proceed with audio mixing
+    await proceed_with_audio_mixing(ctx, session_id)
 
-                    # Write response
-                    response_file = f"{response_dir}/{session_id}.json"
-                    os.makedirs(os.path.dirname(response_file), exist_ok=True)
-                    with open(response_file, "w") as f:
-                        json.dump(result, f)
+@coordinator_agent.on_message(model=AudioMixData)
+async def handle_audio_mix_response(ctx: Context, sender: str, msg: AudioMixData):
+    """Handle audio mixer response - final step"""
+    session_id = msg.session_id
+    agent_responses[f"{session_id}_audio"] = msg
+    ctx.logger.info(f"🎵 Received final audio for {session_id}")
 
-                    ctx.logger.info(f"✅ Completed processing for session {session_id}")
+    # Create final response
+    await create_final_response(ctx, session_id)
 
-                except Exception as e:
-                    ctx.logger.error(f"❌ Error processing session {session_id}: {e}")
-                    # Write error response
-                    error_result = {
-                        "session_id": session_id,
-                        "error": str(e),
-                        "status": "failed"
-                    }
-                    response_file = f"{response_dir}/{session_id}.json"
-                    os.makedirs(os.path.dirname(response_file), exist_ok=True)
-                    with open(response_file, "w") as f:
-                        json.dump(error_result, f)
+@coordinator_agent.on_message(model=ErrorMessage)
+async def handle_error(ctx: Context, sender: str, msg: ErrorMessage):
+    """Handle any agent errors"""
+    ctx.logger.error(f"❌ Agent error from {sender}: {msg.error}")
 
-        except Exception as e:
-            ctx.logger.error(f"❌ Error in request polling: {e}")
+async def check_and_proceed_with_narration(ctx: Context, session_id: str):
+    """Check if we have both perception and emotion data, then start narration"""
+    perception_key = f"{session_id}_perception"
+    emotion_key = f"{session_id}_emotion"
 
-        # Poll every 2 seconds
-        await asyncio.sleep(2)
+    if perception_key in agent_responses and emotion_key in agent_responses:
+        perception_data = agent_responses[perception_key]
+        emotion_data = agent_responses[emotion_key]
 
-async def process_experience(ctx: Context, photo_url: str, session_id: str):
-    """Process a photo through the agent pipeline"""
-    # This is the same logic as before but as a separate function
-    # Step 1: Perception Analysis
-    ctx.logger.info(f"📸 [1/5] → Perception Agent")
-    vision_request = VisionAnalysisRequest(photo_url=photo_url, session_id=session_id)
-    await ctx.send(PERCEPTION_AGENT_ADDRESS, vision_request)
-    perception_response = await ctx.receive(PerceptionData, timeout=120)
-    if isinstance(perception_response.payload, ErrorMessage):
-        raise Exception(f"Perception failed: {perception_response.payload.error}")
-    perception_data = perception_response.payload
+        # Start narration
+        ctx.logger.info(f"📝 [3/5] → Narration Agent")
+        narration_request = NarrationRequest(
+            session_id=session_id,
+            perception=perception_data.__dict__,
+            emotion=emotion_data.__dict__
+        )
+        await ctx.send(NARRATION_AGENT_ADDRESS, narration_request)
 
-    # Step 2: Emotion Detection
-    ctx.logger.info(f"😊 [2/5] → Emotion Agent")
-    emotion_request = EmotionRequest(session_id=session_id, perception_data=perception_data.__dict__)
-    await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
-    emotion_response = await ctx.receive(EmotionData, timeout=60)
-    if isinstance(emotion_response.payload, ErrorMessage):
-        raise Exception(f"Emotion failed: {emotion_response.payload.error}")
-    emotion_data = emotion_response.payload
+async def proceed_with_voice_synthesis(ctx: Context, session_id: str):
+    """Proceed with voice synthesis after getting narration"""
+    narration_key = f"{session_id}_narration"
+    perception_key = f"{session_id}_perception"
+    emotion_key = f"{session_id}_emotion"
 
-    # Step 3: Narration Generation
-    ctx.logger.info(f"📝 [3/5] → Narration Agent")
-    narration_request = NarrationRequest(
-        session_id=session_id,
-        perception=perception_data.__dict__,
-        emotion=emotion_data.__dict__
-    )
-    await ctx.send(NARRATION_AGENT_ADDRESS, narration_request)
-    narration_response = await ctx.receive(NarrationData, timeout=60)
-    if isinstance(narration_response.payload, ErrorMessage):
-        raise Exception(f"Narration failed: {narration_response.payload.error}")
-    narration_data = narration_response.payload
+    if (narration_key in agent_responses and
+        perception_key in agent_responses and
+        emotion_key in agent_responses):
 
-    # Step 4: Voice Synthesis
-    ctx.logger.info(f"🎤 [4/5] → Voice Agent")
-    voice_request = VoiceRequest(
-        session_id=session_id,
-        narration_data=narration_data.__dict__,
-        emotion_data=emotion_data.__dict__
-    )
-    await ctx.send(VOICE_AGENT_ADDRESS, voice_request)
-    voice_response = await ctx.receive(VoiceData, timeout=120)
-    if isinstance(voice_response.payload, ErrorMessage):
-        raise Exception(f"Voice failed: {voice_response.payload.error}")
-    voice_data = voice_response.payload
+        narration_data = agent_responses[narration_key]
+        emotion_data = agent_responses[emotion_key]
 
-    # Step 5: Audio Mixing
-    ctx.logger.info(f"🎵 [5/5] → Audio Mixer Agent")
-    audio_mix_request = AudioMixRequest(
-        session_id=session_id,
-        voice_files=voice_data.voice_files,
-        ambient_sounds=perception_data.ambient_sounds
-    )
-    await ctx.send(AUDIO_MIXER_AGENT_ADDRESS, audio_mix_request)
-    audio_mix_response = await ctx.receive(AudioMixData, timeout=60)
-    if isinstance(audio_mix_response.payload, ErrorMessage):
-        raise Exception(f"Audio Mix failed: {audio_mix_response.payload.error}")
-    audio_mix_data = audio_mix_response.payload
+        # Start voice synthesis
+        ctx.logger.info(f"🎤 [4/5] → Voice Agent")
+        voice_request = VoiceRequest(
+            session_id=session_id,
+            narration_data=narration_data.__dict__,
+            emotion_data=emotion_data.__dict__
+        )
+        await ctx.send(VOICE_AGENT_ADDRESS, voice_request)
 
-    # Create response
+async def proceed_with_audio_mixing(ctx: Context, session_id: str):
+    """Proceed with audio mixing after getting voice data"""
+    voice_key = f"{session_id}_voice"
+    perception_key = f"{session_id}_perception"
+
+    if voice_key in agent_responses and perception_key in agent_responses:
+        voice_data = agent_responses[voice_key]
+        perception_data = agent_responses[perception_key]
+
+        # Start audio mixing
+        ctx.logger.info(f"🎵 [5/5] → Audio Mixer Agent")
+        audio_mix_request = AudioMixRequest(
+            session_id=session_id,
+            voice_files=voice_data.voice_files,
+            ambient_sounds=perception_data.ambient_sounds
+        )
+        await ctx.send(AUDIO_MIXER_AGENT_ADDRESS, audio_mix_request)
+
+async def create_final_response(ctx: Context, session_id: str):
+    """Create the final response after all processing is complete"""
+    # Get all the data
+    perception_data = agent_responses.get(f"{session_id}_perception")
+    emotion_data = agent_responses.get(f"{session_id}_emotion")
+    narration_data = agent_responses.get(f"{session_id}_narration")
+    voice_data = agent_responses.get(f"{session_id}_voice")
+    audio_data = agent_responses.get(f"{session_id}_audio")
+
+    if not all([perception_data, emotion_data, narration_data, voice_data, audio_data]):
+        ctx.logger.error(f"❌ Missing data for session {session_id}")
+        return
+
+    # Create audio layers
     audio_layers = []
     for voice_file in voice_data.voice_files:
         audio_layers.append({
@@ -167,102 +171,48 @@ async def process_experience(ctx: Context, photo_url: str, session_id: str):
             "text": voice_file["text"][:100] + "..." if len(voice_file["text"]) > 100 else voice_file["text"]
         })
 
-    return {
+    # Create final response
+    final_response = {
         "session_id": session_id,
         "emotion": emotion_data.__dict__,
         "narration": narration_data.__dict__,
         "audio_layers": audio_layers,
-        "final_audio_url": audio_mix_data.final_audio_url
+        "final_audio_url": audio_data.final_audio_url
     }
+
+    # Write to response file for FastAPI to pick up
+    import json
+    import os
+    response_dir = "../storage/responses/"
+    os.makedirs(response_dir, exist_ok=True)
+    response_file = f"{response_dir}/{session_id}.json"
+
+    with open(response_file, "w") as f:
+        json.dump(final_response, f)
+
+    ctx.logger.info(f"✅ Complete processing for session {session_id}")
+
+    # Clean up agent responses
+    for key in list(agent_responses.keys()):
+        if key.startswith(session_id):
+            del agent_responses[key]
 
 @coordinator_agent.on_message(model=VisionAnalysisRequest)
 async def orchestrate_experience(ctx: Context, sender: str, msg: VisionAnalysisRequest):
     session_id = msg.session_id
+    photo_url = msg.photo_url
     ctx.logger.info(f"🚀 [COORDINATOR] Starting experience for {session_id}")
 
-    try:
-        # Step 1: Perception Analysis
-        ctx.logger.info(f"📸 [1/5] → Perception Agent")
-        await ctx.send(PERCEPTION_AGENT_ADDRESS, msg)
-        perception_response = await ctx.receive(PerceptionData, timeout=120)
-        if isinstance(perception_response.payload, ErrorMessage):
-            raise Exception(f"Perception failed: {perception_response.payload.error}")
-        perception_data = perception_response.payload
+    # Start both perception and emotion analysis in parallel
+    ctx.logger.info(f"📸 [1/5] → Perception Agent")
+    vision_request = VisionAnalysisRequest(photo_url=photo_url, session_id=session_id)
+    await ctx.send(PERCEPTION_AGENT_ADDRESS, vision_request)
 
-        # Step 2: Emotion Detection
-        ctx.logger.info(f"😊 [2/5] → Emotion Agent")
-        emotion_request = EmotionRequest(session_id=session_id, perception_data=perception_data.__dict__)
-        await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
-        emotion_response = await ctx.receive(EmotionData, timeout=60)
-        if isinstance(emotion_response.payload, ErrorMessage):
-            raise Exception(f"Emotion failed: {emotion_response.payload.error}")
-        emotion_data = emotion_response.payload
+    ctx.logger.info(f"😊 [2/5] → Emotion Agent")
+    emotion_request = EmotionRequest(session_id=session_id, photo_url=photo_url)
+    await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
 
-        # Step 3: Narration Generation
-        ctx.logger.info(f"📝 [3/5] → Narration Agent")
-        narration_request = NarrationRequest(
-            session_id=session_id,
-            perception=perception_data.__dict__,
-            emotion=emotion_data.__dict__
-        )
-        await ctx.send(NARRATION_AGENT_ADDRESS, narration_request)
-        narration_response = await ctx.receive(NarrationData, timeout=60)
-        if isinstance(narration_response.payload, ErrorMessage):
-            raise Exception(f"Narration failed: {narration_response.payload.error}")
-        narration_data = narration_response.payload
-
-        # Step 4: Voice Synthesis
-        ctx.logger.info(f"🎤 [4/5] → Voice Agent")
-        voice_request = VoiceRequest(
-            session_id=session_id,
-            narration_data=narration_data.__dict__,
-            emotion_data=emotion_data.__dict__
-        )
-        await ctx.send(VOICE_AGENT_ADDRESS, voice_request)
-        voice_response = await ctx.receive(VoiceData, timeout=120)
-        if isinstance(voice_response.payload, ErrorMessage):
-            raise Exception(f"Voice failed: {voice_response.payload.error}")
-        voice_data = voice_response.payload
-
-        # Step 5: Audio Mixing
-        ctx.logger.info(f"🎵 [5/5] → Audio Mixer Agent")
-        audio_mix_request = AudioMixRequest(
-            session_id=session_id,
-            voice_files=voice_data.voice_files,
-            ambient_sounds=perception_data.ambient_sounds
-        )
-        await ctx.send(AUDIO_MIXER_AGENT_ADDRESS, audio_mix_request)
-        audio_mix_response = await ctx.receive(AudioMixData, timeout=60)
-        if isinstance(audio_mix_response.payload, ErrorMessage):
-            raise Exception(f"Audio Mix failed: {audio_mix_response.payload.error}")
-        audio_mix_data = audio_mix_response.payload
-
-        # Step 6: Complete Experience
-        ctx.logger.info(f"✅ Experience complete for {session_id}")
-
-        # Create audio layers for UI
-        audio_layers = []
-        for voice_file in voice_data.voice_files:
-            audio_layers.append({
-                "type": voice_file["type"],
-                "position": voice_file["position"],
-                "text": voice_file["text"][:100] + "..." if len(voice_file["text"]) > 100 else voice_file["text"]
-            })
-
-        experience_complete = ExperienceComplete(
-            session_id=session_id,
-            perception=perception_data.__dict__,
-            emotion=emotion_data.__dict__,
-            narration=narration_data.__dict__,
-            audio_layers=audio_layers,
-            final_audio_url=audio_mix_data.final_audio_url
-        )
-
-        await ctx.send(sender, experience_complete)
-
-    except Exception as e:
-        ctx.logger.error(f"❌ Coordinator error for {session_id}: {e}")
-        await ctx.send(sender, ErrorMessage(session_id=session_id, error=str(e), step="coordinator"))
+    ctx.logger.info(f"⏳ Waiting for agent responses for session {session_id}")
 
 if __name__ == "__main__":
     coordinator_agent.run()

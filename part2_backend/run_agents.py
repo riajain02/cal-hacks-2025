@@ -9,7 +9,7 @@ from agents.audio_mixer_agent import audio_mixer_agent
 from agents.coordinator_agent import coordinator_agent
 
 async def run_all_agents():
-    bureau = Bureau()
+    bureau = Bureau(port=8001)  # Use port 8001 for bureau
 
     # Add all agents to bureau
     bureau.add(perception_agent)
@@ -21,14 +21,14 @@ async def run_all_agents():
 
     print("🤖 Starting Multi-Agent Bureau...")
     print(f"🎯 Coordinator Address: {coordinator_agent.address}")
-    print("📡 Agents running on ports: 8000-8005")
+    print("📡 Bureau running on port: 8001")
     print("🔗 Ready for requests!")
 
     # Keep running
     await bureau.run_async()
 
 if __name__ == "__main__":
-    bureau = Bureau()
+    bureau = Bureau(port=8001)  # Use port 8001 for bureau
 
     # Add all agents to bureau
     bureau.add(perception_agent)
@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     print("🤖 Starting Multi-Agent Bureau...")
     print(f"🎯 Coordinator Address: {coordinator_agent.address}")
-    print("📡 Agents running on ports: 8000-8005")
+    print("📡 Bureau running on port: 8001")
     print("🔗 Ready for requests!")
 
     # Run the bureau (this will block)

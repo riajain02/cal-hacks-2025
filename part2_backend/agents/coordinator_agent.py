@@ -35,6 +35,55 @@ async def introduce(ctx: Context):
     ctx.logger.info(f"  Voice: {VOICE_AGENT_ADDRESS}")
     ctx.logger.info(f"  AudioMixer: {AUDIO_MIXER_AGENT_ADDRESS}")
     ctx.logger.info(f"📁 Monitoring for requests...")
+    
+    # Start polling for requests
+    asyncio.create_task(poll_requests(ctx))
+
+async def poll_requests(ctx: Context):
+    """Poll for incoming requests from FastAPI"""
+    import os
+    import json
+    
+    # Use absolute paths based on script location
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    request_file = os.path.join(base_dir, "storage/requests.json")
+    response_dir = os.path.join(base_dir, "storage/responses")
+    
+    ctx.logger.info(f"📂 Polling request file: {request_file}")
+    
+    while True:
+        try:
+            if os.path.exists(request_file):
+                ctx.logger.info(f"📨 Found request file!")
+                
+                # Read request
+                with open(request_file, "r") as f:
+                    request_data = json.load(f)
+                
+                session_id = request_data["session_id"]
+                photo_url = request_data["photo_url"]
+                
+                ctx.logger.info(f"🚀 Processing request for session {session_id}")
+                ctx.logger.info(f"   Photo URL: {photo_url}")
+                
+                # Remove the request file so we don't process it again
+                os.remove(request_file)
+                ctx.logger.info(f"✅ Request file removed")
+                
+                # Trigger processing by sending message to self
+                vision_request = VisionAnalysisRequest(photo_url=photo_url, session_id=session_id)
+                # Store response dir in context storage for later use
+                ctx.storage.set(f"response_dir_{session_id}", response_dir)
+                await ctx.send(coordinator_agent.address, vision_request)
+                ctx.logger.info(f"📤 Sent VisionAnalysisRequest to coordinator")
+                
+        except Exception as e:
+            ctx.logger.error(f"❌ Error in request polling: {e}")
+            import traceback
+            traceback.print_exc()
+        
+        # Poll every 2 seconds
+        await asyncio.sleep(2)
 
 @coordinator_agent.on_message(model=PerceptionData)
 async def handle_perception_response(ctx: Context, sender: str, msg: PerceptionData):
@@ -43,8 +92,10 @@ async def handle_perception_response(ctx: Context, sender: str, msg: PerceptionD
     agent_responses[f"{session_id}_perception"] = msg
     ctx.logger.info(f"📸 Received perception data for {session_id}")
 
-    # Check if we have both perception and emotion data to proceed
-    await check_and_proceed_with_narration(ctx, session_id)
+    # Now start emotion analysis with the perception data
+    ctx.logger.info(f"🎭 [2/5] → Emotion Agent (using perception data)")
+    emotion_request = EmotionRequest(session_id=session_id, perception_data=msg.__dict__)
+    await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
 
 @coordinator_agent.on_message(model=EmotionData)
 async def handle_emotion_response(ctx: Context, sender: str, msg: EmotionData):
@@ -203,16 +254,12 @@ async def orchestrate_experience(ctx: Context, sender: str, msg: VisionAnalysisR
     photo_url = msg.photo_url
     ctx.logger.info(f"🚀 [COORDINATOR] Starting experience for {session_id}")
 
-    # Start both perception and emotion analysis in parallel
+    # Start perception analysis first
     ctx.logger.info(f"📸 [1/5] → Perception Agent")
     vision_request = VisionAnalysisRequest(photo_url=photo_url, session_id=session_id)
     await ctx.send(PERCEPTION_AGENT_ADDRESS, vision_request)
 
-    ctx.logger.info(f"😊 [2/5] → Emotion Agent")
-    emotion_request = EmotionRequest(session_id=session_id, photo_url=photo_url)
-    await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
-
-    ctx.logger.info(f"⏳ Waiting for agent responses for session {session_id}")
+    ctx.logger.info(f"⏳ Waiting for perception result, then will start emotion for session {session_id}")
 
 if __name__ == "__main__":
     coordinator_agent.run()

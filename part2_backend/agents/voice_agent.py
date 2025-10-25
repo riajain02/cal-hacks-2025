@@ -14,6 +14,7 @@ voice_agent = Agent(
 )
 
 FISH_AUDIO_API_KEY = os.getenv("FISH_AUDIO_API_KEY")
+FISH_AUDIO_REFERENCE_ID = os.getenv("FISH_AUDIO_REFERENCE_ID", "b545c585f631496c914815291da4e893")  # Default to provided ID
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 @voice_agent.on_event("startup")
@@ -31,7 +32,7 @@ async def generate_voices(ctx: Context, sender: str, msg: VoiceRequest):
         narration_text = msg.narration_data.get("main_narration", "")
         if narration_text:
             voice_url = await generate_tts(narration_text, "main_narrator", msg.emotion_data)
-            voice_files.append({"type": "narration", "position": "center", "url": voice_url})
+            voice_files.append({"type": "narration", "position": "center", "url": voice_url, "text": narration_text})
 
         # Generate person dialogues
         dialogues = msg.narration_data.get("person_dialogues", [])
@@ -41,7 +42,7 @@ async def generate_voices(ctx: Context, sender: str, msg: VoiceRequest):
             if text:
                 position = "left" if person_id == 1 else "right"
                 voice_url = await generate_tts(text, f"person_{person_id}", msg.emotion_data)
-                voice_files.append({"type": "dialogue", "position": position, "person_id": person_id, "url": voice_url})
+                voice_files.append({"type": "dialogue", "position": position, "person_id": person_id, "url": voice_url, "text": text})
 
         result = VoiceData(session_id=msg.session_id, voice_files=voice_files)
         await ctx.send(sender, result)
@@ -56,14 +57,15 @@ async def generate_tts(text: str, speaker: str, emotion_data: dict) -> str:
     """Generate TTS using Fish Audio or fallback to OpenAI"""
     try:
         # Try Fish Audio first
-        if FISH_AUDIO_API_KEY:
+        print("🔥 USING FISH AUDIO FOR TTS (PREFERRED)")
+        if FISH_AUDIO_API_KEY and FISH_AUDIO_REFERENCE_ID:
             async with httpx.AsyncClient(timeout=60.0) as client:
                 response = await client.post(
                     "https://api.fish.audio/v1/tts",
                     headers={"Authorization": f"Bearer {FISH_AUDIO_API_KEY}"},
                     json={
                         "text": text,
-                        "reference_id": "your_reference_voice_id",  # You'll need to set up voice cloning
+                        "reference_id": FISH_AUDIO_REFERENCE_ID,
                         "format": "mp3",
                         "mp3_bitrate": 128
                     }
@@ -73,11 +75,15 @@ async def generate_tts(text: str, speaker: str, emotion_data: dict) -> str:
                     filename = f"storage/audio/{uuid.uuid4()}.mp3"
                     with open(filename, "wb") as f:
                         f.write(response.content)
-                    return f"http://localhost:8000/audio/{os.path.basename(filename)}"
-    except:
+                    return f"http://localhost:9000/static/{os.path.basename(filename)}"
+                else:
+                    print(f"🔥 FISH AUDIO FAILED: Status {response.status_code}")
+    except Exception as e:
+        print(f"🔥 FISH AUDIO ERROR: {e}")
         pass
 
     # Fallback to OpenAI TTS
+    print("🔥 FALLBACK: USING OPENAI TTS (FISH AUDIO FAILED)")
     async with httpx.AsyncClient(timeout=60.0) as client:
         response = await client.post(
             "https://api.openai.com/v1/audio/speech",
@@ -91,7 +97,7 @@ async def generate_tts(text: str, speaker: str, emotion_data: dict) -> str:
         filename = f"storage/audio/{uuid.uuid4()}.mp3"
         with open(filename, "wb") as f:
             f.write(response.content)
-        return f"http://localhost:8000/audio/{os.path.basename(filename)}"
+        return f"http://localhost:9000/static/{os.path.basename(filename)}"
 
 if __name__ == "__main__":
     voice_agent.run()

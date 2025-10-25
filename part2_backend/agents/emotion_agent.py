@@ -25,6 +25,7 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
     ctx.logger.info(f"🎭 [2/5] Detecting emotion for {msg.session_id}")
 
     try:
+        ctx.logger.warning("🔥 USING LETTA AI FOR EMOTION DETECTION (NO GPT FALLBACK)")
         async with httpx.AsyncClient(timeout=60.0) as client:
             letta_response = await client.post(
                 f"https://api.letta.com/v1/agents/{EMOTION_AGENT_ID}/messages",

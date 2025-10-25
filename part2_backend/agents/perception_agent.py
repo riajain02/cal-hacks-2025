@@ -27,6 +27,7 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
 
     try:
         # Step 1: OpenAI Vision
+        ctx.logger.warning("🔥 USING GPT-4o FOR VISION ANALYSIS (REQUIRED)")
         ctx.logger.info("   → GPT-4o Vision analysis...")
         async with httpx.AsyncClient(timeout=60.0) as client:
             vision_response = await client.post(
@@ -49,6 +50,7 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
             ctx.logger.info(f"   📝 Vision preview: {vision_desc[:200]}...")
 
         # Step 2: Letta AI structured extraction (REQUIRED - no fallback)
+        ctx.logger.warning("🔥 USING LETTA AI FOR STRUCTURED EXTRACTION (REQUIRED - NO GPT FALLBACK)")
         ctx.logger.info("   → Letta AI extraction (REQUIRED)")
         ctx.logger.info(f"   Calling agent: {PERCEPTION_AGENT_ID}")
         ctx.logger.info(f"   Input length: {len(vision_desc)} characters")
@@ -92,6 +94,19 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
                 try:
                     parsed = json.loads(json_content)
                     ctx.logger.info("   ✓ JSON parsing successful")
+                    
+                    # Flatten nested dicts in layout to strings
+                    if "layout" in parsed and isinstance(parsed["layout"], dict):
+                        flattened_layout = {}
+                        for key, value in parsed["layout"].items():
+                            if isinstance(value, dict):
+                                # Convert nested dict to string
+                                flattened_layout[key] = ", ".join(f"{k}: {v}" for k, v in value.items() if v)
+                            else:
+                                flattened_layout[key] = str(value) if value else ""
+                        parsed["layout"] = flattened_layout
+                        ctx.logger.info(f"   ✓ Flattened nested layout: {flattened_layout}")
+                    
                 except json.JSONDecodeError as e:
                     ctx.logger.error(f"   ❌ JSON parsing failed even after quote fix: {e}")
                     ctx.logger.error(f"   Fixed content: {json_content}")

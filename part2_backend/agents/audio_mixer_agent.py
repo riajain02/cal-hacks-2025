@@ -25,15 +25,26 @@ async def mix_audio(ctx: Context, sender: str, msg: AudioMixRequest):
     try:
         # This is a simplified mixer - in production you'd use proper spatial audio
         mixed_audio = AudioSegment.empty()
+        ctx.logger.info(f"🎛️ Starting mix with empty audio segment")
 
         # Add main narration (center)
         for voice in msg.voice_files:
             if voice["type"] == "narration":
                 # Load and add to center
                 audio_path = f"storage/audio/{os.path.basename(voice['url'])}"
+                ctx.logger.info(f"🎛️ Looking for narration file: {audio_path}")
                 if os.path.exists(audio_path):
+                    ctx.logger.info(f"🎛️ Narration file exists, loading...")
                     narration = AudioSegment.from_file(audio_path)
-                    mixed_audio = mixed_audio.overlay(narration, position=0)
+                    ctx.logger.info(f"🎛️ Narration duration: {len(narration)}ms")
+                    if len(mixed_audio) == 0:
+                        mixed_audio = narration
+                        ctx.logger.info(f"🎛️ Set mixed_audio to narration: {len(mixed_audio)}ms")
+                    else:
+                        mixed_audio = mixed_audio.overlay(narration, position=0)
+                        ctx.logger.info(f"🎛️ After overlay, mixed_audio duration: {len(mixed_audio)}ms")
+                else:
+                    ctx.logger.error(f"🎛️ Narration file NOT found: {audio_path}")
 
         # Add dialogues (left/right - simplified as overlay)
         for voice in msg.voice_files:
@@ -59,7 +70,7 @@ async def mix_audio(ctx: Context, sender: str, msg: AudioMixRequest):
         output_filename = f"storage/audio/mix_{msg.session_id}_{uuid.uuid4()}.mp3"
         mixed_audio.export(output_filename, format="mp3")
 
-        final_url = f"http://localhost:8000/audio/{os.path.basename(output_filename)}"
+        final_url = f"http://localhost:9000/static/{os.path.basename(output_filename)}"
         result = AudioMixData(session_id=msg.session_id, final_audio_url=final_url)
 
         await ctx.send(sender, result)

@@ -47,15 +47,3 @@ Thumbs.db
 # Logs
 *.log
 logs/
-
-# Temporary files
-*.tmp
-*.temp
-check_*.py
-my_audio.mp3
-
-# Generated files
-storage/audio/*
-storage/uploads/*
-!storage/audio/.gitkeep
-!storage/uploads/.gitkeep

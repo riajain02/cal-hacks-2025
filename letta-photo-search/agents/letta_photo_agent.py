@@ -4,6 +4,7 @@ This agent searches for photos based on user queries using intelligent semantic 
 """
 import os
 import json
+import logging
 from typing import List, Dict, Optional
 from dotenv import load_dotenv
 
@@ -15,6 +16,16 @@ class PhotoSearchAgent:
 
     def __init__(self):
         """Initialize the photo search agent"""
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+
+        # Create console handler if not already exists
+        if not self.logger.handlers:
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+
         self.api_key = os.getenv('LETTA_API_KEY')
 
         # Load photo database
@@ -35,7 +46,7 @@ class PhotoSearchAgent:
             'plant': ['flower', 'tree', 'garden'],
         }
 
-        print("✓ Photo Search Agent initialized with semantic understanding")
+        self.logger.info("Photo Search Agent initialized with semantic understanding")
 
     def _load_photo_database(self) -> List[Dict]:
         """Load the photo database from JSON file"""
@@ -112,11 +123,11 @@ class PhotoSearchAgent:
         top_matches = matches[:3]
 
         if top_matches:
-            print(f"✓ Found {len(top_matches)} match(es) for '{query}':")
+            self.logger.info(f"Found {len(top_matches)} match(es) for '{query}':")
             for i, match in enumerate(top_matches, 1):
-                print(f"  {i}. {match['title']} (score: {match['relevance_score']})")
+                self.logger.debug(f"  {i}. {match['title']} (score: {match['relevance_score']})")
         else:
-            print(f"✗ No matches found for '{query}'")
+            self.logger.warning(f"No matches found for '{query}'")
 
         return top_matches
 

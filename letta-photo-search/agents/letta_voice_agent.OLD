@@ -1,0 +1,316 @@
+"""
+Letta Voice Processing Agent
+Extracts intent and entities from natural language speech input
+"""
+import os
+import json
+import logging
+from typing import Dict, List, Optional
+from dotenv import load_dotenv
+
+# Try to import Letta, but don't fail if not available
+try:
+    from letta import LocalClient, EmbeddingConfig, LLMConfig
+    LETTA_AVAILABLE = True
+except ImportError:
+    LETTA_AVAILABLE = False
+    print("Warning: Letta not available, using fallback processing")
+
+load_dotenv()
+
+class VoiceProcessingAgent:
+    """
+    Letta-powered agent for processing voice input and extracting:
+    - Intent: What the user wants to do (search, find, show, etc.)
+    - Entities: Specific items being searched for (dog, sunset, coffee, etc.)
+    - Context: Additional descriptive information
+    """
+
+    def __init__(self):
+        """Initialize the Letta voice processing agent"""
+        self.api_key = os.getenv('LETTA_API_KEY')
+
+        if not LETTA_AVAILABLE:
+            print("✓ Voice Processing Agent initialized (fallback mode)")
+            self.client = None
+            self.agent = None
+            return
+
+        try:
+            # Initialize Letta client
+            self.client = LocalClient()
+
+            # Create or get agent
+            self.agent = self._create_agent()
+
+            print("✓ Letta Voice Processing Agent initialized")
+        except Exception as e:
+            print(f"Warning: Could not initialize Letta client: {e}")
+            print("Using fallback processing mode")
+            self.client = None
+            self.agent = None
+
+    def _create_agent(self):
+        """Create a Letta agent configured for voice processing"""
+
+        if not self.client:
+            return None
+
+        # System prompt for the agent
+        system_prompt = """You are an intelligent voice processing assistant for a photo search system designed for blind users.
+
+Your job is to analyze natural language queries and extract:
+
+1. INTENT: What the user wants to do
+   - search: Looking for specific photos
+   - describe: Want description of results
+   - navigate: Browse through photos
+
+2. ENTITIES: Specific items/objects/scenes being searched for
+   - Objects: dog, cat, coffee cup, laptop, etc.
+   - Scenes: sunset, beach, mountain, workspace, etc.
+   - Attributes: color, mood, setting, etc.
+
+3. CONTEXT: Additional descriptive information
+   - Settings: outdoor, indoor, nature
+   - Mood: happy, peaceful, energetic
+   - Time: morning, sunset, night
+   - Qualities: beautiful, colorful, cozy
+
+Always return a JSON response in this exact format:
+{
+    "intent": "search",
+    "entities": ["primary_entity", "additional_entities"],
+    "context": {
+        "setting": "outdoor/indoor/nature",
+        "mood": "description",
+        "attributes": ["attribute1", "attribute2"]
+    },
+    "search_query": "refined search query for image search",
+    "description": "Natural language description of what user is looking for"
+}
+
+Examples:
+Input: "Find me a picture of a happy dog"
+Output: {
+    "intent": "search",
+    "entities": ["dog"],
+    "context": {"mood": "happy", "attributes": ["happy", "pet"]},
+    "search_query": "happy dog",
+    "description": "Looking for a cheerful, happy dog photo"
+}
+
+Input: "Show me a peaceful sunset at the beach"
+Output: {
+    "intent": "search",
+    "entities": ["sunset", "beach"],
+    "context": {"setting": "outdoor", "mood": "peaceful", "attributes": ["peaceful", "serene", "ocean"]},
+    "search_query": "peaceful sunset beach ocean",
+    "description": "Looking for a tranquil beach sunset scene"
+}
+
+Input: "I want to see cats"
+Output: {
+    "intent": "search",
+    "entities": ["cat"],
+    "context": {"attributes": ["pet", "animal"]},
+    "search_query": "cat",
+    "description": "Looking for cat photos"
+}
+
+Be helpful and extract as much relevant information as possible from the user's natural language input.
+"""
+
+        try:
+            # List existing agents
+            agents = self.client.list_agents()
+
+            # Look for existing voice agent
+            for agent in agents:
+                if hasattr(agent, 'name') and agent.name == "voice_processor":
+                    print("Found existing voice processing agent")
+                    return agent
+
+            # Create new agent if not found
+            print("Creating new voice processing agent...")
+            agent = self.client.create_agent(
+                name="voice_processor",
+                preset="memgpt_chat",
+                persona=system_prompt,
+            )
+
+            return agent
+
+        except Exception as e:
+            print(f"Error creating agent: {e}")
+            import traceback
+            traceback.print_exc()
+            return None
+
+    def process_voice_input(self, voice_text: str) -> Dict:
+        """
+        Process voice input and extract intent, entities, and context
+
+        Args:
+            voice_text: Transcribed speech from user
+
+        Returns:
+            Dictionary with intent, entities, context, and refined search query
+        """
+
+        if not self.client or not self.agent:
+            # Fallback to simple processing
+            return self._simple_process(voice_text)
+
+        try:
+            # Send message to Letta agent
+            prompt = f"Process this voice input and extract intent, entities, and context:\n\n'{voice_text}'\n\nRespond with ONLY the JSON output, no other text."
+
+            response = self.client.send_message(
+                agent_id=self.agent.id,
+                message=prompt,
+                role="user"
+            )
+
+            # Extract JSON from response
+            result = self._extract_json(response)
+
+            if result:
+                print(f"✓ Processed: '{voice_text}' -> Intent: {result.get('intent')}, Entities: {result.get('entities')}")
+                return result
+            else:
+                # Fallback if JSON extraction fails
+                return self._simple_process(voice_text)
+
+        except Exception as e:
+            print(f"Error processing voice input: {e}")
+            return self._simple_process(voice_text)
+
+    def _extract_json(self, response) -> Optional[Dict]:
+        """Extract JSON from Letta agent response"""
+        try:
+            # Response might be a list of messages
+            if hasattr(response, 'messages'):
+                for message in response.messages:
+                    if hasattr(message, 'text'):
+                        text = message.text
+                    elif isinstance(message, dict):
+                        text = message.get('text', '')
+                    else:
+                        text = str(message)
+
+                    # Try to find JSON in the text
+                    if '{' in text and '}' in text:
+                        # Extract JSON substring
+                        start = text.index('{')
+                        end = text.rindex('}') + 1
+                        json_str = text[start:end]
+                        return json.loads(json_str)
+
+            # If response is direct text
+            elif isinstance(response, str):
+                if '{' in response and '}' in response:
+                    start = response.index('{')
+                    end = response.rindex('}') + 1
+                    json_str = response[start:end]
+                    return json.loads(json_str)
+
+            return None
+
+        except Exception as e:
+            print(f"Error extracting JSON: {e}")
+            return None
+
+    def _simple_process(self, voice_text: str) -> Dict:
+        """Simple fallback processing without Letta"""
+
+        voice_lower = voice_text.lower().strip()
+
+        # Extract entities (simple keyword matching)
+        keywords = [
+            'dog', 'cat', 'pet', 'animal',
+            'sunset', 'sunrise', 'beach', 'ocean', 'sea',
+            'mountain', 'forest', 'nature', 'tree', 'flower',
+            'coffee', 'cup', 'drink', 'food', 'fruit',
+            'city', 'building', 'urban', 'skyline',
+            'workspace', 'laptop', 'desk', 'office',
+            'car', 'vehicle', 'road', 'street'
+        ]
+
+        entities = []
+        for keyword in keywords:
+            if keyword in voice_lower:
+                entities.append(keyword)
+
+        # Determine intent
+        if any(word in voice_lower for word in ['find', 'search', 'show', 'get', 'looking', 'want']):
+            intent = 'search'
+        else:
+            intent = 'search'  # Default to search
+
+        # Extract context
+        context = {}
+
+        if any(word in voice_lower for word in ['happy', 'cheerful', 'joyful']):
+            context['mood'] = 'happy'
+        elif any(word in voice_lower for word in ['peaceful', 'calm', 'serene', 'tranquil']):
+            context['mood'] = 'peaceful'
+        elif any(word in voice_lower for word in ['beautiful', 'pretty', 'gorgeous']):
+            context['mood'] = 'beautiful'
+
+        if any(word in voice_lower for word in ['outdoor', 'outside', 'nature']):
+            context['setting'] = 'outdoor'
+        elif any(word in voice_lower for word in ['indoor', 'inside']):
+            context['setting'] = 'indoor'
+
+        # Create search query
+        if entities:
+            search_query = ' '.join(entities)
+        else:
+            # Use the whole input as search
+            search_query = voice_text
+
+        return {
+            'intent': intent,
+            'entities': entities if entities else [voice_text],
+            'context': context,
+            'search_query': search_query if search_query else voice_text,
+            'description': f"Looking for {', '.join(entities) if entities else voice_text}"
+        }
+
+
+# Test function
+def test_agent():
+    """Test the voice processing agent"""
+    print("\n" + "="*60)
+    print("TESTING LETTA VOICE PROCESSING AGENT")
+    print("="*60 + "\n")
+
+    agent = VoiceProcessingAgent()
+
+    test_inputs = [
+        "Find me a picture of a happy dog",
+        "Show me a peaceful sunset at the beach",
+        "I want to see a cat",
+        "Looking for coffee",
+        "Show me beautiful mountains",
+        "Find nature photos",
+        "I need a workspace picture",
+    ]
+
+    for voice_input in test_inputs:
+        print(f"\n{'='*60}")
+        print(f"Input: '{voice_input}'")
+        print(f"{'='*60}")
+
+        result = agent.process_voice_input(voice_input)
+
+        print(f"\nIntent: {result['intent']}")
+        print(f"Entities: {result['entities']}")
+        print(f"Context: {result['context']}")
+        print(f"Search Query: {result['search_query']}")
+        print(f"Description: {result['description']}")
+
+
+if __name__ == "__main__":
+    test_agent()

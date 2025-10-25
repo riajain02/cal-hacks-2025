@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Photo Search</title>
+    <link rel="stylesheet" href="style_new.css">
+</head>
+<body>
+    <!-- Initial Voice Page -->
+    <div id="voice-page" class="page active">
+        <div class="background-grid"></div>
+        <div class="glow-orb"></div>
+
+        <div class="voice-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Brain/Memory Icon -->
+                        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                        <!-- Neural connections -->
+                        <circle cx="9" cy="10" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="10" r="1" fill="currentColor"/>
+                        <circle cx="9" cy="15" r="1" fill="currentColor"/>
+                        <circle cx="15" cy="15" r="1" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h1>Memory Search</h1>
+                <p class="tagline">AI-Powered Photo Memory Assistant</p>
+            </div>
+
+            <div class="voice-interface">
+                <div class="mic-button" id="mic-button">
+                    <div class="mic-ripple"></div>
+                    <div class="mic-ripple"></div>
+                    <div class="mic-ripple"></div>
+                    <svg class="mic-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </div>
+
+                <div class="status-text" id="status-text">
+                    Click to speak or type your query
+                </div>
+
+                <div class="transcript" id="transcript"></div>
+            </div>
+
+            <div class="text-input-container">
+                <input
+                    type="text"
+                    id="text-input"
+                    class="text-input"
+                    placeholder="Or type your search query..."
+                    autocomplete="off"
+                />
+                <button class="send-button" id="send-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="suggestions">
+                <div class="suggestion" data-query="Find me a happy dog">🐕 Happy dog</div>
+                <div class="suggestion" data-query="Show me a peaceful sunset">🌅 Peaceful sunset</div>
+                <div class="suggestion" data-query="I want to see nature">🌲 Nature scene</div>
+                <div class="suggestion" data-query="Coffee cup">☕ Coffee</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent Processing Page -->
+    <div id="processing-page" class="page">
+        <div class="background-grid"></div>
+
+        <div class="processing-container">
+            <div class="processing-header">
+                <div class="back-button" id="back-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </div>
+                <div class="query-display" id="query-display"></div>
+            </div>
+
+            <div class="agents-timeline" id="agents-timeline">
+                <!-- Agent steps will be inserted here -->
+            </div>
+
+            <div class="results-section" id="results-section">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio element for TTS -->
+    <audio id="tts-audio" style="display: none;"></audio>
+
+    <script src="app_new.js"></script>
+</body>
+</html>

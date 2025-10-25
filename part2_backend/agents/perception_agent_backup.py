@@ -46,60 +46,25 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
             )
             vision_desc = vision_response.json()["choices"][0]["message"]["content"]
             ctx.logger.info(f"   ✓ Vision complete ({len(vision_desc)} chars)")
-            ctx.logger.info(f"   📝 Vision preview: {vision_desc[:200]}...")
 
-        # Step 2: Letta AI structured extraction (REQUIRED - no fallback)
-        ctx.logger.info("   → Letta AI extraction (REQUIRED)")
-        ctx.logger.info(f"   Calling agent: {PERCEPTION_AGENT_ID}")
-        ctx.logger.info(f"   Input length: {len(vision_desc)} characters")
-
+        # Step 2: Letta AI structured extraction
+        ctx.logger.info("   → Letta AI extraction...")
         async with httpx.AsyncClient(timeout=60.0) as client:
             letta_response = await client.post(
-                f"https://api.letta.com/v1/agents/{PERCEPTION_AGENT_ID}/messages",
+                f"https://api.letta.ai/v1/agents/{PERCEPTION_AGENT_ID}/messages",
                 headers={"Authorization": f"Bearer {LETTA_API_KEY}"},
-                json={"messages": [{"role": "user", "content": f"Extract structured data:\\n\\n{vision_desc}"}], "stream": False}
+                json={"message": f"Extract structured data:\n\n{vision_desc}", "stream": False}
             )
-
-            ctx.logger.info(f"   HTTP Status: {letta_response.status_code}")
-
-            if letta_response.status_code != 200:
-                ctx.logger.error(f"   ❌ HTTP Error: {letta_response.status_code}")
-                ctx.logger.error(f"   Response headers: {dict(letta_response.headers)}")
-                ctx.logger.error(f"   Response body: {letta_response.text}")
-                raise Exception(f"Letta AI HTTP error {letta_response.status_code}: {letta_response.text}")
-
             letta_data = letta_response.json()
-            ctx.logger.info(f"   📦 Raw API response: {json.dumps(letta_data, indent=2)}")
+            perception_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
 
-            perception_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message")), "{}")
-            ctx.logger.info(f"   📝 Extracted assistant content: {perception_text}")
-
-            # Parse JSON (handle mixed quotes from Letta AI)
+            # Parse JSON
             json_start = perception_text.find('{')
             json_end = perception_text.rfind('}') + 1
             if json_start >= 0 and json_end > json_start:
-                json_content = perception_text[json_start:json_end]
-                # Fix mixed quotes by replacing single quotes around keys/values
-                import re
-                # Replace single quotes around keys and string values with double quotes
-                json_content = re.sub(r"'([^']*)':", r'"\1":', json_content)  # Keys
-                json_content = re.sub(r": '([^']*)'", r': "\1"', json_content)  # String values
-                json_content = re.sub(r": '([^']*)',", r': "\1",', json_content)  # String values with comma
-                json_content = re.sub(r": '([^']*)'}", r': "\1"}', json_content)  # String values at end
-                # Fix single quotes in arrays: ['item1', 'item2'] -> ["item1", "item2"]
-                json_content = re.sub(r"'([^']*)'", r'"\1"', json_content)
-
-                try:
-                    parsed = json.loads(json_content)
-                    ctx.logger.info("   ✓ JSON parsing successful")
-                except json.JSONDecodeError as e:
-                    ctx.logger.error(f"   ❌ JSON parsing failed even after quote fix: {e}")
-                    ctx.logger.error(f"   Fixed content: {json_content}")
-                    raise Exception(f"Letta AI returned unparseable JSON: {json_content}")
+                parsed = json.loads(perception_text[json_start:json_end])
             else:
-                ctx.logger.error("   ❌ No valid JSON found in assistant response")
-                ctx.logger.error(f"   Content: {perception_text}")
-                raise Exception(f"Letta AI returned invalid JSON: {perception_text}")
+                parsed = {"objects": ["scene"], "people_count": 0, "people_details": [], "layout": {}, "scene_type": "unknown", "setting": "unknown", "colors": [], "lighting": "natural", "ambient_sounds": []}
 
         result = PerceptionData(
             session_id=msg.session_id,

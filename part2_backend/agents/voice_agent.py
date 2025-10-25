@@ -46,6 +46,7 @@ async def generate_voices(ctx: Context, sender: str, msg: VoiceRequest):
         result = VoiceData(session_id=msg.session_id, voice_files=voice_files)
         await ctx.send(sender, result)
         ctx.logger.info(f"✅ Voice: {len(voice_files)} audio files generated")
+        ctx.logger.info(f"📊 Voice JSON: {result.__dict__}")
 
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")

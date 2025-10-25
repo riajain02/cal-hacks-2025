@@ -27,7 +27,7 @@ async def generate_narration(ctx: Context, sender: str, msg: NarrationRequest):
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             letta_response = await client.post(
-                f"https://api.letta.ai/v1/agents/{NARRATION_AGENT_ID}/messages",
+                f"https://api.letta.com/v1/agents/{NARRATION_AGENT_ID}/messages",
                 headers={"Authorization": f"Bearer {LETTA_API_KEY}"},
                 json={"message": f"Create narration:\n\nPERCEPTION:\n{json.dumps(msg.perception, indent=2)}\n\nEMOTION:\n{json.dumps(msg.emotion, indent=2)}", "stream": False}
             )
@@ -50,6 +50,7 @@ async def generate_narration(ctx: Context, sender: str, msg: NarrationRequest):
 
         await ctx.send(sender, result)
         ctx.logger.info(f"✅ Narration: {len(result.main_narration)} chars, {len(result.person_dialogues)} dialogues")
+        ctx.logger.info(f"📊 Narration JSON: {result.__dict__}")
 
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")

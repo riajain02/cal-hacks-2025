@@ -27,9 +27,9 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
             letta_response = await client.post(
-                f"https://api.letta.ai/v1/agents/{EMOTION_AGENT_ID}/messages",
+                f"https://api.letta.com/v1/agents/{EMOTION_AGENT_ID}/messages",
                 headers={"Authorization": f"Bearer {LETTA_API_KEY}"},
-                json={"message": f"Analyze emotion:\n\n{json.dumps(msg.perception_data, indent=2)}", "stream": False}
+                json={"messages": [{"role": "user", "content": f"Analyze emotion:\n\n{json.dumps(msg.perception_data, indent=2)}"}], "stream": False}
             )
             letta_data = letta_response.json()
             emotion_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
@@ -53,6 +53,7 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
 
         await ctx.send(sender, result)
         ctx.logger.info(f"✅ Emotion: {result.mood} ({result.intensity})")
+        ctx.logger.info(f"📊 Emotion JSON: {result.__dict__}")
 
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")

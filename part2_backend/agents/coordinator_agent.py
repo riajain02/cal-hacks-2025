@@ -45,12 +45,15 @@ async def poll_requests(ctx: Context):
     import json
     import time
 
-    request_file = "../storage/requests.json"
-    response_dir = "../storage/responses/"
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    request_file = os.path.join(base_dir, "storage", "requests.json")
+    response_dir = os.path.join(base_dir, "storage", "responses")
 
     while True:
         try:
+            ctx.logger.info(f"🔍 Checking for request file: {request_file}")
             if os.path.exists(request_file):
+                ctx.logger.info(f"📁 Found request file!")
                 # Read request
                 with open(request_file, "r") as f:
                     request_data = json.load(f)
@@ -58,10 +61,11 @@ async def poll_requests(ctx: Context):
                 session_id = request_data["session_id"]
                 photo_url = request_data["photo_url"]
 
-                ctx.logger.info(f"📨 Processing request for session {session_id}")
+                ctx.logger.info(f"📨 Processing request for session {session_id}: {photo_url}")
 
                 # Remove the request file so we don't process it again
                 os.remove(request_file)
+                ctx.logger.info(f"🗑️  Removed request file")
 
                 # Process the request through the agent pipeline
                 try:

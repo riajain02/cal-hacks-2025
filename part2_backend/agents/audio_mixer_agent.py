@@ -64,6 +64,7 @@ async def mix_audio(ctx: Context, sender: str, msg: AudioMixRequest):
 
         await ctx.send(sender, result)
         ctx.logger.info(f"✅ Audio Mix: {len(mixed_audio)}ms final audio")
+        ctx.logger.info(f"📊 Audio Mix JSON: {result.__dict__}")
 
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")

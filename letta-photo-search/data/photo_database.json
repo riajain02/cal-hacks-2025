@@ -1,0 +1,84 @@
+{
+  "photos": [
+    {
+      "id": 1,
+      "filename": "golden_retriever.jpg",
+      "title": "Golden Retriever Dog",
+      "description": "A happy golden retriever dog sitting in a park with tongue out, friendly and playful expression",
+      "tags": ["dog", "pet", "animal", "golden retriever", "outdoor", "park", "happy"],
+      "url": "https://images.unsplash.com/photo-1633722715463-d30f4f325e24?w=800"
+    },
+    {
+      "id": 2,
+      "filename": "sunset_beach.jpg",
+      "title": "Sunset at Beach",
+      "description": "Beautiful orange and pink sunset over ocean waves at the beach, peaceful and serene scene",
+      "tags": ["sunset", "beach", "ocean", "nature", "scenic", "peaceful", "water"],
+      "url": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800"
+    },
+    {
+      "id": 3,
+      "filename": "coffee_cup.jpg",
+      "title": "Coffee Cup",
+      "description": "A white ceramic coffee cup filled with hot coffee on a wooden table, steam rising",
+      "tags": ["coffee", "drink", "breakfast", "cafe", "beverage", "hot", "cup"],
+      "url": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800"
+    },
+    {
+      "id": 4,
+      "filename": "mountain_landscape.jpg",
+      "title": "Mountain Landscape",
+      "description": "Majestic snow-capped mountain peaks with blue sky and green valley below",
+      "tags": ["mountain", "landscape", "nature", "scenic", "snow", "outdoor", "hiking"],
+      "url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
+    },
+    {
+      "id": 5,
+      "filename": "tabby_cat.jpg",
+      "title": "Tabby Cat",
+      "description": "Cute tabby cat with green eyes lying on a cozy blanket indoors, relaxed and content",
+      "tags": ["cat", "pet", "animal", "tabby", "indoor", "cozy", "cute"],
+      "url": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=800"
+    },
+    {
+      "id": 6,
+      "filename": "city_skyline.jpg",
+      "title": "City Skyline at Night",
+      "description": "Urban city skyline at night with illuminated skyscrapers and city lights reflecting on water",
+      "tags": ["city", "urban", "night", "skyline", "lights", "buildings", "architecture"],
+      "url": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=800"
+    },
+    {
+      "id": 7,
+      "filename": "fresh_fruits.jpg",
+      "title": "Fresh Fruit Bowl",
+      "description": "Colorful assortment of fresh fruits including apples, oranges, and berries in a wooden bowl",
+      "tags": ["fruit", "food", "healthy", "fresh", "colorful", "organic", "nutrition"],
+      "url": "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800"
+    },
+    {
+      "id": 8,
+      "filename": "forest_path.jpg",
+      "title": "Forest Path",
+      "description": "Peaceful forest path covered with autumn leaves, surrounded by tall trees with sunlight filtering through",
+      "tags": ["forest", "nature", "path", "trees", "autumn", "peaceful", "outdoor"],
+      "url": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800"
+    },
+    {
+      "id": 9,
+      "filename": "laptop_workspace.jpg",
+      "title": "Modern Workspace",
+      "description": "Clean modern workspace with laptop, notebook, and coffee cup on a white desk",
+      "tags": ["workspace", "laptop", "office", "desk", "work", "technology", "modern"],
+      "url": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800"
+    },
+    {
+      "id": 10,
+      "filename": "flower_garden.jpg",
+      "title": "Colorful Flower Garden",
+      "description": "Beautiful garden filled with colorful blooming flowers including tulips and daisies in spring",
+      "tags": ["flowers", "garden", "spring", "colorful", "nature", "blooming", "beautiful"],
+      "url": "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800"
+    }
+  ]
+}

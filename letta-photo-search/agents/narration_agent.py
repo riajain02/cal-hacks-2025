@@ -27,20 +27,49 @@ async def generate_narration(ctx: Context, sender: str, msg: NarrationRequest):
     ctx.logger.info(f"✍️  [3/5] Generating narration for {msg.session_id}")
 
     try:
+        ctx.logger.info(f"   → Calling Letta Narration Agent: {NARRATION_AGENT_ID}")
+        ctx.logger.info(f"   → With perception and emotion data from previous agents")
+
         async with httpx.AsyncClient(timeout=60.0) as client:
             letta_response = await client.post(
                 f"https://api.letta.com/v1/agents/{NARRATION_AGENT_ID}/messages",
                 headers={"Authorization": f"Bearer {LETTA_API_KEY}"},
-                json={"message": f"Create narration:\n\nPERCEPTION:\n{json.dumps(msg.perception, indent=2)}\n\nEMOTION:\n{json.dumps(msg.emotion, indent=2)}", "stream": False}
+                json={"messages": [{"role": "user", "content": f"Create narration:\n\nPERCEPTION:\n{json.dumps(msg.perception, indent=2)}\n\nEMOTION:\n{json.dumps(msg.emotion, indent=2)}"}], "stream": False}
             )
+
+            ctx.logger.info(f"   HTTP Status: {letta_response.status_code}")
+
+            if letta_response.status_code != 200:
+                ctx.logger.error(f"   ❌ HTTP Error: {letta_response.status_code}")
+                ctx.logger.error(f"   Response: {letta_response.text}")
+                raise Exception(f"Letta AI HTTP error {letta_response.status_code}")
+
             letta_data = letta_response.json()
+            ctx.logger.info(f"   📦 Raw API response received")
             narration_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
 
             json_start = narration_text.find('{')
             json_end = narration_text.rfind('}') + 1
-            if json_start >= 0:
-                parsed = json.loads(narration_text[json_start:json_end])
+            if json_start >= 0 and json_end > json_start:
+                json_content = narration_text[json_start:json_end]
+                # Fix mixed quotes
+                import re
+                json_content = re.sub(r"'([^']*)':", r'"\1":', json_content)  # Keys
+                json_content = re.sub(r": '([^']*)'", r': "\1"', json_content)  # String values
+                json_content = re.sub(r": '([^']*)',", r': "\1",', json_content)  # String values with comma
+                json_content = re.sub(r": '([^']*)'}", r': "\1"}', json_content)  # String values at end
+                json_content = re.sub(r"'([^']*)'", r'"\1"', json_content)  # Fix single quotes in arrays
+
+                try:
+                    parsed = json.loads(json_content)
+                    ctx.logger.info(f"   ✓ JSON parsing successful")
+                except json.JSONDecodeError as e:
+                    ctx.logger.error(f"   ❌ JSON parsing failed: {e}")
+                    ctx.logger.error(f"   Content: {json_content[:200]}...")
+                    parsed = {"main_narration": "Scene description unavailable.", "person_dialogues": [], "ambient_descriptions": []}
             else:
+                ctx.logger.error(f"   ❌ No valid JSON found in narration response")
+                ctx.logger.error(f"   Content: {narration_text[:200]}...")
                 parsed = {"main_narration": "Scene description unavailable.", "person_dialogues": [], "ambient_descriptions": []}
 
         result = NarrationData(

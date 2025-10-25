@@ -1,0 +1,53 @@
+{
+  "session_id": "85e465bb-807b-400a-a90d-7b13fd717c8f",
+  "success": true,
+  "perception": {
+    "session_id": "85e465bb-807b-400a-a90d-7b13fd717c8f",
+    "objects": [
+      "cat"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "cat occupying most of the frame, head as central focus",
+      "background": "solid, bright blue sky"
+    },
+    "scene_type": "animal_portrait",
+    "setting": "outdoor setting under a clear sky",
+    "colors": [
+      "brown",
+      "beige",
+      "black",
+      "green"
+    ],
+    "lighting": "natural daylight highlighting details in fur and eyes",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "85e465bb-807b-400a-a90d-7b13fd717c8f",
+    "mood": "playful",
+    "emotion_tags": [
+      "curiosity",
+      "affection",
+      "contentment"
+    ],
+    "tone": "light and warm",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, affectionate, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "warm and inviting atmosphere"
+  },
+  "narration": {
+    "session_id": "85e465bb-807b-400a-a90d-7b13fd717c8f",
+    "main_narration": "In this charming animal portrait, a cat occupies most of the frame, its head as the central focus against a solid, bright blue sky. The natural daylight highlights the intricate details of its fur, showcasing hues of brown and beige with hints of black that glisten in the light. This playful feline gazes curiously into the distance, embodying affection and contentment in its relaxed demeanor. The warm atmosphere invites you to share in this delightful moment with your furry friend.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of grass",
+      "soft purring",
+      "distant chirping of birds"
+    ]
+  }
+}

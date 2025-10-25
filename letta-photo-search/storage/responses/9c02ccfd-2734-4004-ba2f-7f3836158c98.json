@@ -1,0 +1,53 @@
+{
+  "session_id": "9c02ccfd-2734-4004-ba2f-7f3836158c98",
+  "success": true,
+  "perception": {
+    "session_id": "9c02ccfd-2734-4004-ba2f-7f3836158c98",
+    "objects": [
+      "cat"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "cat prominently positioned in the center and part of the left side",
+      "background": "vivid, clear blue sky"
+    },
+    "scene_type": "animal_portrait",
+    "setting": "outdoor setting under a clear sky",
+    "colors": [
+      "brown",
+      "black",
+      "golden",
+      "green"
+    ],
+    "lighting": "bright natural sunlight enhancing colors and details",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "9c02ccfd-2734-4004-ba2f-7f3836158c98",
+    "mood": "playful",
+    "emotion_tags": [
+      "curiosity",
+      "contentment",
+      "affection"
+    ],
+    "tone": "light and warm",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, affectionate, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "warm and inviting atmosphere"
+  },
+  "narration": {
+    "session_id": "9c02ccfd-2734-4004-ba2f-7f3836158c98",
+    "main_narration": "In this delightful animal portrait, a cat is prominently positioned in the center and slightly to the left of your view, its fur glistening under bright natural sunlight. The vivid, clear blue sky serves as a perfect backdrop, enhancing the rich colors of brown, black, and golden hues that adorn its coat. This playful feline exudes curiosity and contentment as it gazes into the distance, embodying affection in its relaxed demeanor. The warm atmosphere invites you to share in this charming moment with the cat.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of grass",
+      "soft purring sound",
+      "distant chirping of birds"
+    ]
+  }
+}

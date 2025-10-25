@@ -1,0 +1,53 @@
+{
+  "session_id": "07f0537b-dbfb-4834-bbb6-e76c9846331f",
+  "success": true,
+  "perception": {
+    "session_id": "07f0537b-dbfb-4834-bbb6-e76c9846331f",
+    "objects": [
+      "cat"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "cat prominently in the foreground, slightly to the left with face angled upwards",
+      "background": "clear, featureless sky emphasizing focus on the cat"
+    },
+    "scene_type": "animal_portrait",
+    "setting": "outdoor setting on a clear day",
+    "colors": [
+      "brown",
+      "black",
+      "green",
+      "blue"
+    ],
+    "lighting": "strong and natural, casting soft shadows and highlighting fur texture",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "07f0537b-dbfb-4834-bbb6-e76c9846331f",
+    "mood": "playful",
+    "emotion_tags": [
+      "curiosity",
+      "contentment",
+      "affection"
+    ],
+    "tone": "light and warm",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, affectionate, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "warm and inviting atmosphere"
+  },
+  "narration": {
+    "session_id": "07f0537b-dbfb-4834-bbb6-e76c9846331f",
+    "main_narration": "In a charming outdoor setting on a clear day, a cat takes center stage, prominently positioned in the foreground with its face angled gently upward. The strong natural light highlights the rich texture of its fur, showcasing shades of brown and black against a backdrop of a clear, featureless blue sky. This playful creature exudes curiosity and contentment, inviting you to share in its moment of tranquility. The warm atmosphere surrounding this scene is filled with affection as you observe this delightful feline.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft rustling of grass",
+      "distant chirping of birds",
+      "gentle breeze"
+    ]
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "session_id": "8cce40ac-7384-4717-9044-ac9b6d6851f9",
+  "success": true,
+  "perception": {
+    "session_id": "8cce40ac-7384-4717-9044-ac9b6d6851f9",
+    "objects": [
+      "skyscrapers",
+      "buildings",
+      "rooftops",
+      "streets",
+      "vehicles",
+      "trees"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "",
+      "midground": "running directly down the middle, creating a symmetrical perspective",
+      "background": "lining both sides of the central avenue, taller and denser towards the horizon"
+    },
+    "scene_type": "cityscape",
+    "setting": "urban environment in a major city",
+    "colors": [
+      "gray",
+      "brown",
+      "tan",
+      "green"
+    ],
+    "lighting": "dramatic with soft golden glow from setting or rising sun illuminating the center",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "8cce40ac-7384-4717-9044-ac9b6d6851f9",
+    "mood": "dynamic",
+    "emotion_tags": [
+      "energy",
+      "vitality",
+      "anticipation"
+    ],
+    "tone": "bold and engaging",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "energetic, lively, confident",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant urban atmosphere"
+  },
+  "narration": {
+    "session_id": "8cce40ac-7384-4717-9044-ac9b6d6851f9",
+    "main_narration": "You are immersed in a vibrant cityscape, where towering skyscrapers and buildings line both sides of a central avenue that runs directly down the middle, creating a striking symmetrical perspective. The dramatic lighting casts a soft golden glow from the setting or rising sun, illuminating the bustling streets filled with vehicles and flanked by lush trees that add life to the urban environment. The colors of gray, brown, and tan blend harmoniously with splashes of green, reflecting the dynamic energy and vitality of this major city. This scene exudes anticipation, inviting you to explore its lively atmosphere.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "distant honking of cars",
+      "soft murmur of voices",
+      "rustling leaves in the breeze"
+    ]
+  }
+}

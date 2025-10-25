@@ -1,0 +1,55 @@
+{
+  "session_id": "9ee4ca44-d1ee-4129-881d-53f80dc0d933",
+  "success": true,
+  "perception": {
+    "session_id": "9ee4ca44-d1ee-4129-881d-53f80dc0d933",
+    "objects": [
+      "yellow flowers",
+      "white flowers",
+      "green stems",
+      "leaves"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "flowers dominating the foreground, some in sharp focus and others slightly blurred",
+      "background": "clear blue sky occupying the top portion of the image"
+    },
+    "scene_type": "nature",
+    "setting": "natural setting with wildflowers, likely a field or garden",
+    "colors": [
+      "bright yellow",
+      "green",
+      "vibrant blue"
+    ],
+    "lighting": "natural and bright, suggesting daytime with sunlight enhancing colors",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "9ee4ca44-d1ee-4129-881d-53f80dc0d933",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "cheerfulness",
+      "vibrancy"
+    ],
+    "tone": "bright and uplifting",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "cheerful, lively, warm",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and cheerful atmosphere"
+  },
+  "narration": {
+    "session_id": "9ee4ca44-d1ee-4129-881d-53f80dc0d933",
+    "main_narration": "You are immersed in a vibrant natural setting, where a field of wildflowers bursts forth with bright yellow and white blooms. The flowers dominate the foreground, some appearing in sharp focus while others softly blur into the background, creating a lively tapestry of color. Above them stretches a clear blue sky, enhancing the cheerful atmosphere as sunlight bathes the scene. This moment radiates happiness and vibrancy, inviting you to appreciate nature's beauty.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of leaves",
+      "soft buzzing of bees",
+      "distant chirping of birds"
+    ]
+  }
+}

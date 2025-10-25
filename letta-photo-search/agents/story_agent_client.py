@@ -14,8 +14,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Coordinator agent endpoint
-COORDINATOR_ENDPOINT = "http://localhost:8006/submit"
+# Coordinator agent REST API endpoint
+COORDINATOR_ENDPOINT = "http://localhost:8006/api/generate"
 
 # Response storage directory
 RESPONSE_DIR = Path("storage/responses")

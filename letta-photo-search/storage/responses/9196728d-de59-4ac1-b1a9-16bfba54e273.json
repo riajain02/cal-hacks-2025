@@ -1,0 +1,59 @@
+{
+  "session_id": "9196728d-de59-4ac1-b1a9-16bfba54e273",
+  "success": true,
+  "perception": {
+    "session_id": "9196728d-de59-4ac1-b1a9-16bfba54e273",
+    "objects": [
+      "sandy beach",
+      "ocean",
+      "palm trees",
+      "clouds"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "smooth, wet sand gently meeting the ocean's edge",
+      "midground": "appearing calm with small waves",
+      "background": "palm trees silhouetted against the sky | filling most of the upper portion with scattered clouds"
+    },
+    "scene_type": "outdoor_beach",
+    "setting": "tropical beach at sunset",
+    "colors": [
+      "pastel pink",
+      "orange",
+      "yellow",
+      "turquoise",
+      "blue",
+      "light beige"
+    ],
+    "lighting": "soft, warm glow from setting sun, serene and softly diffused",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "9196728d-de59-4ac1-b1a9-16bfba54e273",
+    "mood": "tranquil",
+    "emotion_tags": [
+      "calm",
+      "peaceful",
+      "reflective"
+    ],
+    "tone": "gentle and soothing",
+    "intensity": "low",
+    "voice_characteristics": {
+      "main_narrator": "soft, serene, slow-paced",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "serene tropical beach atmosphere"
+  },
+  "narration": {
+    "session_id": "9196728d-de59-4ac1-b1a9-16bfba54e273",
+    "main_narration": "You find yourself on a tranquil tropical beach at sunset, where the smooth, wet sand gently meets the ocean's edge. The midground reveals calm waters with small waves lapping softly against the shore, reflecting pastel pinks and oranges from the setting sun. In the background, palm trees stand silhouetted against a sky filled with scattered clouds, their shapes outlined by a warm glow that fills most of the upper portion of your view. This serene scene invites you to pause and reflect in its peaceful embrace.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft whispers of waves",
+      "gentle rustling of palm fronds",
+      "the distant call of seabirds"
+    ]
+  }
+}

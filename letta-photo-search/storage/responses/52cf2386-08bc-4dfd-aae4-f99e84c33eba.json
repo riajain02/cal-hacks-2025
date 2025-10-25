@@ -1,0 +1,56 @@
+{
+  "session_id": "52cf2386-08bc-4dfd-aae4-f99e84c33eba",
+  "success": true,
+  "perception": {
+    "session_id": "52cf2386-08bc-4dfd-aae4-f99e84c33eba",
+    "objects": [
+      "skyscrapers",
+      "buildings",
+      "city street",
+      "rooftop details"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "",
+      "midground": "extending into the distance with tall buildings on either side",
+      "background": "varying architectural designs creating a canyon-like effect"
+    },
+    "scene_type": "cityscape",
+    "setting": "busy urban environment, possibly downtown or financial district",
+    "colors": [
+      "grey",
+      "brown",
+      "white"
+    ],
+    "lighting": "warm, golden sunlight from sunrise or sunset creating backlit glow and reflections on glass surfaces",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "52cf2386-08bc-4dfd-aae4-f99e84c33eba",
+    "mood": "contemplative",
+    "emotion_tags": [
+      "awe",
+      "reflection",
+      "serenity"
+    ],
+    "tone": "thoughtful and introspective",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "calm, reflective, measured",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "tranquil urban atmosphere"
+  },
+  "narration": {
+    "session_id": "52cf2386-08bc-4dfd-aae4-f99e84c33eba",
+    "main_narration": "In this busy urban environment, you find yourself surrounded by towering skyscrapers and buildings that extend into the distance, framing a city street below. The varying architectural designs create a canyon-like effect, inviting contemplation as you gaze up at the impressive structures. Warm, golden sunlight from sunrise or sunset casts a gentle backlit glow on the glass surfaces, reflecting shades of grey and brown with hints of white throughout the scene. This tranquil atmosphere inspires a sense of awe and reflection amidst the bustling energy of downtown.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft echo of distant traffic",
+      "gentle rustling of leaves",
+      "hushed conversations in the background"
+    ]
+  }
+}

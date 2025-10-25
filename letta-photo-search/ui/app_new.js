@@ -155,34 +155,35 @@ class AgentSearchApp {
     }
 
     showProcessingPage(query) {
-        this.voicePage.classList.remove('active');
-        this.processingPage.classList.add('active');
+        this.voicePage.classList.add('hidden');
+        this.processingPage.classList.remove('hidden');
         this.queryDisplay.textContent = `"${query}"`;
         this.agentsTimeline.innerHTML = '';
         this.resultsSection.innerHTML = '';
     }
 
     showVoicePage() {
-        this.processingPage.classList.remove('active');
-        this.memoryPage.classList.remove('active');
-        this.voicePage.classList.add('active');
+        this.processingPage.classList.add('hidden');
+        this.memoryPage.classList.add('hidden');
+        this.voicePage.classList.remove('hidden');
         this.textInput.value = '';
         this.transcript.textContent = '';
     }
 
     showMemoryPage(photo) {
-        this.processingPage.classList.remove('active');
-        this.voicePage.classList.remove('active');
-        this.memoryPage.classList.add('active');
+        this.processingPage.classList.add('hidden');
+        this.voicePage.classList.add('hidden');
+        this.memoryPage.classList.remove('hidden');
 
         // Set photo and query
-        this.memoryQueryDisplay.textContent = `Memory: "${photo.title}"`;
+        this.memoryQueryDisplay.textContent = photo.title;
         this.memoryPhoto.src = photo.url;
         this.memoryPhoto.alt = photo.description;
 
         // Clear previous content
         this.memoryAgentsTimeline.innerHTML = '';
-        this.narrationSection.style.display = 'none';
+        this.narrationSection.classList.add('hidden');
+        document.getElementById('memory-loading').classList.remove('hidden');
 
         // Start memory generation
         this.generateMemoryStory(photo);
@@ -236,28 +237,19 @@ class AgentSearchApp {
     async showAgentStep({ name, icon, status, action }) {
         // Create agent step card
         const stepDiv = document.createElement('div');
-        stepDiv.className = 'agent-step';
+        stepDiv.className = 'glass-effect rounded-2xl p-6 animate-fade-in';
         stepDiv.style.animationDelay = `${this.agentsTimeline.children.length * 0.1}s`;
 
         stepDiv.innerHTML = `
-            <div class="agent-header">
-                <div class="agent-icon">${icon}</div>
-                <div class="agent-info">
-                    <div class="agent-name">${name}</div>
-                    <div class="agent-status">
-                        <span class="status-indicator thinking"></span>
-                        <span class="status-text-agent">${status}</span>
+            <div class="flex items-start gap-4">
+                <div class="text-4xl">${icon}</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-2">${name}</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse status-indicator"></div>
+                        <span class="text-gray-300 status-text">${status}</span>
                     </div>
-                </div>
-            </div>
-            <div class="agent-content">
-                <div class="thinking-animation">
-                    <span>Analyzing</span>
-                    <div class="thinking-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                    <div class="agent-result-container mt-3"></div>
                 </div>
             </div>
         `;
@@ -272,38 +264,36 @@ class AgentSearchApp {
 
         // Update to complete state
         const statusIndicator = stepDiv.querySelector('.status-indicator');
-        const statusTextAgent = stepDiv.querySelector('.status-text-agent');
-        const contentDiv = stepDiv.querySelector('.agent-content');
+        const statusText = stepDiv.querySelector('.status-text');
+        const resultContainer = stepDiv.querySelector('.agent-result-container');
 
-        statusIndicator.classList.remove('thinking');
-        statusIndicator.classList.add('complete');
-        statusTextAgent.textContent = 'Complete';
+        statusIndicator.classList.remove('bg-yellow-500', 'animate-pulse');
+        statusIndicator.classList.add('bg-green-500');
+        statusText.textContent = 'Complete';
 
         // Show result based on agent type
         if (name === 'Voice Processing Agent' && result.success) {
             const data = result.data;
-            contentDiv.innerHTML = `
-                <div class="agent-result">
-                    <div class="result-label">Extracted Information</div>
-                    <div class="result-content">
+            resultContainer.innerHTML = `
+                <div class="bg-black/20 rounded-xl p-4 text-sm">
+                    <div class="text-gray-300 mb-2">
                         <strong>Intent:</strong> ${data.intent}<br>
                         <strong>Search Query:</strong> "${data.search_query}"
                     </div>
-                    <div class="result-badges">
-                        ${data.entities.map(e => `<span class="badge">${e}</span>`).join('')}
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        ${data.entities.map(e => `<span class="bg-purple-500/30 px-3 py-1 rounded-full text-xs">${e}</span>`).join('')}
                     </div>
                 </div>
             `;
         } else if (name === 'Embedding Search Agent' && result.success) {
-            contentDiv.innerHTML = `
-                <div class="agent-result">
-                    <div class="result-label">Vector Similarity Search</div>
-                    <div class="result-content">
+            resultContainer.innerHTML = `
+                <div class="bg-black/20 rounded-xl p-4 text-sm">
+                    <div class="text-gray-300 mb-2">
                         Found ${result.photos.length} matching images using 384-dimensional embeddings
                     </div>
-                    <div class="result-badges">
+                    <div class="flex flex-wrap gap-2 mt-2">
                         ${result.photos.slice(0, 3).map(p =>
-                            `<span class="badge">${p.title}: ${(p.similarity_score * 100).toFixed(1)}%</span>`
+                            `<span class="bg-pink-500/30 px-3 py-1 rounded-full text-xs">${p.title}: ${(p.similarity_score * 100).toFixed(1)}%</span>`
                         ).join('')}
                     </div>
                 </div>
@@ -317,13 +307,12 @@ class AgentSearchApp {
     async displayResults(searchResult, voiceResult) {
         if (!searchResult.success || !searchResult.photos.length) {
             this.resultsSection.innerHTML = `
-                <div class="agent-step">
-                    <div class="agent-result">
-                        <div class="result-label">No Results</div>
-                        <div class="result-content">
-                            No photos found matching your query. Try a different search term.
-                        </div>
-                    </div>
+                <div class="glass-effect rounded-2xl p-8 text-center">
+                    <div class="text-5xl mb-4">🔍</div>
+                    <h3 class="text-2xl font-semibold mb-2">No Results</h3>
+                    <p class="text-gray-300">
+                        No photos found matching your query. Try a different search term.
+                    </p>
                 </div>
             `;
             return;
@@ -333,51 +322,51 @@ class AgentSearchApp {
         this.searchResults = photos; // Store for later use
 
         this.resultsSection.innerHTML = `
-            <div class="results-header">
-                <div class="results-title">Search Results</div>
-                <div class="results-count">${photos.length} photos found</div>
+            <div class="mb-8">
+                <h3 class="text-3xl font-bold mb-2">Search Results</h3>
+                <p class="text-gray-300 text-lg">${photos.length} photos found</p>
             </div>
-            <div class="results-grid" id="results-grid"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="results-grid"></div>
         `;
 
         const grid = document.getElementById('results-grid');
 
         photos.forEach((photo, index) => {
             const card = document.createElement('div');
-            card.className = 'result-card';
+            card.className = 'glass-effect rounded-2xl overflow-hidden hover:scale-105 transition-transform animate-fade-in';
             card.style.animationDelay = `${(index * 0.15) + 0.5}s`;
 
             const similarityScore = (photo.similarity_score || photo.relevance_score / 100 || 0.5) * 100;
 
             card.innerHTML = `
-                <img src="${photo.url}" alt="${photo.description}" class="result-image" />
-                <div class="result-info">
-                    <div class="result-title-text">${photo.title}</div>
-                    <div class="result-description">${photo.description}</div>
-                    <div class="result-tags">
-                        ${photo.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                <img src="${photo.url}" alt="${photo.description}" class="w-full h-48 object-cover" />
+                <div class="p-4">
+                    <h4 class="text-lg font-semibold mb-2">${photo.title}</h4>
+                    <p class="text-gray-300 text-sm mb-3">${photo.description}</p>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        ${photo.tags.map(tag => `<span class="bg-purple-500/30 px-2 py-1 rounded-full text-xs">${tag}</span>`).join('')}
                     </div>
-                    <div class="result-score">
-                        <span class="score-label">Relevance:</span>
-                        <div class="score-bar">
-                            <div class="score-fill" style="width: ${similarityScore}%"></div>
+                    <div class="mb-3">
+                        <div class="flex items-center justify-between text-sm text-gray-300 mb-1">
+                            <span>Relevance:</span>
+                            <span>${similarityScore.toFixed(1)}%</span>
                         </div>
-                        <span class="score-value">${similarityScore.toFixed(1)}%</span>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full" style="width: ${similarityScore}%"></div>
+                        </div>
                     </div>
-                    ${index === 0 ? `
-                        <button class="play-memory-button" data-photo-index="${index}">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="5 3 19 12 5 21 5 3"/>
-                            </svg>
-                            Play this Memory
-                        </button>
-                    ` : ''}
+                    <button class="play-memory-button w-full bg-gradient-to-r from-pink-500 to-purple-600 py-3 rounded-xl hover:shadow-lg hover:shadow-pink-500/50 transition-all font-semibold flex items-center justify-center gap-2" data-photo-index="${index}">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        Generate Memory Story
+                    </button>
                 </div>
             `;
 
             // Click on image/title speaks description
-            const img = card.querySelector('.result-image');
-            const title = card.querySelector('.result-title-text');
+            const img = card.querySelector('img');
+            const title = card.querySelector('h4');
             [img, title].forEach(el => {
                 el.addEventListener('click', () => {
                     this.speak(`${photo.title}. ${photo.description}`);
@@ -451,27 +440,17 @@ class AgentSearchApp {
 
     async showMemoryAgentStep({ name, icon, status, timeline }) {
         const stepDiv = document.createElement('div');
-        stepDiv.className = 'agent-step';
+        stepDiv.className = 'glass-effect rounded-xl p-4 animate-fade-in';
         stepDiv.style.animationDelay = `${timeline.children.length * 0.1}s`;
 
         stepDiv.innerHTML = `
-            <div class="agent-header">
-                <div class="agent-icon">${icon}</div>
-                <div class="agent-info">
-                    <div class="agent-name">${name}</div>
-                    <div class="agent-status">
-                        <span class="status-indicator thinking"></span>
-                        <span class="status-text-agent">${status}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="agent-content">
-                <div class="thinking-animation">
-                    <span>Processing</span>
-                    <div class="thinking-dots">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+            <div class="flex items-center gap-4">
+                <div class="text-3xl">${icon}</div>
+                <div class="flex-1">
+                    <h4 class="text-lg font-semibold">${name}</h4>
+                    <div class="flex items-center gap-2 mt-1">
+                        <div class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse status-indicator"></div>
+                        <span class="text-sm text-gray-300 status-text">${status}</span>
                     </div>
                 </div>
             </div>
@@ -484,26 +463,29 @@ class AgentSearchApp {
 
         // Update to complete
         const statusIndicator = stepDiv.querySelector('.status-indicator');
-        const statusTextAgent = stepDiv.querySelector('.status-text-agent');
+        const statusText = stepDiv.querySelector('.status-text');
 
-        statusIndicator.classList.remove('thinking');
-        statusIndicator.classList.add('complete');
-        statusTextAgent.textContent = 'Complete';
+        statusIndicator.classList.remove('bg-yellow-500', 'animate-pulse');
+        statusIndicator.classList.add('bg-green-500');
+        statusText.textContent = 'Complete';
 
         await this.sleep(300);
     }
 
     displayNarration(narrationData) {
-        let html = `<p>${narrationData.main_narration}</p>`;
+        // Hide loading state
+        document.getElementById('memory-loading').classList.add('hidden');
+
+        let html = `<p class="text-gray-200">${narrationData.main_narration}</p>`;
 
         // Add person dialogues if any
         if (narrationData.person_dialogues && narrationData.person_dialogues.length > 0) {
             narrationData.person_dialogues.forEach(dialogue => {
                 html += `
-                    <p style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid var(--accent-secondary);">
-                        <em>"${dialogue.dialogue}"</em>
-                        ${dialogue.emotion ? `<span style="color: var(--accent-primary);"> - ${dialogue.emotion}</span>` : ''}
-                    </p>
+                    <div class="mt-4 pl-4 border-l-4 border-purple-500 italic">
+                        <p class="text-gray-200">"${dialogue.dialogue}"</p>
+                        ${dialogue.emotion ? `<span class="text-pink-400 text-sm">- ${dialogue.emotion}</span>` : ''}
+                    </div>
                 `;
             });
         }
@@ -511,14 +493,14 @@ class AgentSearchApp {
         // Add ambient descriptions
         if (narrationData.ambient_descriptions && narrationData.ambient_descriptions.length > 0) {
             html += `
-                <p style="margin-top: 1.5rem; font-style: italic; color: var(--text-secondary);">
+                <p class="mt-6 italic text-gray-400 text-sm">
                     Ambient atmosphere: ${narrationData.ambient_descriptions.join(', ')}
                 </p>
             `;
         }
 
         this.narrationText.innerHTML = html;
-        this.narrationSection.style.display = 'block';
+        this.narrationSection.classList.remove('hidden');
     }
 
     async generateNarrationAudio(text) {

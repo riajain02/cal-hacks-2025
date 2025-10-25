@@ -1,0 +1,59 @@
+{
+  "session_id": "0de6b584-bf16-4fc0-a66c-902b16678e6a",
+  "success": true,
+  "perception": {
+    "session_id": "0de6b584-bf16-4fc0-a66c-902b16678e6a",
+    "objects": [
+      "ocean waves",
+      "sandy beach",
+      "palm trees",
+      "clouds"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "sandy shore gradually meeting the ocean",
+      "midground": "occupying the midsection of the image",
+      "background": "dividing ocean from sky with sun setting above | palm trees further back towards the horizon"
+    },
+    "scene_type": "outdoor_beach",
+    "setting": "tropical beach at sunset",
+    "colors": [
+      "pale blue",
+      "soft pink",
+      "turquoise",
+      "darker blue",
+      "pink",
+      "orange"
+    ],
+    "lighting": "softly lit, emphasizing tranquility",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "0de6b584-bf16-4fc0-a66c-902b16678e6a",
+    "mood": "serene",
+    "emotion_tags": [
+      "calm",
+      "peaceful",
+      "reflective"
+    ],
+    "tone": "gentle and soothing",
+    "intensity": "low",
+    "voice_characteristics": {
+      "main_narrator": "soft, tranquil, slow-paced",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "tranquil tropical beach atmosphere"
+  },
+  "narration": {
+    "session_id": "0de6b584-bf16-4fc0-a66c-902b16678e6a",
+    "main_narration": "You stand on a serene tropical beach at sunset, where the sandy shore gently meets the rolling ocean waves. The midground reveals a stunning panorama of pale blue and turquoise waters, while the sky above is painted in soft pinks and vibrant oranges as the sun descends toward the horizon. In the background, palm trees sway softly against this breathtaking backdrop, silhouetted by the fading light that divides ocean from sky. This tranquil scene invites reflection and peace as you soak in nature's beauty.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle lapping of ocean waves",
+      "soft rustling of palm leaves",
+      "whispers of a warm breeze"
+    ]
+  }
+}

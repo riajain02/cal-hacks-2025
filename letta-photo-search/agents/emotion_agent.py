@@ -27,13 +27,33 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
     ctx.logger.info(f"🎭 [2/5] Detecting emotion for {msg.session_id}")
 
     try:
+        # Prepare perception data for Letta
+        perception_summary = ""
+        if msg.perception_data:
+            ctx.logger.info("   → Using perception data from previous agent")
+            perception_summary = json.dumps(msg.perception_data, indent=2)
+        else:
+            ctx.logger.warn("   ⚠️  No perception data provided, using photo URL only")
+            perception_summary = f"Photo URL: {msg.photo_url}"
+
+        ctx.logger.info(f"   → Calling Letta Emotion Agent: {EMOTION_AGENT_ID}")
+
         async with httpx.AsyncClient(timeout=60.0) as client:
             letta_response = await client.post(
                 f"https://api.letta.com/v1/agents/{EMOTION_AGENT_ID}/messages",
                 headers={"Authorization": f"Bearer {LETTA_API_KEY}"},
-                json={"messages": [{"role": "user", "content": f"Analyze emotion:\n\n{json.dumps(msg.perception_data, indent=2)}"}], "stream": False}
+                json={"messages": [{"role": "user", "content": f"Analyze emotion from this perception data:\n\n{perception_summary}"}], "stream": False}
             )
+
+            ctx.logger.info(f"   HTTP Status: {letta_response.status_code}")
+
+            if letta_response.status_code != 200:
+                ctx.logger.error(f"   ❌ HTTP Error: {letta_response.status_code}")
+                ctx.logger.error(f"   Response: {letta_response.text}")
+                raise Exception(f"Letta AI HTTP error {letta_response.status_code}")
+
             letta_data = letta_response.json()
+            ctx.logger.info(f"   📦 Raw API response received")
             emotion_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
 
             # Parse JSON (handle mixed quotes from Letta AI)
@@ -65,8 +85,8 @@ async def detect_emotion(ctx: Context, sender: str, msg: EmotionRequest):
         )
 
         await ctx.send(sender, result)
-        # ctx.logger.info(f"✅ Emotion: {result.mood} ({result.intensity})")
-        # ctx.logger.info(f"📊 Emotion JSON: {result.__dict__}")
+        ctx.logger.info(f"✅ Emotion: {result.mood} ({result.intensity}), tone: {result.tone}")
+        ctx.logger.info(f"📊 Emotion JSON: {result.__dict__}")
 
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")

@@ -5,9 +5,12 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from fetch_models import (
     VisionAnalysisRequest, PerceptionData, EmotionRequest, EmotionData,
     NarrationRequest, NarrationData, VoiceRequest, VoiceData,
-    AudioMixRequest, AudioMixData, ExperienceComplete, ErrorMessage
+    AudioMixRequest, AudioMixData, ExperienceComplete, ErrorMessage,
+    StoryGenerationResponse
 )
 import asyncio
+import json
+from pathlib import Path
 
 # Agent addresses (hardcoded - deterministic from seeds)
 PERCEPTION_AGENT_ADDRESS = "agent1q26xyx0j7jszd9uhah2s2kvp2my555zvywhnxh7x0dz6u3z354k65229de5"
@@ -36,6 +39,35 @@ async def introduce(ctx: Context):
     ctx.logger.info(f"  Voice: {VOICE_AGENT_ADDRESS}")
     ctx.logger.info(f"  AudioMixer: {AUDIO_MIXER_AGENT_ADDRESS}")
     ctx.logger.info(f"📁 Monitoring for requests...")
+    ctx.logger.info(f"🌐 REST API available at: http://localhost:8006/api/generate")
+
+# REST API endpoint for HTTP requests
+@coordinator_agent.on_rest_post("/api/generate", VisionAnalysisRequest, StoryGenerationResponse)
+async def handle_http_request(ctx: Context, req: VisionAnalysisRequest) -> StoryGenerationResponse:
+    """
+    HTTP REST endpoint to trigger story generation
+    Accepts JSON: {"photo_url": "...", "session_id": "..."}
+    """
+    ctx.logger.info(f"🌐 HTTP REST request received for session: {req.session_id}")
+
+    # Store photo URL for later use
+    agent_responses[f"{req.session_id}_photo_url"] = req.photo_url
+
+    # Start the agent workflow by sending to perception agent
+    ctx.logger.info(f"🚀 [COORDINATOR] Starting experience for {req.session_id}")
+    ctx.logger.info(f"📸 [1/5] → Perception Agent")
+
+    vision_request = VisionAnalysisRequest(photo_url=req.photo_url, session_id=req.session_id)
+    await ctx.send(PERCEPTION_AGENT_ADDRESS, vision_request)
+
+    ctx.logger.info(f"⏳ Waiting for agent responses for session {req.session_id}")
+
+    # Return immediately - the workflow will complete asynchronously
+    return StoryGenerationResponse(
+        success=True,
+        message="Story generation started",
+        session_id=req.session_id
+    )
 
 @coordinator_agent.on_message(model=PerceptionData)
 async def handle_perception_response(ctx: Context, sender: str, msg: PerceptionData):
@@ -44,8 +76,17 @@ async def handle_perception_response(ctx: Context, sender: str, msg: PerceptionD
     agent_responses[f"{session_id}_perception"] = msg
     ctx.logger.info(f"📸 Received perception data for {session_id}")
 
-    # Check if we have both perception and emotion data to proceed
-    await check_and_proceed_with_narration(ctx, session_id)
+    # Now send to emotion agent with perception data
+    photo_url = agent_responses.get(f"{session_id}_photo_url", "")
+    ctx.logger.info(f"😊 [2/5] → Emotion Agent (with perception data)")
+    emotion_request = EmotionRequest(
+        session_id=session_id,
+        photo_url=photo_url,
+        perception_data=msg.__dict__
+    )
+    await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
+
+    # Note: We no longer check for both here, emotion will come after
 
 @coordinator_agent.on_message(model=EmotionData)
 async def handle_emotion_response(ctx: Context, sender: str, msg: EmotionData):
@@ -54,18 +95,19 @@ async def handle_emotion_response(ctx: Context, sender: str, msg: EmotionData):
     agent_responses[f"{session_id}_emotion"] = msg
     ctx.logger.info(f"😊 Received emotion data for {session_id}")
 
-    # Check if we have both perception and emotion data to proceed
-    await check_and_proceed_with_narration(ctx, session_id)
+    # Now we have both perception and emotion, proceed with narration
+    await proceed_with_narration(ctx, session_id)
 
 @coordinator_agent.on_message(model=NarrationData)
 async def handle_narration_response(ctx: Context, sender: str, msg: NarrationData):
-    """Handle narration agent response"""
+    """Handle narration agent response - create final response for simple story"""
     session_id = msg.session_id
     agent_responses[f"{session_id}_narration"] = msg
     ctx.logger.info(f"📝 Received narration data for {session_id}")
 
-    # Proceed with voice synthesis
-    await proceed_with_voice_synthesis(ctx, session_id)
+    # Create final response with perception, emotion, and narration
+    # (Voice and audio mixing can be added later if needed)
+    await create_simple_final_response(ctx, session_id)
 
 @coordinator_agent.on_message(model=VoiceData)
 async def handle_voice_response(ctx: Context, sender: str, msg: VoiceData):
@@ -92,23 +134,62 @@ async def handle_error(ctx: Context, sender: str, msg: ErrorMessage):
     """Handle any agent errors"""
     ctx.logger.error(f"❌ Agent error from {sender}: {msg.error}")
 
-async def check_and_proceed_with_narration(ctx: Context, session_id: str):
-    """Check if we have both perception and emotion data, then start narration"""
+async def proceed_with_narration(ctx: Context, session_id: str):
+    """Start narration with perception and emotion data"""
     perception_key = f"{session_id}_perception"
     emotion_key = f"{session_id}_emotion"
 
-    if perception_key in agent_responses and emotion_key in agent_responses:
-        perception_data = agent_responses[perception_key]
-        emotion_data = agent_responses[emotion_key]
+    perception_data = agent_responses.get(perception_key)
+    emotion_data = agent_responses.get(emotion_key)
 
-        # Start narration
-        ctx.logger.info(f"📝 [3/5] → Narration Agent")
-        narration_request = NarrationRequest(
-            session_id=session_id,
-            perception=perception_data.__dict__,
-            emotion=emotion_data.__dict__
-        )
-        await ctx.send(NARRATION_AGENT_ADDRESS, narration_request)
+    if not perception_data or not emotion_data:
+        ctx.logger.error(f"❌ Missing data for narration: perception={bool(perception_data)}, emotion={bool(emotion_data)}")
+        return
+
+    # Start narration
+    ctx.logger.info(f"📝 [3/5] → Narration Agent")
+    narration_request = NarrationRequest(
+        session_id=session_id,
+        perception=perception_data.__dict__,
+        emotion=emotion_data.__dict__
+    )
+    await ctx.send(NARRATION_AGENT_ADDRESS, narration_request)
+
+async def create_simple_final_response(ctx: Context, session_id: str):
+    """Create final response with just perception, emotion, and narration (simplified)"""
+    # Get all the data
+    perception_data = agent_responses.get(f"{session_id}_perception")
+    emotion_data = agent_responses.get(f"{session_id}_emotion")
+    narration_data = agent_responses.get(f"{session_id}_narration")
+
+    if not all([perception_data, emotion_data, narration_data]):
+        ctx.logger.error(f"❌ Missing data for final response: perception={bool(perception_data)}, emotion={bool(emotion_data)}, narration={bool(narration_data)}")
+        return
+
+    # Create final response
+    final_response = {
+        "session_id": session_id,
+        "success": True,
+        "perception": perception_data.__dict__,
+        "emotion": emotion_data.__dict__,
+        "narration": narration_data.__dict__
+    }
+
+    # Write to response file for Flask to pick up
+    response_dir = Path("storage/responses")
+    response_dir.mkdir(parents=True, exist_ok=True)
+    response_file = response_dir / f"{session_id}.json"
+
+    with open(response_file, "w") as f:
+        json.dump(final_response, f, indent=2)
+
+    ctx.logger.info(f"✅ Complete processing for session {session_id}")
+    ctx.logger.info(f"📁 Response saved to: {response_file}")
+
+    # Clean up agent responses
+    for key in list(agent_responses.keys()):
+        if key.startswith(session_id):
+            del agent_responses[key]
 
 async def proceed_with_voice_synthesis(ctx: Context, session_id: str):
     """Proceed with voice synthesis after getting narration"""
@@ -204,14 +285,13 @@ async def orchestrate_experience(ctx: Context, sender: str, msg: VisionAnalysisR
     photo_url = msg.photo_url
     ctx.logger.info(f"🚀 [COORDINATOR] Starting experience for {session_id}")
 
-    # Start both perception and emotion analysis in parallel
+    # Store photo URL for later use
+    agent_responses[f"{session_id}_photo_url"] = photo_url
+
+    # Start with perception agent first (emotion will follow after perception completes)
     ctx.logger.info(f"📸 [1/5] → Perception Agent")
     vision_request = VisionAnalysisRequest(photo_url=photo_url, session_id=session_id)
     await ctx.send(PERCEPTION_AGENT_ADDRESS, vision_request)
-
-    ctx.logger.info(f"😊 [2/5] → Emotion Agent")
-    emotion_request = EmotionRequest(session_id=session_id, photo_url=photo_url)
-    await ctx.send(EMOTION_AGENT_ADDRESS, emotion_request)
 
     ctx.logger.info(f"⏳ Waiting for agent responses for session {session_id}")
 

@@ -1,0 +1,56 @@
+{
+  "session_id": "f0154c91-e3df-4a0a-9d51-92bbeb6bead5",
+  "success": true,
+  "perception": {
+    "session_id": "f0154c91-e3df-4a0a-9d51-92bbeb6bead5",
+    "objects": [
+      "orange poppy flowers",
+      "white flowers",
+      "stems",
+      "leaves"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "densely populated with orange poppies at varying heights",
+      "midground": "suggesting more flowers and plants",
+      "background": "out of focus, emphasizing the foreground subject"
+    },
+    "scene_type": "nature",
+    "setting": "outdoor scene in a field or garden of poppies",
+    "colors": [
+      "vibrant orange",
+      "white",
+      "bright blue"
+    ],
+    "lighting": "bright and natural sunlight casting a warm glow on the flowers",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "f0154c91-e3df-4a0a-9d51-92bbeb6bead5",
+    "mood": "cheerful",
+    "emotion_tags": [
+      "happiness",
+      "vibrancy",
+      "exuberance"
+    ],
+    "tone": "bright and lively",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "enthusiastic, warm, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and uplifting atmosphere"
+  },
+  "narration": {
+    "session_id": "f0154c91-e3df-4a0a-9d51-92bbeb6bead5",
+    "main_narration": "You step into a lively outdoor scene, where a field of vibrant orange poppy flowers flourishes in the foreground, their varying heights creating a dynamic visual feast. The bright sunlight casts a warm glow on the petals, enhancing their cheerful hue against the delicate white flowers and lush green stems surrounding them. Beyond this vivid display, the midground suggests even more blooms and plants, while the background remains softly out of focus to emphasize this captivating array of color. This exuberant atmosphere invites you to bask in nature's beauty and embrace its uplifting spirit.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of leaves",
+      "soft buzzing of bees",
+      "distant chirping of birds"
+    ]
+  }
+}

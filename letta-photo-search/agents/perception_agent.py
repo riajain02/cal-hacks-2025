@@ -81,34 +81,51 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
             json_end = perception_text.rfind('}') + 1
             if json_start >= 0 and json_end > json_start:
                 json_content = perception_text[json_start:json_end]
-                # Fix mixed quotes by replacing single quotes around keys/values
+                # Fix mixed quotes and malformed strings from Letta AI
                 import re
-                # Replace single quotes around keys and string values with double quotes
-                json_content = re.sub(r"'([^']*)':", r'"\1":', json_content)  # Keys
-                json_content = re.sub(r": '([^']*)'", r': "\1"', json_content)  # String values
-                json_content = re.sub(r": '([^']*)',", r': "\1",', json_content)  # String values with comma
-                json_content = re.sub(r": '([^']*)'}", r': "\1"}', json_content)  # String values at end
-                # Fix single quotes in arrays: ['item1', 'item2'] -> ["item1", "item2"]
-                json_content = re.sub(r"'([^']*)'", r'"\1"', json_content)
+
+                # Strategy: Replace ALL single quotes with double quotes first,
+                # then fix apostrophes that should remain as-is
+
+                # 1. First, protect apostrophes in contractions (it's, cat's, etc.)
+                # by temporarily replacing them with a placeholder
+                json_content = re.sub(r"([a-zA-Z])'([st])\b", r"\1___APOS___\2", json_content)
+                json_content = re.sub(r"([a-zA-Z])'s\b", r"\1___APOS___s", json_content)  # Fix "cat's"
+                # 2. Now replace ALL remaining single quotes with double quotes
+                json_content = json_content.replace("'", '"')
+
+                # 3. Restore the protected apostrophes
+                json_content = json_content.replace('___APOS___', "'")
 
                 try:
                     parsed = json.loads(json_content)
                     ctx.logger.info("   ✓ JSON parsing successful")
                 except json.JSONDecodeError as e:
                     ctx.logger.error(f"   ❌ JSON parsing failed even after quote fix: {e}")
-                    ctx.logger.error(f"   Fixed content: {json_content}")
-                    raise Exception(f"Letta AI returned unparseable JSON: {json_content}")
+                    ctx.logger.error(f"   Fixed content: {json_content[:500]}...")
+                    raise Exception(f"Letta AI returned unparseable JSON: {json_content[:200]}...")
             else:
                 ctx.logger.error("   ❌ No valid JSON found in assistant response")
                 ctx.logger.error(f"   Content: {perception_text}")
                 raise Exception(f"Letta AI returned invalid JSON: {perception_text}")
+
+        # Flatten layout if Letta returns nested objects
+        layout = parsed.get("layout", {})
+        flattened_layout = {}
+        for key, value in layout.items():
+            if isinstance(value, dict):
+                # Flatten nested dict to string (join all values)
+                nested_values = [str(v) for v in value.values() if v]
+                flattened_layout[key] = " | ".join(nested_values) if nested_values else json.dumps(value)
+            else:
+                flattened_layout[key] = str(value) if value is not None else ""
 
         result = PerceptionData(
             session_id=msg.session_id,
             objects=parsed.get("objects", []),
             people_count=parsed.get("people_count", 0),
             people_details=parsed.get("people_details", []),
-            layout=parsed.get("layout", {}),
+            layout=flattened_layout,
             scene_type=parsed.get("scene_type", "unknown"),
             setting=parsed.get("setting", "unknown"),
             colors=parsed.get("colors", []),

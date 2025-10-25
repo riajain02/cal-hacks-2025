@@ -21,6 +21,7 @@ class PerceptionData(Model):
 class EmotionRequest(Model):
     session_id: str
     photo_url: str
+    perception_data: Optional[Dict] = None
 
 class EmotionData(Model):
     session_id: str
@@ -72,3 +73,8 @@ class ErrorMessage(Model):
     session_id: str
     error: str
     step: str
+
+class StoryGenerationResponse(Model):
+    success: bool
+    message: str
+    session_id: str

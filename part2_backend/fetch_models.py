@@ -20,7 +20,7 @@ class PerceptionData(Model):
 
 class EmotionRequest(Model):
     session_id: str
-    perception_data: Dict
+    photo_url: str
 
 class EmotionData(Model):
     session_id: str

@@ -72,6 +72,22 @@
                 <div class="suggestion" data-query="I want to see nature">🌲 Nature scene</div>
                 <div class="suggestion" data-query="Coffee cup">☕ Coffee</div>
             </div>
+
+            <div style="margin-top: 2rem; text-align: center;">
+                <a href="/story" style="
+                    display: inline-block;
+                    padding: 1rem 2rem;
+                    background: linear-gradient(135deg, #c084fc, #ff6b9d);
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                ">
+                    📸 Generate Photo Story
+                </a>
+            </div>
         </div>
     </div>
 
@@ -96,6 +112,53 @@
 
             <div class="results-section" id="results-section">
                 <!-- Results will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Memory Playback Page -->
+    <div id="memory-page" class="page">
+        <div class="background-grid"></div>
+        <div class="glow-orb"></div>
+
+        <div class="processing-container">
+            <div class="processing-header">
+                <div class="back-button" id="memory-back-button">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Results
+                </div>
+                <div class="query-display" id="memory-query-display"></div>
+            </div>
+
+            <div class="memory-photo-container">
+                <img id="memory-photo" class="memory-photo" alt="Memory photo" />
+            </div>
+
+            <div class="agents-timeline" id="memory-agents-timeline">
+                <!-- Agent steps will be inserted here -->
+            </div>
+
+            <div class="narration-section" id="narration-section" style="display: none;">
+                <div class="narration-card">
+                    <h3>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Your Memory Story
+                    </h3>
+                    <div class="narration-text" id="narration-text"></div>
+
+                    <div class="audio-controls" style="margin-top: 2rem;">
+                        <button class="play-audio-button" id="play-audio-button">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            Play Audio Narration
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -13,16 +13,29 @@ class AgentSearchApp {
         this.sendButton = document.getElementById('send-button');
         this.voicePage = document.getElementById('voice-page');
         this.processingPage = document.getElementById('processing-page');
+        this.memoryPage = document.getElementById('memory-page');
         this.backButton = document.getElementById('back-button');
+        this.memoryBackButton = document.getElementById('memory-back-button');
         this.queryDisplay = document.getElementById('query-display');
         this.agentsTimeline = document.getElementById('agents-timeline');
         this.resultsSection = document.getElementById('results-section');
+
+        // Memory page elements
+        this.memoryQueryDisplay = document.getElementById('memory-query-display');
+        this.memoryPhoto = document.getElementById('memory-photo');
+        this.memoryAgentsTimeline = document.getElementById('memory-agents-timeline');
+        this.narrationSection = document.getElementById('narration-section');
+        this.narrationText = document.getElementById('narration-text');
+        this.playAudioButton = document.getElementById('play-audio-button');
+        this.ttsAudio = document.getElementById('tts-audio');
 
         // State
         this.recognition = null;
         this.synthesis = window.speechSynthesis;
         this.isListening = false;
         this.currentQuery = '';
+        this.searchResults = [];
+        this.currentAudioUrl = null;
 
         this.init();
     }
@@ -38,6 +51,8 @@ class AgentSearchApp {
             if (e.key === 'Enter') this.processQuery();
         });
         this.backButton.addEventListener('click', () => this.showVoicePage());
+        this.memoryBackButton.addEventListener('click', () => this.showProcessingPage());
+        this.playAudioButton.addEventListener('click', () => this.playNarrationAudio());
 
         // Suggestion buttons
         document.querySelectorAll('.suggestion').forEach(btn => {
@@ -149,9 +164,28 @@ class AgentSearchApp {
 
     showVoicePage() {
         this.processingPage.classList.remove('active');
+        this.memoryPage.classList.remove('active');
         this.voicePage.classList.add('active');
         this.textInput.value = '';
         this.transcript.textContent = '';
+    }
+
+    showMemoryPage(photo) {
+        this.processingPage.classList.remove('active');
+        this.voicePage.classList.remove('active');
+        this.memoryPage.classList.add('active');
+
+        // Set photo and query
+        this.memoryQueryDisplay.textContent = `Memory: "${photo.title}"`;
+        this.memoryPhoto.src = photo.url;
+        this.memoryPhoto.alt = photo.description;
+
+        // Clear previous content
+        this.memoryAgentsTimeline.innerHTML = '';
+        this.narrationSection.style.display = 'none';
+
+        // Start memory generation
+        this.generateMemoryStory(photo);
     }
 
     async runAgentWorkflow(query) {
@@ -296,6 +330,7 @@ class AgentSearchApp {
         }
 
         const photos = searchResult.photos;
+        this.searchResults = photos; // Store for later use
 
         this.resultsSection.innerHTML = `
             <div class="results-header">
@@ -329,15 +364,211 @@ class AgentSearchApp {
                         </div>
                         <span class="score-value">${similarityScore.toFixed(1)}%</span>
                     </div>
+                    ${index === 0 ? `
+                        <button class="play-memory-button" data-photo-index="${index}">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="5 3 19 12 5 21 5 3"/>
+                            </svg>
+                            Play this Memory
+                        </button>
+                    ` : ''}
                 </div>
             `;
 
-            card.addEventListener('click', () => {
-                this.speak(`${photo.title}. ${photo.description}`);
+            // Click on image/title speaks description
+            const img = card.querySelector('.result-image');
+            const title = card.querySelector('.result-title-text');
+            [img, title].forEach(el => {
+                el.addEventListener('click', () => {
+                    this.speak(`${photo.title}. ${photo.description}`);
+                });
             });
+
+            // Play memory button
+            const playButton = card.querySelector('.play-memory-button');
+            if (playButton) {
+                playButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.showMemoryPage(photo);
+                });
+            }
 
             grid.appendChild(card);
         });
+    }
+
+    async generateMemoryStory(photo) {
+        try {
+            // Step 1: Perception Agent
+            await this.showMemoryAgentStep({
+                name: 'Perception Agent',
+                icon: '👁️',
+                status: 'Analyzing visual content...',
+                timeline: this.memoryAgentsTimeline
+            });
+
+            // Step 2: Emotion Agent
+            await this.showMemoryAgentStep({
+                name: 'Emotion Agent',
+                icon: '💭',
+                status: 'Detecting emotions and mood...',
+                timeline: this.memoryAgentsTimeline
+            });
+
+            // Step 3: Narration Agent
+            await this.showMemoryAgentStep({
+                name: 'Narration Agent',
+                icon: '📖',
+                status: 'Generating story...',
+                timeline: this.memoryAgentsTimeline
+            });
+
+            // Call backend to generate story
+            const response = await fetch('/api/story/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ photo_url: photo.url })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                // Display narration
+                this.displayNarration(result.narration);
+
+                // Generate audio
+                await this.generateNarrationAudio(result.narration.main_narration);
+            } else {
+                throw new Error(result.message || 'Story generation failed');
+            }
+
+        } catch (error) {
+            console.error('Error generating memory story:', error);
+            this.narrationText.textContent = `Unable to generate story: ${error.message}. Please try again.`;
+            this.narrationSection.style.display = 'block';
+        }
+    }
+
+    async showMemoryAgentStep({ name, icon, status, timeline }) {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'agent-step';
+        stepDiv.style.animationDelay = `${timeline.children.length * 0.1}s`;
+
+        stepDiv.innerHTML = `
+            <div class="agent-header">
+                <div class="agent-icon">${icon}</div>
+                <div class="agent-info">
+                    <div class="agent-name">${name}</div>
+                    <div class="agent-status">
+                        <span class="status-indicator thinking"></span>
+                        <span class="status-text-agent">${status}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="agent-content">
+                <div class="thinking-animation">
+                    <span>Processing</span>
+                    <div class="thinking-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        timeline.appendChild(stepDiv);
+
+        // Simulate processing time
+        await this.sleep(1500);
+
+        // Update to complete
+        const statusIndicator = stepDiv.querySelector('.status-indicator');
+        const statusTextAgent = stepDiv.querySelector('.status-text-agent');
+
+        statusIndicator.classList.remove('thinking');
+        statusIndicator.classList.add('complete');
+        statusTextAgent.textContent = 'Complete';
+
+        await this.sleep(300);
+    }
+
+    displayNarration(narrationData) {
+        let html = `<p>${narrationData.main_narration}</p>`;
+
+        // Add person dialogues if any
+        if (narrationData.person_dialogues && narrationData.person_dialogues.length > 0) {
+            narrationData.person_dialogues.forEach(dialogue => {
+                html += `
+                    <p style="margin-top: 1rem; padding-left: 1rem; border-left: 3px solid var(--accent-secondary);">
+                        <em>"${dialogue.dialogue}"</em>
+                        ${dialogue.emotion ? `<span style="color: var(--accent-primary);"> - ${dialogue.emotion}</span>` : ''}
+                    </p>
+                `;
+            });
+        }
+
+        // Add ambient descriptions
+        if (narrationData.ambient_descriptions && narrationData.ambient_descriptions.length > 0) {
+            html += `
+                <p style="margin-top: 1.5rem; font-style: italic; color: var(--text-secondary);">
+                    Ambient atmosphere: ${narrationData.ambient_descriptions.join(', ')}
+                </p>
+            `;
+        }
+
+        this.narrationText.innerHTML = html;
+        this.narrationSection.style.display = 'block';
+    }
+
+    async generateNarrationAudio(text) {
+        try {
+            const response = await fetch('/api/tts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.currentAudioUrl = result.audio_url;
+                console.log('Audio generated:', this.currentAudioUrl);
+            } else {
+                console.error('TTS error:', result.message);
+            }
+        } catch (error) {
+            console.error('Error generating audio:', error);
+        }
+    }
+
+    playNarrationAudio() {
+        if (!this.currentAudioUrl) {
+            console.error('No audio URL available');
+            return;
+        }
+
+        this.ttsAudio.src = this.currentAudioUrl;
+        this.ttsAudio.play();
+
+        this.playAudioButton.classList.add('playing');
+        this.playAudioButton.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+            Pause
+        `;
+
+        this.ttsAudio.onended = () => {
+            this.playAudioButton.classList.remove('playing');
+            this.playAudioButton.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                Play Audio Narration
+            `;
+        };
     }
 
     speak(text) {

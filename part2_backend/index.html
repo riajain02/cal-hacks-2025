@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎧 Photo-to-Audio Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3em;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(76, 175, 80, 0.5);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .sample-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .sample-btn {
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .sample-btn:hover {
+            border-color: #667eea;
+            background: #f7f8ff;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            margin-top: 30px;
+        }
+
+        .loading.show { display: block; }
+
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .step {
+            flex: 1;
+            padding: 8px;
+            background: #e9ecef;
+            margin: 0 3px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .result {
+            display: none;
+            margin-top: 40px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 20px;
+        }
+
+        .result.show { display: block; }
+
+        .result-section {
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .result-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mood-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .narration-text {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            line-height: 1.9;
+            font-size: 1.15em;
+            color: #333;
+            border-left: 5px solid #667eea;
+            font-style: italic;
+        }
+
+        .dialogue-item {
+            background: #e7f3ff;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .dialogue-label {
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 50px;
+        }
+
+        .audio-layers {
+            margin-top: 15px;
+        }
+
+        .audio-layer {
+            background: #f0f0f0;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎧 Photo-to-Audio Experience</h1>
+        <p class="subtitle">Multi-Agent AI System for Immersive Audio Narration</p>
+
+        <div class="tech-stack">
+            <span class="badge">🧠 Letta AI</span>
+            <span class="badge">🤖 Fetch.ai</span>
+            <span class="badge">🐟 Fish Audio</span>
+            <span class="badge">📮 Postman</span>
+            <span class="badge">👁️ GPT-4o Vision</span>
+        </div>
+
+        <input
+            type="text"
+            id="photoUrl"
+            placeholder="Paste image URL here (e.g., from Unsplash)"
+            value="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"
+        />
+
+        <button id="generateBtn" onclick="generateExperience()">
+            ✨ Generate Multi-Voice Audio Experience
+        </button>
+
+        <div class="sample-grid">
+            <button class="sample-btn" onclick="loadSample('https://images.unsplash.com/photo-1507525428034-b723cf961d3e')">
+                🏖️ Beach Sunset
+            </button>
+            <button class="sample-btn" onclick="loadSample('https://images.unsplash.com/photo-1506905925346-21bda4d32df4')">
+                ⛰️ Mountain Vista
+            </button>
+            <button class="sample-btn" onclick="loadSample('https://images.unsplash.com/photo-1514565131-fce0801e5785')">
+                🌃 City Night
+            </button>
+            <button class="sample-btn" onclick="loadSample('https://images.unsplash.com/photo-1441974231531-c6227db76b6e')">
+                🌲 Forest Path
+            </button>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <h3>🔄 Multi-Agent System Processing...</h3>
+            <div class="progress-steps">
+                <div class="step" id="step1">Vision</div>
+                <div class="step" id="step2">Emotion</div>
+                <div class="step" id="step3">Narration</div>
+                <div class="step" id="step4">Voices</div>
+                <div class="step" id="step5">Audio Mix</div>
+            </div>
+            <p style="margin-top: 20px; color: #666;">This may take 45-90 seconds...</p>
+        </div>
+
+        <div id="result" class="result">
+            <div class="result-section">
+                <h3>🎭 Detected Mood & Atmosphere</h3>
+                <span class="mood-tag" id="mood">Loading...</span>
+                <span style="margin-left: 15px; color: #666;" id="intensity"></span>
+                <p style="margin-top: 15px; color: #666;" id="emotion_tags"></p>
+            </div>
+
+            <div class="result-section">
+                <h3>📖 Main Narration</h3>
+                <div class="narration-text" id="narration">Loading...</div>
+            </div>
+
+            <div class="result-section" id="dialogues_section" style="display: none;">
+                <h3>💬 Generated Dialogues</h3>
+                <div id="dialogues_container"></div>
+            </div>
+
+            <div class="result-section">
+                <h3>🔊 Immersive Audio</h3>
+                <audio id="audioPlayer" controls></audio>
+                <div class="audio-layers" id="audio_layers"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+
+        function loadSample(url) {
+            document.getElementById('photoUrl').value = url;
+        }
+
+        function updateStep(step) {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`step${i}`).classList.remove('active');
+            }
+            if (step > 0) {
+                document.getElementById(`step${step}`).classList.add('active');
+            }
+        }
+
+        async function generateExperience() {
+            const photoUrl = document.getElementById('photoUrl').value;
+            const btn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+
+            if (!photoUrl) {
+                alert('Please enter an image URL');
+                return;
+            }
+
+            btn.disabled = true;
+            loading.classList.add('show');
+            result.classList.remove('show');
+            currentStep = 0;
+
+            // Simulate progress
+            const progressInterval = setInterval(() => {
+                currentStep = (currentStep % 5) + 1;
+                updateStep(currentStep);
+            }, 10000);
+
+            try {
+                const response = await fetch('http://localhost:9000/api/experience/create', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        photo_url: photoUrl,
+                        user_id: 'web_demo'
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to generate experience');
+                }
+
+                const data = await response.json();
+
+                clearInterval(progressInterval);
+
+                // Update UI
+                document.getElementById('mood').textContent = data.emotion.mood;
+                document.getElementById('intensity').textContent = `(${data.emotion.intensity} intensity)`;
+                document.getElementById('emotion_tags').textContent = `Emotions: ${data.emotion.emotion_tags.join(', ')}`;
+                document.getElementById('narration').textContent = data.narration.main_narration;
+
+                // Dialogues
+                if (data.narration.person_dialogues && data.narration.person_dialogues.length > 0) {
+                    const dialoguesSection = document.getElementById('dialogues_section');
+                    const dialoguesContainer = document.getElementById('dialogues_container');
+                    dialoguesSection.style.display = 'block';
+                    dialoguesContainer.innerHTML = '';
+
+                    data.narration.person_dialogues.forEach((dialogue, idx) => {
+                        const div = document.createElement('div');
+                        div.className = 'dialogue-item';
+                        div.innerHTML = `
+                            <div class="dialogue-label">Person ${idx + 1} (${dialogue.position}) - ${dialogue.emotion}</div>
+                            "${dialogue.dialogue}"
+                        `;
+                        dialoguesContainer.appendChild(div);
+                    });
+                }
+
+                // Audio layers
+                const layersContainer = document.getElementById('audio_layers');
+                layersContainer.innerHTML = '<h4 style="margin-top: 15px;">Audio Layers:</h4>';
+                data.audio_layers.forEach(layer => {
+                    const div = document.createElement('div');
+                    div.className = 'audio-layer';
+                    div.textContent = `${layer.type} (${layer.position}): "${layer.text.substring(0, 50)}..."`;
+                    layersContainer.appendChild(div);
+                });
+
+                // Final audio
+                document.getElementById('audioPlayer').src = `http://localhost:9000${data.final_audio_url}`;
+
+                loading.classList.remove('show');
+                result.classList.add('show');
+
+                // Auto-play
+                document.getElementById('audioPlayer').play();
+
+            } catch (error) {
+                clearInterval(progressInterval);
+                alert('Error: ' + error.message + '\n\nMake sure:\n1. Agent bureau is running (run_agents.py)\n2. Coordinator address is set in main.py');
+                loading.classList.remove('show');
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

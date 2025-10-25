@@ -1,0 +1,116 @@
+{
+  "info": {
+    "name": "CalHacks Photo-to-Audio Experience",
+    "description": "Multi-agent AI system for converting photos to immersive audio experiences",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Experience (Beach)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"photo_url\": \"https://images.unsplash.com/photo-1507525428034-b723cf961d3e\",\n  \"user_id\": \"postman_test\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:9000/api/experience/create",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9000",
+          "path": ["api", "experience", "create"]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has required fields\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('session_id');",
+              "    pm.expect(jsonData).to.have.property('emotion');",
+              "    pm.expect(jsonData).to.have.property('narration');",
+              "    pm.expect(jsonData).to.have.property('audio_layers');",
+              "    pm.expect(jsonData).to.have.property('final_audio_url');",
+              "});",
+              "",
+              "pm.test(\"Audio URL is accessible\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    var audioUrl = 'http://localhost:9000' + jsonData.final_audio_url;",
+              "    pm.sendRequest(audioUrl, function (err, response) {",
+              "        pm.expect(err).to.be.null;",
+              "        pm.expect(response).to.have.status(200);",
+              "    });",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Experience (Mountain)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"photo_url\": \"https://images.unsplash.com/photo-1506905925346-21bda4d32df4\",\n  \"user_id\": \"postman_test\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:9000/api/experience/create",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9000",
+          "path": ["api", "experience", "create"]
+        }
+      }
+    },
+    {
+      "name": "Create Experience (City Night)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"photo_url\": \"https://images.unsplash.com/photo-1514565131-fce0801e5785\",\n  \"user_id\": \"postman_test\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:9000/api/experience/create",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "9000",
+          "path": ["api", "experience", "create"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:9000",
+      "type": "string"
+    }
+  ]
+}

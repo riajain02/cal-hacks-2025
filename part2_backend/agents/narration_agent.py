@@ -10,9 +10,7 @@ load_dotenv()
 
 narration_agent = Agent(
     name="narration_agent",
-    seed="narration_seed_11111",
-    port=8003,
-    endpoint=["http://localhost:8003/submit"]
+    seed="narration_seed_11111"
 )
 
 LETTA_API_KEY = os.getenv("LETTA_API_KEY")

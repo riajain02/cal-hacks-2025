@@ -11,9 +11,7 @@ load_dotenv()
 
 audio_mixer_agent = Agent(
     name="audio_mixer_agent",
-    seed="mixer_seed_33333",
-    port=8005,
-    endpoint=["http://localhost:8005/submit"]
+    seed="mixer_seed_33333"
 )
 
 @audio_mixer_agent.on_event("startup")

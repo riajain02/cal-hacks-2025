@@ -10,9 +10,7 @@ load_dotenv()
 
 emotion_agent = Agent(
     name="emotion_agent",
-    seed="emotion_seed_67890",
-    port=8002,
-    endpoint=["http://localhost:8002/submit"]
+    seed="emotion_seed_67890"
 )
 
 LETTA_API_KEY = os.getenv("LETTA_API_KEY")

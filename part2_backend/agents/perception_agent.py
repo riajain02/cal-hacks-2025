@@ -10,9 +10,7 @@ load_dotenv()
 
 perception_agent = Agent(
     name="perception_agent",
-    seed="perception_seed_12345",
-    port=8001,
-    endpoint=["http://localhost:8001/submit"]
+    seed="perception_seed_12345"
 )
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")

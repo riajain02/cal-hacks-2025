@@ -10,9 +10,7 @@ load_dotenv()
 
 voice_agent = Agent(
     name="voice_agent",
-    seed="voice_seed_22222",
-    port=8004,
-    endpoint=["http://localhost:8004/submit"]
+    seed="voice_seed_22222"
 )
 
 FISH_AUDIO_API_KEY = os.getenv("FISH_AUDIO_API_KEY")

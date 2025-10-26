@@ -1,0 +1,58 @@
+{
+  "session_id": "f418b403-7c6f-4cfb-bd99-ffe4ee3b60f2",
+  "success": true,
+  "perception": {
+    "session_id": "f418b403-7c6f-4cfb-bd99-ffe4ee3b60f2",
+    "objects": [
+      "skyscrapers",
+      "tall buildings",
+      "low-rise buildings",
+      "roads",
+      "streets",
+      "rooftops"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "visible in the foreground",
+      "midground": "running vertically down the image toward the horizon",
+      "background": "densely packed, especially toward the center and sides"
+    },
+    "scene_type": "cityscape",
+    "setting": "urban environment in a major city",
+    "colors": [
+      "golden",
+      "warm hues",
+      "clear sky"
+    ],
+    "lighting": "warm golden light from low sun casting elongated shadows and reflecting off glass surfaces",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "f418b403-7c6f-4cfb-bd99-ffe4ee3b60f2",
+    "mood": "dynamic",
+    "emotion_tags": [
+      "energy",
+      "vitality",
+      "anticipation"
+    ],
+    "tone": "bold and lively",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "energetic, engaging, confident",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant urban atmosphere"
+  },
+  "narration": {
+    "session_id": "f418b403-7c6f-4cfb-bd99-ffe4ee3b60f2",
+    "main_narration": "You are enveloped in a vibrant cityscape, where a mix of skyscrapers and tall buildings rises prominently against the clear sky. The scene captures the energy of an urban environment, with roads and streets running vertically down the image toward the horizon, leading your eye deeper into this bustling metropolis. Warm golden light from the low sun casts elongated shadows and beautifully reflects off glass surfaces, enhancing the dynamic atmosphere around you. This moment is filled with vitality and anticipation, inviting you to explore every corner of this lively city.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "distant hum of traffic",
+      "soft echo of footsteps",
+      "rustling leaves in nearby parks"
+    ]
+  }
+}

@@ -1,19 +1,19 @@
 /* Accessible Photo Search - Styles */
 
 :root {
-    --primary-color: #4f46e5;
-    --primary-dark: #4338ca;
-    --primary-light: #818cf8;
-    --success-color: #10b981;
-    --error-color: #ef4444;
+    --primary-color: #f97316;
+    --primary-dark: #ea580c;
+    --primary-light: #fb923c;
+    --success-color: #84cc16;
+    --error-color: #f43f5e;
     --warning-color: #f59e0b;
-    --bg-color: #f9fafb;
+    --bg-color: #fff7ed;
     --card-bg: #ffffff;
-    --text-primary: #111827;
-    --text-secondary: #6b7280;
-    --border-color: #e5e7eb;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --text-primary: #1c1917;
+    --text-secondary: #78716c;
+    --border-color: #fed7aa;
+    --shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.1), 0 2px 4px -1px rgba(249, 115, 22, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(249, 115, 22, 0.15), 0 4px 6px -2px rgba(249, 115, 22, 0.1);
 }
 
 /* High Contrast Mode Support */
@@ -34,7 +34,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #dc2626 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -133,7 +133,7 @@ main {
 
 .search-input:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
 }
 
 .voice-btn {
@@ -149,7 +149,7 @@ main {
 }
 
 .voice-btn:hover {
-    background: #059669;
+    background: #65a30d;
     transform: scale(1.05);
 }
 
@@ -212,9 +212,9 @@ main {
 }
 
 .status.loading {
-    background: #dbeafe;
-    color: #1e40af;
-    border-left: 4px solid #3b82f6;
+    background: #ffedd5;
+    color: #7c2d12;
+    border-left: 4px solid #f97316;
 }
 
 .status.success {

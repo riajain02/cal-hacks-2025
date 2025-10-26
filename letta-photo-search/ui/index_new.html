@@ -14,19 +14,19 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3b82f6',
-                        secondary: '#6366f1',
-                        accent: '#06b6d4',
+                        primary: '#10b981',
+                        secondary: '#059669',
+                        accent: '#34d399',
                         dark: '#0f172a',
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'slide-up': 'slideUp 0.4s ease-out',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         },
                         slideUp: {
@@ -41,68 +41,68 @@
 
     <style>
         @keyframes ripple {
-            0% { transform: scale(0.8); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+            0% { transform: scale(0.9); opacity: 0.5; }
+            100% { transform: scale(2.5); opacity: 0; }
         }
 
         .mic-ripple {
-            animation: ripple 2s infinite;
+            animation: ripple 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-        }
-
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            background: linear-gradient(to bottom, #0f172a 0%, #1e293b 100%);
         }
 
         .glass-effect {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(148, 163, 184, 0.2);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 10px;
+            width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
+            background: transparent;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #3b82f6, #6366f1);
-            border-radius: 5px;
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.5);
         }
     </style>
 </head>
 <body class="gradient-bg min-h-screen text-white">
 
     <!-- Voice Search Page -->
-    <div id="voice-page" class="min-h-screen flex items-center justify-center p-4">
-        <div class="max-w-2xl w-full text-center animate-fade-in">
+    <div id="voice-page" class="min-h-screen flex items-center justify-center p-6">
+        <div class="max-w-3xl w-full text-center animate-fade-in">
             <!-- Logo -->
-            <div class="mb-8">
-                <div class="text-6xl mb-4">🧠</div>
-                <h1 class="text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400">
+            <div class="mb-12">
+                <h1 class="text-6xl font-semibold mb-3 tracking-tight text-white">
                     Memory Search
                 </h1>
-                <p class="text-slate-300 text-lg">AI-Powered Photo Memory Assistant</p>
+                <p class="text-slate-400 text-lg">AI-powered photo memory assistant</p>
             </div>
 
             <!-- Mic Button -->
-            <div class="relative inline-block mb-8">
-                <button id="mic-button" class="relative w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 hover:scale-110 transition-transform duration-300 shadow-2xl shadow-blue-500/30">
-                    <div class="absolute inset-0 rounded-full bg-blue-500 opacity-0 mic-ripple"></div>
-                    <div class="absolute inset-0 rounded-full bg-blue-500 opacity-0 mic-ripple" style="animation-delay: 0.5s"></div>
-                    <div class="absolute inset-0 rounded-full bg-blue-500 opacity-0 mic-ripple" style="animation-delay: 1s"></div>
-                    <svg class="w-12 h-12 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div class="relative inline-block mb-12">
+                <button id="mic-button" class="relative w-24 h-24 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 transition-all duration-300 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-105">
+                    <div class="absolute inset-0 rounded-full bg-emerald-400 opacity-0 mic-ripple"></div>
+                    <div class="absolute inset-0 rounded-full bg-emerald-400 opacity-0 mic-ripple" style="animation-delay: 1s"></div>
+                    <svg class="w-10 h-10 mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                         <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
                         <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
                         <line x1="12" y1="19" x2="12" y2="23"/>
@@ -112,25 +112,25 @@
             </div>
 
             <!-- Status Text -->
-            <p id="status-text" class="text-lg mb-6 text-slate-300">
+            <p id="status-text" class="text-base mb-8 text-slate-400 font-medium">
                 Click to speak or type your query
             </p>
 
             <!-- Transcript -->
-            <div id="transcript" class="text-2xl font-semibold mb-6 h-8 text-blue-300"></div>
+            <div id="transcript" class="text-xl font-medium mb-8 h-7 text-emerald-400"></div>
 
             <!-- Search Input -->
-            <div class="glass-effect rounded-2xl p-6 mb-6">
-                <div class="flex gap-3">
+            <div class="glass-card rounded-2xl p-1.5 mb-8 max-w-2xl mx-auto">
+                <div class="flex gap-2">
                     <input
                         type="text"
                         id="text-input"
-                        placeholder="Type your search query..."
-                        class="flex-1 bg-slate-800/50 border border-slate-600/50 rounded-xl px-6 py-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Search your memories..."
+                        class="flex-1 bg-slate-800/80 border-0 rounded-xl px-5 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
                     />
                     <button
                         id="send-button"
-                        class="bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all font-semibold"
+                        class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 px-6 py-3.5 rounded-xl transition-all font-medium shadow-lg shadow-emerald-500/25"
                     >
                         Search
                     </button>
@@ -138,17 +138,17 @@
             </div>
 
             <!-- Quick Suggestions -->
-            <div class="flex flex-wrap gap-3 justify-center">
-                <button class="suggestion glass-effect px-6 py-2 rounded-full hover:bg-white/20 transition-all" data-query="Happy dog">
+            <div class="flex flex-wrap gap-2.5 justify-center max-w-2xl mx-auto">
+                <button class="suggestion glass-effect px-4 py-2 rounded-lg hover:bg-white/10 transition-all text-sm font-medium text-slate-300 hover:text-white border border-white/5" data-query="Happy dog">
                     🐕 Happy dog
                 </button>
-                <button class="suggestion glass-effect px-6 py-2 rounded-full hover:bg-white/20 transition-all" data-query="Peaceful sunset">
+                <button class="suggestion glass-effect px-4 py-2 rounded-lg hover:bg-white/10 transition-all text-sm font-medium text-slate-300 hover:text-white border border-white/5" data-query="Peaceful sunset">
                     🌅 Peaceful sunset
                 </button>
-                <button class="suggestion glass-effect px-6 py-2 rounded-full hover:bg-white/20 transition-all" data-query="City lights">
+                <button class="suggestion glass-effect px-4 py-2 rounded-lg hover:bg-white/10 transition-all text-sm font-medium text-slate-300 hover:text-white border border-white/5" data-query="City lights">
                     🏙️ City lights
                 </button>
-                <button class="suggestion glass-effect px-6 py-2 rounded-full hover:bg-white/20 transition-all" data-query="Ocean waves">
+                <button class="suggestion glass-effect px-4 py-2 rounded-lg hover:bg-white/10 transition-all text-sm font-medium text-slate-300 hover:text-white border border-white/5" data-query="Ocean waves">
                     🌊 Ocean waves
                 </button>
             </div>
@@ -156,23 +156,23 @@
     </div>
 
     <!-- Processing/Results Page -->
-    <div id="processing-page" class="hidden min-h-screen p-8">
+    <div id="processing-page" class="hidden min-h-screen p-6">
         <div class="max-w-7xl mx-auto">
             <!-- Back Button -->
-            <button id="back-button" class="flex items-center gap-2 text-white mb-8 hover:text-blue-400 transition-colors glass-effect px-6 py-3 rounded-xl">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            <button id="back-button" class="flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors glass-effect px-4 py-2.5 rounded-lg text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                 </svg>
                 Back to Search
             </button>
 
             <!-- Query Display -->
-            <h2 class="text-4xl font-bold mb-8 animate-fade-in">
-                Searching for: <span id="query-display" class="text-blue-400"></span>
+            <h2 class="text-3xl font-semibold mb-10 animate-fade-in text-white">
+                Searching for: <span id="query-display" class="text-emerald-400"></span>
             </h2>
 
             <!-- Agent Timeline -->
-            <div id="agents-timeline" class="space-y-4 mb-12"></div>
+            <div id="agents-timeline" class="space-y-3 mb-12"></div>
 
             <!-- Results Section -->
             <div id="results-section"></div>
@@ -180,24 +180,24 @@
     </div>
 
     <!-- Memory Generation Page -->
-    <div id="memory-page" class="hidden min-h-screen p-8">
+    <div id="memory-page" class="hidden min-h-screen p-6">
         <div class="max-w-7xl mx-auto">
             <!-- Back Button -->
-            <button id="memory-back-button" class="flex items-center gap-2 text-white mb-8 hover:text-blue-400 transition-colors glass-effect px-6 py-3 rounded-xl">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            <button id="memory-back-button" class="flex items-center gap-2 text-slate-400 hover:text-white mb-8 transition-colors glass-effect px-4 py-2.5 rounded-lg text-sm font-medium">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
                 </svg>
                 Back to Results
             </button>
 
             <!-- Memory Title -->
-            <h2 class="text-4xl font-bold mb-8">
-                Memory: <span id="memory-query-display" class="text-blue-400"></span>
+            <h2 class="text-3xl font-semibold mb-10 text-white">
+                Memory: <span id="memory-query-display" class="text-emerald-400"></span>
             </h2>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Photo Display -->
-                <div class="glass-effect rounded-2xl overflow-hidden animate-fade-in">
+                <div class="glass-card rounded-2xl overflow-hidden animate-fade-in border border-white/10">
                     <img id="memory-photo" src="" alt="" class="w-full h-auto object-cover" />
                 </div>
 
@@ -205,20 +205,20 @@
                 <div class="space-y-6">
                     <!-- Agent Timeline -->
                     <div>
-                        <h3 class="text-2xl font-semibold mb-4">🤖 AI Agent Processing</h3>
-                        <div id="memory-agents-timeline" class="space-y-4"></div>
+                        <h3 class="text-xl font-semibold mb-4 text-white">AI Agent Processing</h3>
+                        <div id="memory-agents-timeline" class="space-y-3"></div>
                     </div>
 
                     <!-- Narration Section -->
-                    <div id="narration-section" class="glass-effect rounded-2xl p-6 hidden animate-fade-in">
-                        <h3 class="text-2xl font-semibold mb-4 flex items-center gap-2">
-                            📖 Story Narration
+                    <div id="narration-section" class="glass-card rounded-2xl p-6 hidden animate-fade-in border border-white/10">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center gap-2 text-white">
+                            Story Narration
                         </h3>
-                        <div id="narration-text" class="text-slate-200 leading-relaxed space-y-4 mb-6"></div>
+                        <div id="narration-text" class="text-slate-300 leading-relaxed space-y-3 mb-6 text-sm"></div>
 
                         <!-- Audio Player -->
-                        <button id="play-audio-button" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 py-4 rounded-xl hover:shadow-lg hover:shadow-blue-500/50 transition-all font-semibold flex items-center justify-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button id="play-audio-button" class="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 py-3.5 rounded-xl transition-all font-medium flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                                 <polygon points="5 3 19 12 5 21 5 3"/>
                             </svg>
                             Play Audio Narration
@@ -227,10 +227,10 @@
                     </div>
 
                     <!-- Loading State -->
-                    <div id="memory-loading" class="glass-effect rounded-2xl p-8 text-center">
-                        <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent mb-4"></div>
-                        <p class="text-slate-300 text-lg">Generating your memory story...</p>
-                        <p class="text-slate-400 text-sm mt-2">Our AI agents are analyzing the photo</p>
+                    <div id="memory-loading" class="glass-card rounded-2xl p-8 text-center border border-white/10">
+                        <div class="inline-block animate-spin rounded-full h-12 w-12 border-3 border-emerald-500/30 border-t-emerald-500 mb-4"></div>
+                        <p class="text-slate-300 text-base font-medium">Generating your memory story...</p>
+                        <p class="text-slate-500 text-sm mt-2">AI agents are analyzing the photo</p>
                     </div>
                 </div>
             </div>

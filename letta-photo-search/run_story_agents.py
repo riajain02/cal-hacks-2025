@@ -39,7 +39,7 @@ def main():
         ('perception_agent.py', 'Perception Agent', 8001),
         ('emotion_agent.py', 'Emotion Agent', 8002),
         ('narration_agent.py', 'Narration Agent', 8003),
-        ('coordinator_agent.py', 'Coordinator Agent', 8006),
+        ('coordinator_agent.py', 'Coordinator Agent', 8007),
     ]
 
     processes = []

@@ -17,7 +17,7 @@ load_dotenv()
 
 # Import agents and services
 from agents.letta_voice_agent import VoiceProcessingAgent
-from agents.embedding_search_agent import EmbeddingSearchAgent
+from agents.clip_search_agent import CLIPSearchAgent
 from services.fish_audio_service import UnifiedTTSService
 from agents.story_agent_client import StoryAgentClient
 
@@ -64,7 +64,7 @@ def get_search_agent():
     if search_agent is None:
         print("Initializing Embedding Search Agent...")
         try:
-            search_agent = EmbeddingSearchAgent()
+            search_agent = CLIPSearchAgent()
         except Exception as e:
             print(f"Error initializing search agent: {e}")
             search_agent = None
@@ -125,6 +125,12 @@ def classic():
 # def story():
 #     """Serve the photo story generator UI"""
 #     return send_from_directory('ui', 'story.html')
+
+
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    """Serve image files"""
+    return send_from_directory('images', filename)
 
 
 @app.route('/<path:path>')
@@ -302,7 +308,16 @@ async def generate_story():
         if not photo_url and not photo_path:
             return jsonify({'success': False, 'message': 'photo_url or photo_path is required'}), 400
 
-        print(f"Generating story for photo: {photo_url}")
+        # Convert image_url to local path if needed
+        if photo_url and photo_url.startswith('/images/'):
+            from urllib.parse import unquote
+            filename = unquote(photo_url.replace('/images/', ''))
+            photo_path = f"images/{filename}"
+            print(f"Using local path: {photo_path}")
+        
+        # Use photo_path if available, otherwise photo_url
+        target_path = photo_path or photo_url
+        print(f"Generating story for photo: {target_path}")
 
         story_client = get_story_agent_client()
         if not story_client:
@@ -311,7 +326,7 @@ async def generate_story():
                 'message': 'Story agent client not available. Make sure agents are running.'
             }), 500
 
-        result = await story_client.generate_story_from_photo(photo_url, timeout=120)
+        result = await story_client.generate_story_from_photo(target_path, timeout=120)
         if not result.get('success', False):
             return jsonify(result), 500
 

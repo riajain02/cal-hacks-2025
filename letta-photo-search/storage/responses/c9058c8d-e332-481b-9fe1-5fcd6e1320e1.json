@@ -1,0 +1,61 @@
+{
+  "session_id": "c9058c8d-e332-481b-9fe1-5fcd6e1320e1",
+  "success": true,
+  "perception": {
+    "session_id": "c9058c8d-e332-481b-9fe1-5fcd6e1320e1",
+    "objects": [
+      "shovels",
+      "grass",
+      "dirt",
+      "foliage"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "position": "center-left",
+        "description": "engaged in digging or working with the shovels",
+        "apparent_mood": "focused and physically exerting effort"
+      }
+    ],
+    "layout": {
+      "foreground": "individuals working with shovels",
+      "background": "open grassy space bordered by trees and shrubs"
+    },
+    "scene_type": "outdoor_activity",
+    "setting": "rural or woodland setting",
+    "colors": [
+      "green",
+      "brown",
+      "gray"
+    ],
+    "lighting": "bright daytime lighting, possibly late morning or early afternoon with shadows indicating sunlight",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "c9058c8d-e332-481b-9fe1-5fcd6e1320e1",
+    "mood": "determined",
+    "emotion_tags": [
+      "focus",
+      "effort",
+      "collaboration"
+    ],
+    "tone": "active and engaging",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "energetic, encouraging, clear",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "productive outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "c9058c8d-e332-481b-9fe1-5fcd6e1320e1",
+    "main_narration": "In this productive outdoor setting, two individuals are engaged in the physical effort of digging with shovels, their focus evident as they work diligently on the task at hand. Positioned in the foreground, their movements reflect determination and collaboration as they turn over dirt amidst a backdrop of lush green grass bordered by trees and shrubs. Bright daylight bathes the scene, casting shadows that indicate it is late morning or early afternoon. This vibrant atmosphere captures the essence of hard work and camaraderie in a rural or woodland environment.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft crunching of shovels against soil",
+      "rustling leaves from a gentle breeze",
+      "distant chirping of birds"
+    ]
+  }
+}

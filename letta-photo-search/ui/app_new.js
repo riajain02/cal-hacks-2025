@@ -177,8 +177,11 @@ class AgentSearchApp {
 
         // Set photo and query
         this.memoryQueryDisplay.textContent = photo.title;
-        this.memoryPhoto.src = photo.url;
+        this.memoryPhoto.src = photo.image_url || photo.url;
         this.memoryPhoto.alt = photo.description;
+        
+        // Store image_url for story generation
+        photo.url = photo.image_url || photo.url;
 
         // Clear previous content
         this.memoryAgentsTimeline.innerHTML = '';
@@ -416,7 +419,7 @@ class AgentSearchApp {
             const response = await fetch('/api/story/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ photo_url: photo.url })
+                body: JSON.stringify({ photo_url: photo.image_url || photo.url })
             });
 
             const result = await response.json();

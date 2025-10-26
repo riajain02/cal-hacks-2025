@@ -1,0 +1,49 @@
+{
+  "session_id": "fa96ba5e-6eae-427b-8424-711bdb3844b9",
+  "success": true,
+  "perception": {
+    "session_id": "fa96ba5e-6eae-427b-8424-711bdb3844b9",
+    "objects": [
+      "tabby cat"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "cat's head positioned in the lower portion of the image, tilted slightly upwards and to the left",
+      "background": "solid bright blue"
+    },
+    "scene_type": "animal_portrait",
+    "setting": "outdoor setting on a bright, clear day",
+    "colors": [
+      "brown",
+      "tan",
+      "black",
+      "green"
+    ],
+    "lighting": "bright and clear, highlighting fur texture and eye color with shadows suggesting direct sunlight",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "fa96ba5e-6eae-427b-8424-711bdb3844b9",
+    "mood": "playful",
+    "emotion_tags": [
+      "curiosity",
+      "affection",
+      "contentment"
+    ],
+    "tone": "light and warm",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, affectionate, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "warm and inviting atmosphere"
+  },
+  "narration": {
+    "session_id": "fa96ba5e-6eae-427b-8424-711bdb3844b9",
+    "main_narration": "Scene description unavailable.",
+    "person_dialogues": [],
+    "ambient_descriptions": []
+  }
+}

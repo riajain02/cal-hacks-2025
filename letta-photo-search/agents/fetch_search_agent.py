@@ -26,7 +26,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Import the embedding search agent
-from agents.embedding_search_agent import EmbeddingSearchAgent
+from agents.clip_search_agent import CLIPSearchAgent
 
 # Define message models
 class ImageSearchRequest(Model):
@@ -64,11 +64,11 @@ fund_agent_if_low(search_agent.wallet.address())
 embedding_search_agent = None
 
 def get_search_agent():
-    """Get or create the embedding search agent instance"""
+    """Get or create the CLIP search agent instance"""
     global embedding_search_agent
     if embedding_search_agent is None:
-        print("Initializing Embedding Search Agent...")
-        embedding_search_agent = EmbeddingSearchAgent()
+        print("Initializing CLIP Search Agent...")
+        embedding_search_agent = CLIPSearchAgent()
     return embedding_search_agent
 
 # Create protocol for image search

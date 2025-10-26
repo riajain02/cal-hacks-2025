@@ -172,7 +172,7 @@ class PhotoSearchApp {
 
         // Create image
         const img = document.createElement('img');
-        img.src = `/api/photo/${photo.id}`;
+        img.src = photo.image_url || `/api/photo/${photo.id}`;
         img.alt = photo.description;
         img.loading = 'lazy';
 

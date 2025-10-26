@@ -93,7 +93,7 @@ async def handle_user_query(ctx: Context, sender: str, msg: UserVoiceQuery):
 
         # Import here to avoid circular dependencies
         from agents.letta_voice_agent import VoiceProcessingAgent
-        from agents.embedding_search_agent import EmbeddingSearchAgent
+        from agents.clip_search_agent import CLIPSearchAgent
 
         # Step 1: Process voice input
         ctx.logger.info("Step 1: Processing voice input...")
@@ -105,7 +105,7 @@ async def handle_user_query(ctx: Context, sender: str, msg: UserVoiceQuery):
 
         # Step 2: Search for images
         ctx.logger.info("Step 2: Searching for images...")
-        search_agent = EmbeddingSearchAgent()
+        search_agent = CLIPSearchAgent()
         photo_results = search_agent.search_with_context(
             query=voice_result['search_query'],
             entities=voice_result['entities'],

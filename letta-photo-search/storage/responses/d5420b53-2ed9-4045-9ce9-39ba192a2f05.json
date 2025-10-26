@@ -1,0 +1,60 @@
+{
+  "session_id": "d5420b53-2ed9-4045-9ce9-39ba192a2f05",
+  "success": true,
+  "perception": {
+    "session_id": "d5420b53-2ed9-4045-9ce9-39ba192a2f05",
+    "objects": [
+      "notebook",
+      "graph paper",
+      "hand",
+      "black pen or pencil"
+    ],
+    "people_count": 1,
+    "people_details": [
+      {
+        "position": "right side",
+        "description": "hand actively writing on the paper"
+      }
+    ],
+    "layout": {
+      "foreground": "occupying most of the image, positioned flat and slightly tilted",
+      "background": "list with checkboxes next to each item"
+    },
+    "scene_type": "workspace",
+    "setting": "personal or casual setting like a home or office",
+    "colors": [
+      "soft muted tones",
+      "white",
+      "blue"
+    ],
+    "lighting": "natural daylight creating a clear and focused environment",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "d5420b53-2ed9-4045-9ce9-39ba192a2f05",
+    "mood": "focused",
+    "emotion_tags": [
+      "concentration",
+      "determination",
+      "creativity"
+    ],
+    "tone": "calm and purposeful",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "steady, clear, thoughtful",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "productive and serene atmosphere"
+  },
+  "narration": {
+    "session_id": "d5420b53-2ed9-4045-9ce9-39ba192a2f05",
+    "main_narration": "In this personal workspace, a notebook lies flat and slightly tilted on the surface, filled with graph paper that invites creativity and organization. On the right side of the image, a hand is actively writing with a black pen or pencil, its movements steady and purposeful as it captures ideas and plans. The background features a list adorned with checkboxes next to each item, hinting at tasks being completed. Natural daylight floods the setting, creating a clear and focused environment that enhances concentration and determination.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft scratching of pen on paper",
+      "gentle rustling of pages",
+      "distant sounds of everyday life"
+    ]
+  }
+}

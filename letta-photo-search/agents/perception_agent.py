@@ -28,7 +28,33 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
     ctx.logger.info(f"📸 [1/5] Analyzing image for {msg.session_id}")
 
     try:
-        # Step 1: OpenAI Vision
+        # Step 1: Prepare image URL - convert local paths to base64
+        image_url = msg.photo_url
+        if not image_url.startswith(('http://', 'https://')):
+            # Local file - convert to base64
+            import base64
+            from pathlib import Path
+
+            ctx.logger.info(f"   → Converting local image to base64: {image_url}")
+            image_path = Path(image_url)
+            if not image_path.exists():
+                raise Exception(f"Image file not found: {image_url}")
+
+            with open(image_path, "rb") as image_file:
+                image_data = base64.b64encode(image_file.read()).decode('utf-8')
+                # Detect image type from extension
+                ext = image_path.suffix.lower()
+                mime_type = {
+                    '.jpg': 'image/jpeg',
+                    '.jpeg': 'image/jpeg',
+                    '.png': 'image/png',
+                    '.gif': 'image/gif',
+                    '.webp': 'image/webp'
+                }.get(ext, 'image/jpeg')
+                image_url = f"data:{mime_type};base64,{image_data}"
+                ctx.logger.info(f"   ✓ Image converted to base64 ({len(image_data)} bytes)")
+
+        # Step 2: OpenAI Vision
         ctx.logger.info("   → GPT-4o Vision analysis...")
         async with httpx.AsyncClient(timeout=60.0) as client:
             vision_response = await client.post(
@@ -40,17 +66,22 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
                         "role": "user",
                         "content": [
                             {"type": "text", "text": "Analyze this image in extreme detail. Describe: 1) ALL objects, 2) Number of people and their positions/moods, 3) Spatial layout, 4) Colors/lighting, 5) Scene context. Be exhaustive."},
-                            {"type": "image_url", "image_url": {"url": msg.photo_url}}
+                            {"type": "image_url", "image_url": {"url": image_url}}
                         ]
                     }],
                     "max_tokens": 800
                 }
             )
-            vision_desc = vision_response.json()["choices"][0]["message"]["content"]
+            response_json = vision_response.json()
+            ctx.logger.info(f"   OpenAI response status: {vision_response.status_code}")
+            if vision_response.status_code != 200:
+                ctx.logger.error(f"   OpenAI error: {response_json}")
+                raise Exception(f"OpenAI Vision error: {response_json.get('error', {}).get('message', 'Unknown error')}")
+            vision_desc = response_json["choices"][0]["message"]["content"]
             ctx.logger.info(f"   ✓ Vision complete ({len(vision_desc)} chars)")
             ctx.logger.info(f"   📝 Vision preview: {vision_desc[:200]}...")
 
-        # Step 2: Letta AI structured extraction (REQUIRED - no fallback)
+        # Step 3: Letta AI structured extraction (REQUIRED - no fallback)
         ctx.logger.info("   → Letta AI extraction (REQUIRED)")
         ctx.logger.info(f"   Calling agent: {PERCEPTION_AGENT_ID}")
         ctx.logger.info(f"   Input length: {len(vision_desc)} characters")

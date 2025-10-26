@@ -1,0 +1,54 @@
+{
+  "session_id": "ff182ab8-4a3d-4eee-ab15-02f3d6854734",
+  "success": true,
+  "perception": {
+    "session_id": "ff182ab8-4a3d-4eee-ab15-02f3d6854734",
+    "objects": [
+      "sand",
+      "ocean",
+      "sky",
+      "sun",
+      "palms"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "leading into gentle waves",
+      "midground": "occupying the majority of the right half with a clear horizon line",
+      "background": "featuring scattered clouds and sun near the horizon | visible in the distance on the left side"
+    },
+    "scene_type": "outdoor_beach",
+    "setting": "tranquil beach scene during sunrise or sunset",
+    "colors": [
+      "warm pinks",
+      "oranges",
+      "cool blues",
+      "turquoises"
+    ],
+    "lighting": "soft and diffused due to time of day, suggesting serenity",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "ff182ab8-4a3d-4eee-ab15-02f3d6854734",
+    "mood": "serene",
+    "emotion_tags": [
+      "calm",
+      "peaceful",
+      "reflective"
+    ],
+    "tone": "gentle and soothing",
+    "intensity": "low",
+    "voice_characteristics": {
+      "main_narrator": "soft, tranquil, slow-paced",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "tranquil beach atmosphere"
+  },
+  "narration": {
+    "session_id": "ff182ab8-4a3d-4eee-ab15-02f3d6854734",
+    "main_narration": "Scene description unavailable.",
+    "person_dialogues": [],
+    "ambient_descriptions": []
+  }
+}

@@ -34,8 +34,8 @@ def test_voice_agent():
 
 def test_embedding_search():
     """Test embedding-based search agent"""
-    from agents.embedding_search_agent import EmbeddingSearchAgent
-    agent = EmbeddingSearchAgent()
+    from agents.clip_search_agent import CLIPSearchAgent
+    agent = CLIPSearchAgent()
     results = agent.search("dog", top_k=3)
     assert len(results) > 0
     print(f"  Query: 'dog'")

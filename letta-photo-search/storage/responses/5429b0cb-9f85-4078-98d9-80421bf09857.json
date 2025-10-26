@@ -1,0 +1,56 @@
+{
+  "session_id": "5429b0cb-9f85-4078-98d9-80421bf09857",
+  "success": true,
+  "perception": {
+    "session_id": "5429b0cb-9f85-4078-98d9-80421bf09857",
+    "objects": [
+      "yellow flowers",
+      "white flowers",
+      "stems",
+      "leaves"
+    ],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "dominating the foreground with stems and leaves creating texture",
+      "midground": "extending into the middle ground, fading out of focus",
+      "background": "{\"sky_and_other_plants\": \"\"}"
+    },
+    "scene_type": "nature",
+    "setting": "natural outdoor scene in a meadow or field during spring or summer",
+    "colors": [
+      "vivid yellow",
+      "deep blue",
+      "green"
+    ],
+    "lighting": "bright and natural daylight, likely with sun overhead or slightly to one side",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "5429b0cb-9f85-4078-98d9-80421bf09857",
+    "mood": "cheerful",
+    "emotion_tags": [
+      "happiness",
+      "vibrancy",
+      "exuberance"
+    ],
+    "tone": "bright and uplifting",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "enthusiastic, warm, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and joyful atmosphere"
+  },
+  "narration": {
+    "session_id": "5429b0cb-9f85-4078-98d9-80421bf09857",
+    "main_narration": "You are surrounded by a vibrant natural scene in a meadow, where vivid yellow flowers dominate the foreground, their stems and leaves creating an intricate texture that draws your eye. The brightness of the day enhances the cheerful atmosphere, with sunlight illuminating every detail and casting a warm glow over the landscape. As your gaze extends into the midground, more flowers fade softly out of focus against a backdrop of deep blue sky and lush greenery. This lively setting radiates happiness and exuberance, inviting you to bask in its uplifting energy.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of leaves",
+      "soft buzzing of bees",
+      "distant chirping of birds"
+    ]
+  }
+}

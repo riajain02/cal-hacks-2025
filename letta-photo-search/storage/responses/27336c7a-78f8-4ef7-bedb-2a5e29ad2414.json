@@ -1,0 +1,72 @@
+{
+  "session_id": "27336c7a-78f8-4ef7-bedb-2a5e29ad2414",
+  "success": true,
+  "perception": {
+    "session_id": "27336c7a-78f8-4ef7-bedb-2a5e29ad2414",
+    "objects": [
+      "two backpacks",
+      "grass",
+      "rocky terrain",
+      "mountains",
+      "structure on mountain peak"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person sitting with legs bent, looking to the left, smiling",
+        "position": "side by side",
+        "apparent_mood": "relaxed and happy"
+      },
+      {
+        "description": "person partially turned to the side, looking towards the mountains",
+        "position": "side by side",
+        "apparent_mood": "relaxed and happy"
+      }
+    ],
+    "layout": {
+      "foreground": "two people sitting on grassy and rocky surface",
+      "background": "mountain range with clear view of peaks"
+    },
+    "scene_type": "outdoor adventure",
+    "setting": "outdoor in mountainous region",
+    "colors": [
+      "greens",
+      "grays",
+      "earth tones",
+      "hints of blue and pink"
+    ],
+    "lighting": "soft, ambient glow",
+    "ambient_sounds": [
+      "nature sounds",
+      "wind rustling",
+      "birds chirping"
+    ]
+  },
+  "emotion": {
+    "session_id": "27336c7a-78f8-4ef7-bedb-2a5e29ad2414",
+    "mood": "serene",
+    "emotion_tags": [
+      "relaxation",
+      "happiness",
+      "contentment"
+    ],
+    "tone": "gentle and reflective",
+    "intensity": "low to medium",
+    "voice_characteristics": {
+      "main_narrator": "soft, calming, warm",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "tranquil outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "27336c7a-78f8-4ef7-bedb-2a5e29ad2414",
+    "main_narration": "In this serene outdoor adventure, two individuals sit comfortably on a grassy and rocky surface, surrounded by the majestic beauty of a mountainous region. One person, with legs bent and a gentle smile, gazes thoughtfully to the left, while their companion, partially turned towards the side, admires the stunning mountain peaks rising in the background. The scene is painted with earthy tones of greens and grays, accented by soft hints of blue and pink as the ambient light casts a calming glow over everything. Nature's symphony fills the air\u2014soft rustling of leaves in the wind and cheerful birds chirping create an atmosphere rich in relaxation and contentment that invites reflection.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "the whispering wind",
+      "birds singing softly",
+      "the distant echo of nature"
+    ]
+  }
+}

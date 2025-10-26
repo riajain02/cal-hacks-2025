@@ -1,0 +1,90 @@
+{
+  "session_id": "bd8604b4-ea7e-4d87-bfa8-0d9fc30bf9bd",
+  "success": true,
+  "perception": {
+    "session_id": "bd8604b4-ea7e-4d87-bfa8-0d9fc30bf9bd",
+    "objects": [
+      "Giant Teddy Bear",
+      "Foldable tables",
+      "White plastic chairs",
+      "Laptops",
+      "Electronic devices",
+      "Backpacks",
+      "Bags",
+      "Snacks",
+      "Drink containers",
+      "Signage",
+      "Pamphlets",
+      "Water bottles",
+      "Clothing items"
+    ],
+    "people_count": 7,
+    "people_details": [
+      {
+        "description": "woman in black",
+        "position": "foreground",
+        "apparent_mood": "cheerful"
+      },
+      {
+        "description": "person in a brown jacket",
+        "position": "foreground",
+        "apparent_mood": "cheerful"
+      },
+      {
+        "description": "several people engaged in work or conversation",
+        "position": "background",
+        "apparent_mood": "focused"
+      },
+      {
+        "description": "couple of standing people walking past with backpacks",
+        "position": "background",
+        "apparent_mood": "neutral"
+      }
+    ],
+    "layout": {
+      "foreground": "Giant Teddy Bear, two people posing for the camera",
+      "background": "several people seated at tables, couple of people standing"
+    },
+    "scene_type": "casual communal gathering",
+    "setting": "indoor, likely a hall or conference room",
+    "colors": [
+      "light brown",
+      "black",
+      "white",
+      "dark blue"
+    ],
+    "lighting": "moderately lit with even, diffused lighting",
+    "ambient_sounds": [
+      "soft conversation",
+      "keyboard typing",
+      "snack rustling"
+    ]
+  },
+  "emotion": {
+    "session_id": "bd8604b4-ea7e-4d87-bfa8-0d9fc30bf9bd",
+    "mood": "cheerful",
+    "emotion_tags": [
+      "happiness",
+      "engagement",
+      "community"
+    ],
+    "tone": "light and inviting",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "warm, friendly, upbeat",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "friendly and communal atmosphere"
+  },
+  "narration": {
+    "session_id": "bd8604b4-ea7e-4d87-bfa8-0d9fc30bf9bd",
+    "main_narration": "In this cheerful indoor setting, a casual communal gathering unfolds, centered around a giant teddy bear that adds a whimsical touch to the atmosphere. In the foreground, two individuals\u2014one dressed in black and another in a brown jacket\u2014share smiles as they pose for the camera, radiating warmth and happiness. In the background, several people are engaged in focused work or conversation at foldable tables adorned with laptops and electronic devices, while others stroll by with backpacks in tow. The space is alive with light brown, dark blue, and white tones under moderately lit conditions that create an inviting ambiance. Soft conversations blend with the sounds of keyboard typing and rustling snacks, painting a picture of community engagement where everyone feels connected.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle chatter",
+      "the soft tapping of keyboards",
+      "crinkling snack wrappers"
+    ]
+  }
+}

@@ -98,6 +98,7 @@ def test_database():
             print(f"   Filename: {metadata['filename']}")
             print(f"   Path: {metadata['path']}")
             print(f"   Embedding dimension: {len(embedding)}")
+            print(f"   First 10 values: {embedding[:10]}")
             print()
             
     except Exception as e:
@@ -105,7 +106,7 @@ def test_database():
         print("Database may not exist. Run without 'test' argument first.")
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "test":
+    if len(sys.argv) > 1 and sys.argv[1] in ["test", "--verify"]:
         test_database()
     else:
         populate_image_database()

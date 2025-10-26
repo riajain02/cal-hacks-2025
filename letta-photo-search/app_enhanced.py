@@ -3,6 +3,10 @@ Enhanced Flask Backend for Accessible Photo Search
 Integrates Letta voice processing, embedding search, and Fish Audio services
 """
 import os
+
+# Fix tokenizer parallelism warning/deadlock BEFORE importing transformers
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 import json
 import uuid
 import asyncio
@@ -340,11 +344,11 @@ async def generate_story():
 
         # Available voices with descriptions
         voices = [
-            ["728f6ff2240d49308e8137ffe66008e2", "warm male voice"],
-            ["802e3bc2b27e49c2995d23ef70e6ac89", "energetic male voice"],
+            #["728f6ff2240d49308e8137ffe66008e2", "warm male voice"],
+            #["802e3bc2b27e49c2995d23ef70e6ac89", "energetic male voice"],
             ["b545c585f631496c914815291da4e893", "friendly female voice"],
             ["c2623f0c075b4492ac367989aee1576f", "calm female voice"],
-            ["0b74ead073f2474a904f69033535b98e", "gentle male voice"],
+            #["0b74ead073f2474a904f69033535b98e", "gentle male voice"],
             ["edb42faa2d0e4cd5aa6aa1ae67de2e86", "mature female voice"]
         ]
         voices_text = "\n".join([f'  - "{ref_id}": {desc}' for ref_id, desc in voices])

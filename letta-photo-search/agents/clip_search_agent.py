@@ -42,7 +42,10 @@ class CLIPSearchAgent:
         self.client = chromadb.PersistentClient(path=chroma_db_path)
         
         try:
-            self.collection = self.client.get_collection(name="image_embeddings")
+            self.collection = self.client.get_or_create_collection(
+                name="image_embeddings",
+                metadata={"hnsw:space": "cosine"}
+            )
             count = self.collection.count()
             print(f"✓ CLIP Search Agent initialized with {count} photos")
         except Exception as e:
@@ -168,11 +171,8 @@ class CLIPSearchAgent:
         for i, (metadata, distance) in enumerate(zip(results['metadatas'][0], results['distances'][0])):
             similarity_score = 1 - distance  # Convert distance to similarity
 
-            # Generate meaningful memory title and description
-            title, description = self._generate_memory_title_and_description(
-                metadata['path'],
-                query
-            )
+            # Use simple fallback titles for speed (avoid OpenAI calls in search)
+            title, description = self._fallback_title_description(metadata['path'])
 
             result = {
                 'id': i,

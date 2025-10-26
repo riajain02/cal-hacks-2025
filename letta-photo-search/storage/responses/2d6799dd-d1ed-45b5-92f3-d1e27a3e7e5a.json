@@ -1,0 +1,45 @@
+{
+  "session_id": "2d6799dd-d1ed-45b5-92f3-d1e27a3e7e5a",
+  "success": true,
+  "perception": {
+    "session_id": "2d6799dd-d1ed-45b5-92f3-d1e27a3e7e5a",
+    "objects": [],
+    "people_count": 0,
+    "people_details": [],
+    "layout": {
+      "foreground": "",
+      "background": ""
+    },
+    "scene_type": "unknown",
+    "setting": "unknown",
+    "colors": [],
+    "lighting": "unknown",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "2d6799dd-d1ed-45b5-92f3-d1e27a3e7e5a",
+    "mood": "mysterious",
+    "emotion_tags": [
+      "curiosity",
+      "uncertainty"
+    ],
+    "tone": "enigmatic and contemplative",
+    "intensity": "low",
+    "voice_characteristics": {
+      "main_narrator": "soft, thoughtful, measured",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "ambiguous and thought-provoking atmosphere"
+  },
+  "narration": {
+    "session_id": "2d6799dd-d1ed-45b5-92f3-d1e27a3e7e5a",
+    "main_narration": "In this enigmatic scene, a sense of mystery fills the air as you find yourself in an undefined space, devoid of any visible objects or people. The surroundings are shrouded in uncertainty, inviting curiosity about what lies beyond the unseen. With no colors or distinct lighting to guide your perception, the atmosphere feels both ambiguous and thought-provoking. The absence of sound amplifies your contemplation, leaving you to ponder the possibilities that might exist within this quiet void\u2014a canvas for imagination and reflection.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "an echoing silence",
+      "the soft whisper of thoughts",
+      "the lingering sense of anticipation"
+    ]
+  }
+}

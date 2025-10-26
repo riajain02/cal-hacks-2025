@@ -1,0 +1,67 @@
+{
+  "session_id": "69b97a7d-5d40-4612-ac78-52828998c220",
+  "success": true,
+  "perception": {
+    "session_id": "69b97a7d-5d40-4612-ac78-52828998c220",
+    "objects": [
+      "Eiffel Tower",
+      "bushes",
+      "pathways",
+      "tall green railing",
+      "two takeaway coffee cups"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "two individuals walking side by side",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "individuals walking on the path, bordered by greenery and railing",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "public park or walkway",
+    "setting": "outdoor",
+    "colors": [
+      "beige",
+      "green",
+      "blue",
+      "muted brown"
+    ],
+    "lighting": "warm, natural lighting with soft shadows",
+    "ambient_sounds": [
+      "laughter",
+      "conversations",
+      "footsteps"
+    ]
+  },
+  "emotion": {
+    "session_id": "69b97a7d-5d40-4612-ac78-52828998c220",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "connection"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "69b97a7d-5d40-4612-ac78-52828998c220",
+    "main_narration": "In this lively public park setting, two individuals walk side by side along a pathway bordered by lush greenery and a tall green railing. Their joyful expressions reflect a moment of happiness and connection as they share the experience of strolling together in front of the iconic Eiffel Tower, which rises majestically in the background. The warm, natural lighting casts soft shadows on the ground, enhancing the earthy tones of beige, muted brown, and vibrant greens around them. The air is filled with sounds of laughter and conversations from fellow visitors, creating an inviting atmosphere that brims with contentment and excitement.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft laughter",
+      "the gentle rustle of leaves",
+      "distant chatter from other park-goers"
+    ]
+  }
+}

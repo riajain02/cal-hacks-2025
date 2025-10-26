@@ -1,0 +1,84 @@
+{
+  "session_id": "906bce3b-abb9-454c-986f-aaeddb5a2eac",
+  "success": true,
+  "perception": {
+    "session_id": "906bce3b-abb9-454c-986f-aaeddb5a2eac",
+    "objects": [
+      "pink inflatable rings",
+      "colorful popsicle-shaped inflatable",
+      "sandy beach",
+      "calm ocean",
+      "horizon with low-lying clouds",
+      "distant land formations or islands"
+    ],
+    "people_count": 4,
+    "people_details": [
+      {
+        "description": "individual holding pink inflatable ring",
+        "position": "center",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual holding pink inflatable ring",
+        "position": "center",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual holding popsicle-shaped inflatable",
+        "position": "center",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual mid-jump",
+        "position": "center",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "sandy beach with people",
+      "background": "calm ocean and sky with horizon"
+    },
+    "scene_type": "beach scene",
+    "setting": "outdoor",
+    "colors": [
+      "warm golden sand",
+      "soft blue ocean",
+      "blue and white sky",
+      "pink inflatable rings",
+      "multicolored popsicle"
+    ],
+    "lighting": "sunny with very few shadows",
+    "ambient_sounds": [
+      "sound of waves",
+      "laughter",
+      "seagulls"
+    ]
+  },
+  "emotion": {
+    "session_id": "906bce3b-abb9-454c-986f-aaeddb5a2eac",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "playfulness"
+    ],
+    "tone": "lively and vibrant",
+    "intensity": "high",
+    "voice_characteristics": {
+      "main_narrator": "enthusiastic, bright, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "fun and cheerful beach atmosphere"
+  },
+  "narration": {
+    "session_id": "906bce3b-abb9-454c-986f-aaeddb5a2eac",
+    "main_narration": "On this lively beach scene, four joyful individuals bask in the sun as they play with colorful inflatables against a backdrop of calm ocean waves and a horizon dotted with low-lying clouds. In the center, two people hold bright pink inflatable rings, their smiles radiant as they share in the excitement of the day. Another individual proudly carries a popsicle-shaped inflatable while one leaps into the air mid-jump, embodying pure happiness and playfulness. The warm golden sand glistens under sunny skies painted in soft blues and whites, creating a picturesque setting filled with laughter and joy. The sound of waves lapping at the shore mingles with cheerful laughter and distant seagulls, enhancing this fun-filled atmosphere.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle crashing waves",
+      "lively chatter",
+      "the distant call of seagulls"
+    ]
+  }
+}

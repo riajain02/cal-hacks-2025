@@ -1,0 +1,71 @@
+{
+  "session_id": "0aac89fd-40b0-4760-8aec-95ea4b735039",
+  "success": true,
+  "perception": {
+    "session_id": "0aac89fd-40b0-4760-8aec-95ea4b735039",
+    "objects": [
+      "Eiffel Tower",
+      "greenery",
+      "grass",
+      "bushes",
+      "pathway"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person holding a hat",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "person wearing a trench coat",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "two individuals walking closely together",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "tourism/leisure",
+    "setting": "outdoor",
+    "colors": [
+      "green",
+      "earth tones",
+      "muted brown"
+    ],
+    "lighting": "daytime, possibly cloudy or overcast",
+    "ambient_sounds": [
+      "laughter",
+      "footsteps",
+      "distant chatter"
+    ]
+  },
+  "emotion": {
+    "session_id": "0aac89fd-40b0-4760-8aec-95ea4b735039",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "contentment"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "0aac89fd-40b0-4760-8aec-95ea4b735039",
+    "main_narration": "In this vibrant outdoor scene, two individuals walk closely together in the foreground, their joyful expressions illuminated by the presence of the iconic Eiffel Tower rising majestically behind them. One person holds a hat playfully, while the other dons a stylish trench coat, both embodying a spirit of happiness and excitement as they explore this famous landmark. The lush greenery and earth-toned bushes lining the pathway add to the charm of this leisurely setting. Despite an overcast sky that blankets the scene with soft light, laughter and distant chatter fill the air, creating an inviting atmosphere brimming with contentment.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "laughter echoing",
+      "soft footsteps on gravel",
+      "the hum of conversations nearby"
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "session_id": "acf44cfc-230a-4e47-a2fd-dfbc9f1db8a5",
+  "success": true,
+  "perception": {
+    "session_id": "acf44cfc-230a-4e47-a2fd-dfbc9f1db8a5",
+    "objects": [
+      "Eiffel Tower",
+      "two people",
+      "hat",
+      "coffee cup",
+      "fence"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person on the left holding a hat and a coffee cup",
+        "position": "left side",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "person on the right holding a coffee cup",
+        "position": "right side",
+        "apparent_mood": "smiling"
+      }
+    ],
+    "layout": {
+      "foreground": "two people walking side by side",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "outdoor tourist moment",
+    "setting": "outdoor",
+    "colors": [
+      "greenery",
+      "earth tones",
+      "blue"
+    ],
+    "lighting": "bright daylight with natural lighting",
+    "ambient_sounds": [
+      "people talking",
+      "birds chirping",
+      "distant city sounds"
+    ]
+  },
+  "emotion": {
+    "session_id": "acf44cfc-230a-4e47-a2fd-dfbc9f1db8a5",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "excitement"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, upbeat",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "acf44cfc-230a-4e47-a2fd-dfbc9f1db8a5",
+    "main_narration": "In this lively outdoor moment, two people stroll side by side in front of the iconic Eiffel Tower, their joyful expressions capturing the essence of their adventure. The person on the left holds a hat and a steaming coffee cup, while the person on the right beams with a smile, also cradling their own cup of coffee. Surrounding them is lush greenery and earth tones that complement the bright blue sky above, creating a picturesque scene filled with warmth and excitement. The air is alive with sounds of people chatting nearby, birds chirping overhead, and distant city noises that enhance this vibrant atmosphere.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "lively chatter",
+      "soft chirping of birds",
+      "the hum of city life"
+    ]
+  }
+}

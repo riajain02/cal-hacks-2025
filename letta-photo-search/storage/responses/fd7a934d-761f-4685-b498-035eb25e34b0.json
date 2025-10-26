@@ -1,0 +1,68 @@
+{
+  "session_id": "fd7a934d-761f-4685-b498-035eb25e34b0",
+  "success": true,
+  "perception": {
+    "session_id": "fd7a934d-761f-4685-b498-035eb25e34b0",
+    "objects": [
+      "Eiffel Tower",
+      "takeaway cups"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person wearing a hat, laughing or smiling",
+        "position": "foreground, right side",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "person smiling, standing close",
+        "position": "foreground, right side",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "two individuals with takeaway cups",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "casual outing",
+    "setting": "outdoor near the Eiffel Tower",
+    "colors": [
+      "green",
+      "beige",
+      "blue"
+    ],
+    "lighting": "natural daylight, possibly afternoon sun",
+    "ambient_sounds": [
+      "laughter",
+      "activities in a park",
+      "conversations"
+    ]
+  },
+  "emotion": {
+    "session_id": "fd7a934d-761f-4685-b498-035eb25e34b0",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "excitement"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "fd7a934d-761f-4685-b498-035eb25e34b0",
+    "main_narration": "In this delightful outdoor scene near the Eiffel Tower, two joyful individuals stand close together, each holding a takeaway cup. The person on the right, wearing a stylish hat, beams with laughter while their companion shares in the moment with a bright smile. The backdrop of the iconic Eiffel Tower adds to the charm of their casual outing, surrounded by soft greens and warm beige tones that reflect the afternoon sunlight. The atmosphere is alive with sounds of laughter and lively park activities blending seamlessly into conversations around them, creating an inviting ambiance filled with happiness and excitement.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "cheerful laughter",
+      "the sound of people enjoying themselves",
+      "soft rustling leaves from nearby trees"
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "session_id": "be4d6839-2e98-4107-800e-35cefd81b0d8",
+  "success": true,
+  "perception": {
+    "session_id": "be4d6839-2e98-4107-800e-35cefd81b0d8",
+    "objects": [
+      "Eiffel Tower",
+      "Fence",
+      "Pathway",
+      "Trees"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "Two people walking side by side",
+        "position": "foreground, slightly to the right",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "Two people walking",
+      "background": "Eiffel Tower, Trees"
+    },
+    "scene_type": "candid moment",
+    "setting": "outdoor park near the Eiffel Tower",
+    "colors": [
+      "earthy tones",
+      "greens",
+      "muted brown"
+    ],
+    "lighting": "soft light, overcast sky",
+    "ambient_sounds": [
+      "laughter",
+      "walking sounds",
+      "nature sounds"
+    ]
+  },
+  "emotion": {
+    "session_id": "be4d6839-2e98-4107-800e-35cefd81b0d8",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "connection"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "be4d6839-2e98-4107-800e-35cefd81b0d8",
+    "main_narration": "In this candid moment, two individuals walk side by side along a pathway in an outdoor park near the iconic Eiffel Tower. Their joyful expressions reflect happiness as they share this delightful experience together, framed beautifully by lush trees and earthy tones of greens and muted browns surrounding them. The soft light from an overcast sky casts a gentle glow on the scene, adding to its tranquil charm. Laughter fills the air alongside the sounds of their footsteps and nature's whispers, creating a vibrant atmosphere that celebrates connection and contentment in this picturesque setting.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "cheerful laughter",
+      "the crunch of leaves underfoot",
+      "soft rustling of tree branches"
+    ]
+  }
+}

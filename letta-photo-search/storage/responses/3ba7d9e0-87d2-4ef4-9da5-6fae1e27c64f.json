@@ -1,0 +1,70 @@
+{
+  "session_id": "3ba7d9e0-87d2-4ef4-9da5-6fae1e27c64f",
+  "success": true,
+  "perception": {
+    "session_id": "3ba7d9e0-87d2-4ef4-9da5-6fae1e27c64f",
+    "objects": [
+      "Eiffel Tower",
+      "paved pathway",
+      "greenery",
+      "railing"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person wearing a hat and a plaid shirt",
+        "position": "foreground, walking on the pathway",
+        "apparent_mood": "happy and relaxed"
+      },
+      {
+        "description": "person in a light trench coat",
+        "position": "foreground, walking on the pathway",
+        "apparent_mood": "happy and relaxed"
+      }
+    ],
+    "layout": {
+      "foreground": "two people walking along the pathway",
+      "background": "Eiffel Tower centered in the top half"
+    },
+    "scene_type": "park or public area near a landmark",
+    "setting": "outdoor",
+    "colors": [
+      "warm earthy tones",
+      "greens",
+      "neutral tones"
+    ],
+    "lighting": "natural daylight, possibly late afternoon",
+    "ambient_sounds": [
+      "laughter",
+      "casual conversation",
+      "sounds of nature"
+    ]
+  },
+  "emotion": {
+    "session_id": "3ba7d9e0-87d2-4ef4-9da5-6fae1e27c64f",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "relaxation"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, relaxed",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "3ba7d9e0-87d2-4ef4-9da5-6fae1e27c64f",
+    "main_narration": "In this picturesque park area near the Eiffel Tower, two individuals walk leisurely along a paved pathway, their expressions filled with happiness and relaxation. The person on the left sports a hat and a plaid shirt, embodying a carefree spirit, while their companion in a light trench coat walks alongside, equally content as they enjoy each other's company. The iconic Eiffel Tower looms majestically in the background, framed by lush greenery that adds to the charm of this outdoor setting. Natural daylight bathes the scene in warm earthy tones and soft greens, suggesting it is late afternoon. The air is filled with joyous laughter and casual conversations mingling with gentle sounds of nature\u2014a perfect backdrop for this delightful moment together.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft laughter",
+      "the rustle of leaves",
+      "distant chirping of birds"
+    ]
+  }
+}

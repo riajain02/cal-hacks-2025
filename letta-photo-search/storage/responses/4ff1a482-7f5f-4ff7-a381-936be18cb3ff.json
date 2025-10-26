@@ -1,0 +1,70 @@
+{
+  "session_id": "4ff1a482-7f5f-4ff7-a381-936be18cb3ff",
+  "success": true,
+  "perception": {
+    "session_id": "4ff1a482-7f5f-4ff7-a381-936be18cb3ff",
+    "objects": [
+      "Eiffel Tower",
+      "Pathway/Road",
+      "Greenery",
+      "Street Elements"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "One person is wearing a hat and plaid shirt, holding on to it with a playful expression.",
+        "position": "walking on the pathway",
+        "apparent_mood": "happy"
+      },
+      {
+        "description": "The other is wearing a trench coat and is smiling, holding a cup.",
+        "position": "walking on the pathway",
+        "apparent_mood": "smiling"
+      }
+    ],
+    "layout": {
+      "foreground": "Two individuals walking along the path.",
+      "background": "The Eiffel Tower looms large."
+    },
+    "scene_type": "casual and leisurely stroll",
+    "setting": "outdoor in Paris, France",
+    "colors": [
+      "earthy tones",
+      "greens",
+      "browns",
+      "beiges"
+    ],
+    "lighting": "bright and clear, suggesting daytime, possibly late morning or afternoon",
+    "ambient_sounds": [
+      "lively conversation",
+      "sounds of a park or open area"
+    ]
+  },
+  "emotion": {
+    "session_id": "4ff1a482-7f5f-4ff7-a381-936be18cb3ff",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "playfulness",
+      "contentment"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "4ff1a482-7f5f-4ff7-a381-936be18cb3ff",
+    "main_narration": "In this joyful scene of leisurely exploration, two individuals stroll along a pathway in Paris, with the magnificent Eiffel Tower looming large in the background. One person, dressed in a hat and plaid shirt, playfully holds onto their hat with a cheerful expression that radiates happiness. Beside them, another individual wearing a stylish trench coat smiles warmly while cradling a cup\u2014perhaps filled with coffee or tea\u2014as they enjoy the sights and sounds of their surroundings. The earthy tones of greens and browns blend beautifully under bright daylight that suggests it\u2019s late morning or early afternoon. Lively conversations and the gentle ambiance of an open park area create an inviting atmosphere filled with contentment and playfulness.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "lively chatter",
+      "soft rustle of leaves",
+      "the distant hum of city life"
+    ]
+  }
+}

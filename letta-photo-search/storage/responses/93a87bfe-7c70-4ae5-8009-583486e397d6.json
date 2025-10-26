@@ -1,0 +1,71 @@
+{
+  "session_id": "93a87bfe-7c70-4ae5-8009-583486e397d6",
+  "success": true,
+  "perception": {
+    "session_id": "93a87bfe-7c70-4ae5-8009-583486e397d6",
+    "objects": [
+      "bowls with cereal",
+      "glasses with orange juice",
+      "cup with milk",
+      "bowl of fruit",
+      "plate with oranges"
+    ],
+    "people_count": 3,
+    "people_details": [
+      {
+        "description": "two people facing each other",
+        "position": "seated at a table",
+        "apparent_mood": "smiling and relaxed"
+      },
+      {
+        "description": "one person nearby",
+        "position": "standing or sitting nearby",
+        "apparent_mood": "engaged in conversation"
+      }
+    ],
+    "layout": {
+      "foreground": "people around a table",
+      "background": "dining room or kitchen surroundings"
+    },
+    "scene_type": "cozy breakfast or brunch",
+    "setting": "indoor",
+    "colors": [
+      "earthy tones",
+      "soft blues",
+      "whites",
+      "subtle pinks"
+    ],
+    "lighting": "warm natural lighting, early morning or late afternoon",
+    "ambient_sounds": [
+      "casual conversation",
+      "clinking of dishes"
+    ]
+  },
+  "emotion": {
+    "session_id": "93a87bfe-7c70-4ae5-8009-583486e397d6",
+    "mood": "content",
+    "emotion_tags": [
+      "happiness",
+      "relaxation",
+      "connection"
+    ],
+    "tone": "warm and inviting",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, cheerful, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "cozy and friendly atmosphere"
+  },
+  "narration": {
+    "session_id": "93a87bfe-7c70-4ae5-8009-583486e397d6",
+    "main_narration": "In this cozy breakfast scene, two people sit comfortably at a table, facing each other with warm smiles that radiate relaxation and contentment. Nearby, a third person stands or sits close by, engaged in lively conversation that adds to the inviting atmosphere. The table is adorned with bowls filled with cereal, refreshing glasses of orange juice, and a cup of milk alongside a colorful bowl of fruit and plates filled with juicy oranges. Soft earthy tones mixed with subtle blues and pinks create a pleasant aesthetic enhanced by warm natural lighting from the morning or late afternoon sun. This cheerful setting is alive with the sounds of casual chatter and the gentle clinking of dishes, embodying connection and happiness.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle laughter",
+      "soft rustling of napkins",
+      "the sound of pouring juice"
+    ]
+  }
+}

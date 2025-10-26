@@ -1,0 +1,71 @@
+{
+  "session_id": "41de017b-b2a0-4313-bd9f-db63b7b2118a",
+  "success": true,
+  "perception": {
+    "session_id": "41de017b-b2a0-4313-bd9f-db63b7b2118a",
+    "objects": [
+      "Eiffel Tower",
+      "trees",
+      "shrubs",
+      "fences",
+      "urban structures",
+      "road"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "individual wearing a hat",
+        "position": "right side of the walkway",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual in a light-colored trench coat",
+        "position": "right side of the walkway",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "two individuals walking closely together",
+      "background": "Eiffel Tower towering centrally"
+    },
+    "scene_type": "casual outdoor moment",
+    "setting": "outdoor, park area near the Eiffel Tower",
+    "colors": [
+      "greenery",
+      "light colors of clothing"
+    ],
+    "lighting": "natural, warm daylight",
+    "ambient_sounds": [
+      "laughter",
+      "footsteps",
+      "birds chirping"
+    ]
+  },
+  "emotion": {
+    "session_id": "41de017b-b2a0-4313-bd9f-db63b7b2118a",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "contentment"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "41de017b-b2a0-4313-bd9f-db63b7b2118a",
+    "main_narration": "In this delightful outdoor scene near the Eiffel Tower, two individuals walk closely together along a picturesque walkway, their joyful expressions radiating happiness. One person sports a stylish hat while the other is clad in a light-colored trench coat, both embodying the spirit of excitement and contentment as they enjoy their day. The lush greenery surrounding them adds to the vibrant atmosphere, with trees and shrubs framing their path against the backdrop of the iconic tower towering majestically above. Natural warm daylight bathes the scene in soft light, while sounds of laughter, footsteps on pavement, and birds chirping create an inviting ambiance.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft laughter",
+      "the gentle rustle of leaves",
+      "distant city sounds"
+    ]
+  }
+}

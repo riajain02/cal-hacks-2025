@@ -1,0 +1,66 @@
+{
+  "session_id": "3658aeb5-f10d-40e5-9dd3-bfbe53172f3b",
+  "success": true,
+  "perception": {
+    "session_id": "3658aeb5-f10d-40e5-9dd3-bfbe53172f3b",
+    "objects": [
+      "Eiffel Tower",
+      "fencing",
+      "trees",
+      "bushes"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person with a large hat, joyful expression",
+        "position": "walking side by side on the paved path",
+        "apparent_mood": "happy, relaxed"
+      },
+      {
+        "description": "person smiling",
+        "position": "walking side by side on the paved path",
+        "apparent_mood": "happy, relaxed"
+      }
+    ],
+    "layout": {
+      "foreground": "paved path with greenery and fencing",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "casual stroll",
+    "setting": "outdoor",
+    "colors": [
+      "green",
+      "neutral tones",
+      "brownish"
+    ],
+    "lighting": "partly cloudy, diffuse lighting suggesting morning or late afternoon",
+    "ambient_sounds": [
+      "chatter of tourists",
+      "birdsong",
+      "rustle of leaves"
+    ]
+  },
+  "emotion": {
+    "session_id": "3658aeb5-f10d-40e5-9dd3-bfbe53172f3b",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "relaxation",
+      "contentment"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "3658aeb5-f10d-40e5-9dd3-bfbe53172f3b",
+    "main_narration": "Scene description unavailable.",
+    "person_dialogues": [],
+    "ambient_descriptions": []
+  }
+}

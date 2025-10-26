@@ -1,0 +1,73 @@
+{
+  "session_id": "eca3dce2-08aa-4e3d-bd91-ebb55268255e",
+  "success": true,
+  "perception": {
+    "session_id": "eca3dce2-08aa-4e3d-bd91-ebb55268255e",
+    "objects": [
+      "Eiffel Tower",
+      "two takeaway coffee cups",
+      "pathway",
+      "green hedges",
+      "trees",
+      "urban elements"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person wearing a hat and plaid shirt, appearing to laugh",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "person in a beige trench coat, smiling and looking at the first person",
+        "position": "foreground",
+        "apparent_mood": "happy"
+      }
+    ],
+    "layout": {
+      "foreground": "two people walking on a path",
+      "background": "Eiffel Tower centered, urban elements including roads and buildings"
+    },
+    "scene_type": "candid moment of Parisian tourism",
+    "setting": "outdoor",
+    "colors": [
+      "green",
+      "earth tones",
+      "blue",
+      "brownish"
+    ],
+    "lighting": "warm, natural lighting indicating daytime",
+    "ambient_sounds": [
+      "people chatting",
+      "footsteps on the path",
+      "distant city sounds"
+    ]
+  },
+  "emotion": {
+    "session_id": "eca3dce2-08aa-4e3d-bd91-ebb55268255e",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "connection"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "eca3dce2-08aa-4e3d-bd91-ebb55268255e",
+    "main_narration": "In this vibrant Parisian scene, two friends walk side by side along a charming pathway, their laughter filling the air with joy. One person, wearing a hat and plaid shirt, radiates happiness as they share a lighthearted moment with their companion in a beige trench coat, who smiles warmly in return. The iconic Eiffel Tower stands majestically in the background, framed by lush green hedges and urban elements that hint at the lively city around them. Warm natural lighting brightens the day, highlighting earthy tones of green and brown while creating an inviting atmosphere filled with the sounds of footsteps on the path and distant city chatter.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft laughter",
+      "the murmur of crowds",
+      "clinking cups as they walk"
+    ]
+  }
+}

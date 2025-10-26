@@ -1,0 +1,73 @@
+{
+  "session_id": "987a58a2-4398-45f7-8f51-a39cdf331af7",
+  "success": true,
+  "perception": {
+    "session_id": "987a58a2-4398-45f7-8f51-a39cdf331af7",
+    "objects": [
+      "Eiffel Tower",
+      "two people",
+      "beverages",
+      "hat",
+      "paved path",
+      "green hedges"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person on the left lifting one leg playfully, arm around the other person, smiling",
+        "position": "left",
+        "apparent_mood": "happy"
+      },
+      {
+        "description": "person on the right, smiling",
+        "position": "right",
+        "apparent_mood": "happy"
+      }
+    ],
+    "layout": {
+      "foreground": "two people walking on a paved path",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "touristy moment",
+    "setting": "outdoor, tourist area in Paris",
+    "colors": [
+      "earthy tones",
+      "green",
+      "beige",
+      "blue"
+    ],
+    "lighting": "bright and warm daylight",
+    "ambient_sounds": [
+      "lively conversation",
+      "footsteps on pavement",
+      "distant sounds of a tourist area"
+    ]
+  },
+  "emotion": {
+    "session_id": "987a58a2-4398-45f7-8f51-a39cdf331af7",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "playfulness",
+      "excitement"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "high",
+    "voice_characteristics": {
+      "main_narrator": "warm, enthusiastic, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "987a58a2-4398-45f7-8f51-a39cdf331af7",
+    "main_narration": "In this vibrant tourist scene near the Eiffel Tower, two people walk joyfully along a paved path, their spirits high and laughter echoing around them. The person on the left playfully lifts one leg while wrapping an arm around their companion, both of them wearing broad smiles that radiate happiness. The lush green hedges frame their playful moment against the iconic backdrop of the Eiffel Tower standing tall in the distance. Bright and warm daylight enhances the earthy tones and soft blues surrounding them, creating an inviting atmosphere filled with excitement. Lively conversations mix with the sounds of footsteps on pavement and distant chatter from fellow tourists, encapsulating a perfect day out in Paris.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "cheerful laughter",
+      "soft rustling leaves",
+      "the hum of excited tourists nearby"
+    ]
+  }
+}

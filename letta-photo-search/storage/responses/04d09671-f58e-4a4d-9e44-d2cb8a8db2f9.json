@@ -1,0 +1,68 @@
+{
+  "session_id": "04d09671-f58e-4a4d-9e44-d2cb8a8db2f9",
+  "success": true,
+  "perception": {
+    "session_id": "04d09671-f58e-4a4d-9e44-d2cb8a8db2f9",
+    "objects": [
+      "Eiffel Tower",
+      "pathway",
+      "foliage",
+      "buildings",
+      "coffee cups"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "two people walking, one possibly wearing a hat",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "two people walking on the pathway",
+      "background": "Eiffel Tower centrally positioned"
+    },
+    "scene_type": "tourist leisure",
+    "setting": "outdoor",
+    "colors": [
+      "earthy tones",
+      "greens",
+      "blues",
+      "grays",
+      "browns"
+    ],
+    "lighting": "natural daylight, warm, cloudy",
+    "ambient_sounds": [
+      "laughter",
+      "conversations",
+      "footsteps"
+    ]
+  },
+  "emotion": {
+    "session_id": "04d09671-f58e-4a4d-9e44-d2cb8a8db2f9",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "excitement"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "04d09671-f58e-4a4d-9e44-d2cb8a8db2f9",
+    "main_narration": "In this vibrant scene of tourist leisure, two joyful individuals stroll along a pathway, their laughter echoing amidst the lively atmosphere of Paris. The iconic Eiffel Tower rises majestically in the background, centrally positioned against a canvas of earthy tones and lush greens that surround them. Warm natural daylight filters through the clouds, creating a cozy ambiance as they walk past charming buildings and colorful foliage. The sounds of conversations and footsteps blend harmoniously with their cheerful banter, enhancing this delightful moment filled with happiness and excitement.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "laughter ringing in the air",
+      "soft whispers of nearby conversations",
+      "the rhythmic sound of footsteps on pavement"
+    ]
+  }
+}

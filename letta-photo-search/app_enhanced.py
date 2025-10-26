@@ -318,7 +318,7 @@ async def generate_story():
         # Use photo_path if available, otherwise photo_url
         target_path = photo_path or photo_url
         print(f"Generating story for photo: {target_path}")
-
+        
         story_client = get_story_agent_client()
         if not story_client:
             return jsonify({
@@ -329,6 +329,133 @@ async def generate_story():
         result = await story_client.generate_story_from_photo(target_path, timeout=120)
         if not result.get('success', False):
             return jsonify(result), 500
+
+        # Multi-voice dialogue generation
+        session_id = result.get('session_id', 'unknown')
+
+        import httpx
+        import os
+        import base64
+        import asyncio
+
+        # Available voices with descriptions
+        voices = [
+            ["728f6ff2240d49308e8137ffe66008e2", "warm male voice"],
+            ["802e3bc2b27e49c2995d23ef70e6ac89", "energetic male voice"],
+            ["b545c585f631496c914815291da4e893", "friendly female voice"],
+            ["c2623f0c075b4492ac367989aee1576f", "calm female voice"],
+            ["0b74ead073f2474a904f69033535b98e", "gentle male voice"],
+            ["edb42faa2d0e4cd5aa6aa1ae67de2e86", "mature female voice"]
+        ]
+        voices_text = "\n".join([f'  - "{ref_id}": {desc}' for ref_id, desc in voices])
+
+        # Get perception data to understand the scene
+        perception = result.get('perception', {})
+        people_count = perception.get('people_count', 0)
+        scene_type = perception.get('scene_type', 'unknown')
+
+        dialogue_prompt = f"""Based on this photo, create exactly 2 short dialogue lines that capture the memory.
+
+        Available voices (choose 2 different voices that best match the scene):
+        {voices_text}
+
+        Scene: {scene_type}
+        People in photo: {people_count if people_count > 0 else 'no visible people, but imagine voices of memory'}
+
+        Return ONLY valid JSON (no markdown):
+        {{
+        "dialogues": [
+            {{"voice_id": "voice_reference_id", "text": "First dialogue line (1-2 sentences)"}},
+            {{"voice_id": "different_voice_reference_id", "text": "Second dialogue line (1-2 sentences)"}}
+        ]
+        }}
+
+        Guidelines:
+        - Each dialogue should be emotional and memory-focused
+        - Choose voices that match the scene mood
+        - Keep dialogues SHORT (1-2 sentences each)
+        - Make them conversational and warm"""
+
+        try:
+            # Read and encode image
+            with open(target_path, "rb") as image_file:
+                base64_image = base64.b64encode(image_file.read()).decode('utf-8')
+
+            # Call GPT-4o-mini for speed
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    "https://api.openai.com/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}",
+                        "Content-Type": "application/json"
+                    },
+                    json={
+                        "model": "gpt-4o-mini",
+                        "messages": [{
+                            "role": "user",
+                            "content": [
+                                {"type": "text", "text": dialogue_prompt},
+                                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                            ]
+                        }],
+                        "response_format": {"type": "json_object"},
+                        "max_tokens": 300
+                    }
+                )
+
+                dialogue_result = response.json()
+                content = dialogue_result['choices'][0]['message']['content']
+                parsed_dialogues = json.loads(content)
+
+                print(f"Generated {len(parsed_dialogues.get('dialogues', []))} dialogues")
+
+                # Generate audio files in parallel for speed
+                dialogue_audio_urls = []
+                tts = get_tts_service()
+
+                if tts and parsed_dialogues.get('dialogues'):
+                    async def generate_dialogue_audio(idx, dialogue_info):
+                        voice_id = dialogue_info['voice_id']
+                        text = dialogue_info['text']
+                        audio_filename = f"dialogue_{session_id}_{idx}.mp3"
+                        audio_filepath = AUDIO_DIR / audio_filename
+
+                        print(f"  Generating dialogue {idx+1} with voice {voice_id[:8]}...")
+                        await tts.text_to_speech(
+                            text=text,
+                            reference_id=voice_id,
+                            save_to=str(audio_filepath)
+                        )
+
+                        return {
+                            "voice_id": voice_id,
+                            "text": text,
+                            "audio_url": f"/api/audio/{audio_filename}"
+                        }
+
+                    # Generate all dialogues in parallel
+                    tasks = [
+                        generate_dialogue_audio(i, d)
+                        for i, d in enumerate(parsed_dialogues['dialogues'][:2])
+                    ]
+                    dialogue_audio_urls = await asyncio.gather(*tasks, return_exceptions=True)
+
+                    # Filter out errors and log them
+                    successful_dialogues = []
+                    for i, d in enumerate(dialogue_audio_urls):
+                        if isinstance(d, Exception):
+                            print(f"  ❌ Dialogue {i+1} failed: {d}")
+                        else:
+                            successful_dialogues.append(d)
+                    
+                    dialogue_audio_urls = successful_dialogues
+                    print(f"✓ Generated {len(dialogue_audio_urls)} dialogue audios")
+
+                result['person_dialogues'] = dialogue_audio_urls
+
+        except Exception as e:
+            print(f"Dialogue generation failed (non-critical): {e}")
+            result['person_dialogues'] = []
 
         narration_data = result.get('narration', {})
         narration_text = narration_data.get('main_narration', '')

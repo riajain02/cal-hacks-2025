@@ -1,0 +1,65 @@
+{
+  "session_id": "245c3c30-2963-4aad-bf98-1805fff5c0e3",
+  "success": true,
+  "perception": {
+    "session_id": "245c3c30-2963-4aad-bf98-1805fff5c0e3",
+    "objects": [
+      "Eiffel Tower",
+      "two cups",
+      "hats",
+      "coats"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "two people walking, possibly arm in arm",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "two people walking closer to the camera",
+      "background": "Eiffel Tower occupying the central background"
+    },
+    "scene_type": "outdoor park-like area",
+    "setting": "outdoor",
+    "colors": [
+      "green",
+      "warm tones",
+      "brownish"
+    ],
+    "lighting": "bright daytime with natural light",
+    "ambient_sounds": [
+      "lively chatter",
+      "birds chirping",
+      "footsteps on the path"
+    ]
+  },
+  "emotion": {
+    "session_id": "245c3c30-2963-4aad-bf98-1805fff5c0e3",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "affection"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "245c3c30-2963-4aad-bf98-1805fff5c0e3",
+    "main_narration": "In this vibrant outdoor park-like area, two individuals walk closely together, possibly arm in arm, their joyful expressions illuminating the scene as they approach the camera. The iconic Eiffel Tower stands proudly in the central background, creating a stunning backdrop to their cheerful outing. Clad in warm tones with hats perched atop their heads and cups in hand, they exude happiness and contentment while enjoying each other's company. Bright daylight bathes the surroundings in natural light, enhancing the lush greens and warm brownish hues of the environment. The atmosphere is alive with lively chatter, birds chirping overhead, and footsteps gently echoing on the path\u2014a perfect day to savor moments of affection and joy.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "lively conversations",
+      "the soft flapping of bird wings",
+      "the crunch of gravel underfoot"
+    ]
+  }
+}

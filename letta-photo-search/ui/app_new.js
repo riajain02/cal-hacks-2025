@@ -422,8 +422,34 @@ class SynesthesiaApp {
 
             if (result.success) {
                 this.speak('Story complete');
-                this.displayNarration(result.narration);
-                await this.generateNarrationAudio(result.narration.main_narration);
+                this.displayNarration(result.narration, result.person_dialogues);
+
+                // Store audio URLs for playback
+                this.storyAudioUrls = [];
+
+                // Add dialogue audios if available
+                if (result.person_dialogues && result.person_dialogues.length > 0) {
+                    result.person_dialogues.forEach(dialogue => {
+                        if (dialogue.audio_url) {
+                            this.storyAudioUrls.push({
+                                type: 'dialogue',
+                                url: dialogue.audio_url,
+                                text: dialogue.text
+                            });
+                        }
+                    });
+                }
+
+                // Add main narration audio
+                if (result.narration && result.narration.audio_url) {
+                    this.storyAudioUrls.push({
+                        type: 'narration',
+                        url: result.narration.audio_url,
+                        text: result.narration.main_narration
+                    });
+                }
+
+                this.currentAudioUrl = result.narration?.audio_url || null;
             } else {
                 throw new Error(result.message || 'Story generation failed');
             }
@@ -467,21 +493,28 @@ class SynesthesiaApp {
         await this.sleep(150);
     }
 
-    displayNarration(narrationData) {
+    displayNarration(narrationData, personDialogues = []) {
         document.getElementById('memory-loading').classList.add('hidden');
 
-        let html = `<p class="text-gray-900 leading-relaxed">${narrationData.main_narration}</p>`;
+        let html = '';
 
-        if (narrationData.person_dialogues && narrationData.person_dialogues.length > 0) {
-            narrationData.person_dialogues.forEach(dialogue => {
+        // Display person dialogues first if available
+        if (personDialogues && personDialogues.length > 0) {
+            html += `<div class="mb-6 space-y-3">`;
+            personDialogues.forEach((dialogue, idx) => {
+                const voiceLabel = idx === 0 ? 'Voice 1' : 'Voice 2';
                 html += `
-                    <div class="mt-4 pl-4 border-l-2 border-gray-800 italic">
-                        <p class="text-gray-700">"${dialogue.dialogue}"</p>
-                        ${dialogue.emotion ? `<span class="text-gray-500 text-xs">— ${dialogue.emotion}</span>` : ''}
+                    <div class="pl-4 border-l-4 border-gray-800 italic">
+                        <p class="text-gray-900 font-medium">"${dialogue.text}"</p>
+                        <span class="text-gray-500 text-xs">— ${voiceLabel}</span>
                     </div>
                 `;
             });
+            html += `</div>`;
         }
+
+        // Then display main narration
+        html += `<p class="text-gray-900 leading-relaxed">${narrationData.main_narration}</p>`;
 
         this.narrationText.innerHTML = html;
         this.narrationSection.classList.remove('hidden');
@@ -505,7 +538,18 @@ class SynesthesiaApp {
         }
     }
 
-    playNarrationAudio() {
+    async playNarrationAudio() {
+        // Play all story audios in sequence (dialogues first, then main narration)
+        if (this.storyAudioUrls && this.storyAudioUrls.length > 0) {
+            // Play directly without announcement
+            for (const audioInfo of this.storyAudioUrls) {
+                await this.playAudio(audioInfo.url);
+            }
+
+            return;
+        }
+
+        // Fallback to current audio URL
         if (!this.currentAudioUrl) {
             this.speak('Audio not available yet');
             return;
@@ -516,11 +560,11 @@ class SynesthesiaApp {
             this.ttsAudio.play();
 
             this.playAudioButton.innerHTML = `
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                     <rect x="6" y="4" width="4" height="16"/>
                     <rect x="14" y="4" width="4" height="16"/>
                 </svg>
-                Pause
+                ⏸ Pause Story
             `;
 
             this.ttsAudio.onended = () => {
@@ -534,11 +578,32 @@ class SynesthesiaApp {
 
     resetAudioButton() {
         this.playAudioButton.innerHTML = `
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                 <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-            Play Audio
+            🎧 Play Full Memory Story
         `;
+    }
+
+    playAudio(audioUrl) {
+        return new Promise((resolve, reject) => {
+            const audio = new Audio(audioUrl);
+
+            audio.onended = () => {
+                console.log('Audio finished:', audioUrl);
+                resolve();
+            };
+
+            audio.onerror = (error) => {
+                console.error('Audio playback error:', error);
+                reject(error);
+            };
+
+            audio.play().catch(err => {
+                console.error('Failed to play audio:', err);
+                reject(err);
+            });
+        });
     }
 
     speak(text) {

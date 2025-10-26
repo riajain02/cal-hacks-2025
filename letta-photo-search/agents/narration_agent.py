@@ -3,7 +3,7 @@ from uagents import Agent, Context
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from fetch_models import NarrationRequest, NarrationData, ErrorMessage
-import httpx, json
+import httpx, json, uuid
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,6 +17,9 @@ narration_agent = Agent(
 
 LETTA_API_KEY = os.getenv("LETTA_API_KEY")
 NARRATION_AGENT_ID = os.getenv("NARRATION_AGENT_ID")
+FISH_AUDIO_API_KEY = os.getenv("FISH_AUDIO_API_KEY")
+FISH_AUDIO_REFERENCE_ID = os.getenv("FISH_AUDIO_REFERENCE_ID", "b545c585f631496c914815291da4e893")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 @narration_agent.on_event("startup")
 async def introduce(ctx: Context):
@@ -86,6 +89,54 @@ async def generate_narration(ctx: Context, sender: str, msg: NarrationRequest):
     except Exception as e:
         ctx.logger.error(f"❌ Error: {e}")
         await ctx.send(sender, ErrorMessage(session_id=msg.session_id, error=str(e), step="narration"))
+
+async def generate_tts(text: str, ctx: Context) -> str:
+    """Generate TTS using Fish Audio or fallback to OpenAI"""
+    try:
+        # Try Fish Audio first
+        if FISH_AUDIO_API_KEY and FISH_AUDIO_REFERENCE_ID:
+            ctx.logger.info("🔥 USING FISH AUDIO FOR TTS (PREFERRED)")
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                response = await client.post(
+                    "https://api.fish.audio/v1/tts",
+                    headers={"Authorization": f"Bearer {FISH_AUDIO_API_KEY}"},
+                    json={
+                        "text": text,
+                        "reference_id": FISH_AUDIO_REFERENCE_ID,
+                        "format": "mp3",
+                        "mp3_bitrate": 128
+                    }
+                )
+                if response.status_code == 200:
+                    # Save to file and return URL
+                    filename = f"storage/audio/{uuid.uuid4()}.mp3"
+                    with open(filename, "wb") as f:
+                        f.write(response.content)
+                    ctx.logger.info(f"✅ Fish Audio TTS generated: {os.path.basename(filename)}")
+                    return f"http://localhost:9000/static/{os.path.basename(filename)}"
+                else:
+                    ctx.logger.warning(f"🔥 FISH AUDIO FAILED: Status {response.status_code}")
+    except Exception as e:
+        ctx.logger.warning(f"🔥 FISH AUDIO ERROR: {e}")
+        pass
+
+    # Fallback to OpenAI TTS
+    ctx.logger.info("🔥 FALLBACK: USING OPENAI TTS (FISH AUDIO FAILED)")
+    async with httpx.AsyncClient(timeout=60.0) as client:
+        response = await client.post(
+            "https://api.openai.com/v1/audio/speech",
+            headers={"Authorization": f"Bearer {OPENAI_API_KEY}"},
+            json={
+                "model": "tts-1",
+                "input": text,
+                "voice": "alloy"
+            }
+        )
+        filename = f"storage/audio/{uuid.uuid4()}.mp3"
+        with open(filename, "wb") as f:
+            f.write(response.content)
+        ctx.logger.info(f"✅ OpenAI TTS generated: {os.path.basename(filename)}")
+        return f"http://localhost:9000/static/{os.path.basename(filename)}"
 
 if __name__ == "__main__":
     narration_agent.run()

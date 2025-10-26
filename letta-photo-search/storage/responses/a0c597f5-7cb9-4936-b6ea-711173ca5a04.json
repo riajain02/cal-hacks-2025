@@ -1,0 +1,65 @@
+{
+  "session_id": "a0c597f5-7cb9-4936-b6ea-711173ca5a04",
+  "success": true,
+  "perception": {
+    "session_id": "a0c597f5-7cb9-4936-b6ea-711173ca5a04",
+    "objects": [
+      "bowls filled with cereal",
+      "glass of juice",
+      "milk glass",
+      "various fruits",
+      "oranges",
+      "bowls filled with berries"
+    ],
+    "people_count": 3,
+    "people_details": [
+      {
+        "description": "individuals seated around a table",
+        "position": "around the table",
+        "apparent_mood": "relaxed"
+      }
+    ],
+    "layout": {
+      "foreground": "bowl filled with food items and juice glass",
+      "background": "window allowing natural light"
+    },
+    "scene_type": "breakfast or brunch setting",
+    "setting": "indoor, likely around a kitchen or dining room table",
+    "colors": [
+      "warm tones",
+      "soft natural colors"
+    ],
+    "lighting": "natural light streaming in, creating a cozy atmosphere",
+    "ambient_sounds": [
+      "sounds of light conversation",
+      "clinking of dishes"
+    ]
+  },
+  "emotion": {
+    "session_id": "a0c597f5-7cb9-4936-b6ea-711173ca5a04",
+    "mood": "content",
+    "emotion_tags": [
+      "happiness",
+      "relaxation",
+      "togetherness"
+    ],
+    "tone": "warm and inviting",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, cheerful, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "cozy and friendly atmosphere"
+  },
+  "narration": {
+    "session_id": "a0c597f5-7cb9-4936-b6ea-711173ca5a04",
+    "main_narration": "In this cozy breakfast setting, three individuals are seated comfortably around a table filled with bowls brimming with colorful cereal, fresh fruits, and juicy berries. A glass of bright orange juice and a glass of milk sit invitingly among the delicious spread, all illuminated by natural light streaming in through a nearby window. The warm tones and soft natural colors create an inviting atmosphere that enhances the sense of togetherness as they share this meal. Light conversation flows easily between them, accompanied by the gentle clinking of dishes\u2014a perfect backdrop to their relaxed morning gathering filled with happiness and contentment.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft laughter",
+      "the rustle of napkins",
+      "the cheerful sounds of morning chatter"
+    ]
+  }
+}

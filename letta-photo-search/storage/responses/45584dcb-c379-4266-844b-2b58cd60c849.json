@@ -1,0 +1,73 @@
+{
+  "session_id": "45584dcb-c379-4266-844b-2b58cd60c849",
+  "success": true,
+  "perception": {
+    "session_id": "45584dcb-c379-4266-844b-2b58cd60c849",
+    "objects": [
+      "yellow kayak",
+      "reddish-orange kayak",
+      "orange paddle",
+      "red paddle",
+      "calm lake or river"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person in the yellow kayak, looking ahead and smiling",
+        "position": "foreground",
+        "apparent_mood": "enjoyment or relaxation"
+      },
+      {
+        "description": "person in the reddish kayak, actively engaged in rowing",
+        "position": "background",
+        "apparent_mood": "active"
+      }
+    ],
+    "layout": {
+      "foreground": "yellow kayak with its occupant, facing slightly toward the camera",
+      "background": "reddish-orange kayak with its occupant, facing forward and slightly to the left"
+    },
+    "scene_type": "recreational kayaking",
+    "setting": "outdoor, natural environment by a water body",
+    "colors": [
+      "blue",
+      "yellow",
+      "green",
+      "gray"
+    ],
+    "lighting": "bright lighting, sunny day with reflections on the water",
+    "ambient_sounds": [
+      "water splashing",
+      "paddles moving",
+      "birds chirping",
+      "soft breeze"
+    ]
+  },
+  "emotion": {
+    "session_id": "45584dcb-c379-4266-844b-2b58cd60c849",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "relaxation",
+      "enjoyment"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, relaxed",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and peaceful outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "45584dcb-c379-4266-844b-2b58cd60c849",
+    "main_narration": "On this bright, sunny day by the calm waters of a lake or river, two individuals enjoy a delightful kayaking experience. In the foreground, a person in a vibrant yellow kayak smiles contentedly as they look ahead, radiating enjoyment and relaxation. Behind them, another person is actively engaged in rowing their reddish-orange kayak with determination and enthusiasm. The scene is alive with colors\u2014bright blues of the water contrasting beautifully against the yellow and orange kayaks set against lush greenery surrounding the shore. The sunlight glistens on the surface of the water, creating playful reflections that enhance this picturesque setting. Sounds of gentle water splashing, paddles moving rhythmically through the water, birds chirping nearby, and a soft breeze create an inviting ambiance filled with happiness and tranquility.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle splashes of water",
+      "soft rustling leaves",
+      "chirping birds in harmony"
+    ]
+  }
+}

@@ -257,7 +257,8 @@ class UnifiedTTSService:
     async def text_to_speech(
         self,
         text: str,
-        save_to: Optional[str] = None
+        save_to: Optional[str] = None,
+        reference_id: Optional[str] = None
     ) -> bytes:
         """
         Convert text to speech, trying Fish Audio first, then OpenAI
@@ -265,6 +266,7 @@ class UnifiedTTSService:
         Args:
             text: Text to convert
             save_to: Optional file path to save audio
+            reference_id: Optional Fish Audio voice reference ID
 
         Returns:
             Audio data as bytes
@@ -273,16 +275,22 @@ class UnifiedTTSService:
         # Try Fish Audio first
         if self.fish_audio:
             try:
-                return await self.fish_audio.text_to_speech(text, save_to=save_to)
+                print("🔥 USING FISH AUDIO FOR TTS (PREFERRED)")
+                result = await self.fish_audio.text_to_speech(text, reference_id=reference_id, save_to=save_to)
+                print("✅ Fish Audio TTS generated successfully")
+                return result
             except Exception as e:
-                print(f"Fish Audio TTS failed: {e}. Trying OpenAI fallback...")
+                print(f"🔥 FISH AUDIO FAILED: {e}")
+                print("🔥 FALLBACK: USING OPENAI TTS")
 
         # Fall back to OpenAI
         if self.openai_tts:
             try:
-                return await self.openai_tts.text_to_speech(text, save_to=save_to)
+                result = await self.openai_tts.text_to_speech(text, save_to=save_to)
+                print("✅ OpenAI TTS generated successfully")
+                return result
             except Exception as e:
-                print(f"OpenAI TTS also failed: {e}")
+                print(f"❌ OpenAI TTS also failed: {e}")
                 raise
 
         raise ValueError("All TTS services failed")

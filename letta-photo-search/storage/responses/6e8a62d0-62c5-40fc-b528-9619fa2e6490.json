@@ -1,0 +1,77 @@
+{
+  "session_id": "6e8a62d0-62c5-40fc-b528-9619fa2e6490",
+  "success": true,
+  "perception": {
+    "session_id": "6e8a62d0-62c5-40fc-b528-9619fa2e6490",
+    "objects": [
+      "bowls",
+      "cereal",
+      "fruit",
+      "glass of orange juice",
+      "glass of milk or yogurt",
+      "oranges"
+    ],
+    "people_count": 3,
+    "people_details": [
+      {
+        "description": "adult facing another person, likely smiling",
+        "position": "at the table",
+        "apparent_mood": "cheerful"
+      },
+      {
+        "description": "child focusing on their food",
+        "position": "at the table",
+        "apparent_mood": "happy"
+      },
+      {
+        "description": "another child, partially visible",
+        "position": "close to the others",
+        "apparent_mood": "positive"
+      }
+    ],
+    "layout": {
+      "foreground": "people seated around the table with food spread",
+      "background": "kitchen or dining area with a window"
+    },
+    "scene_type": "family meal",
+    "setting": "indoor, likely a kitchen or dining area",
+    "colors": [
+      "earthy tones",
+      "natural colors of the food",
+      "warm hues in clothing"
+    ],
+    "lighting": "warm, natural lighting from a window",
+    "ambient_sounds": [
+      "conversation",
+      "sound of utensils",
+      "soft laughter"
+    ]
+  },
+  "emotion": {
+    "session_id": "6e8a62d0-62c5-40fc-b528-9619fa2e6490",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "togetherness",
+      "contentment"
+    ],
+    "tone": "warm and inviting",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "cheerful, engaging, familial",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "friendly and cozy atmosphere"
+  },
+  "narration": {
+    "session_id": "6e8a62d0-62c5-40fc-b528-9619fa2e6490",
+    "main_narration": "In this inviting kitchen setting, a family gathers around the table for a hearty meal filled with laughter and joy. An adult faces another person, likely smiling warmly as they share in the moment, while a child focuses happily on their bowl of cereal and fresh fruit. Nearby, another child can be seen partially visible, exuding positivity as they enjoy the delightful spread that includes bowls brimming with colorful cereal and fruit, alongside glasses of orange juice and creamy yogurt. The warm natural light streaming through the window enhances the earthy tones of their clothing and the vibrant colors of the food. The atmosphere is filled with cheerful conversation, soft laughter, and the gentle sounds of utensils clinking against bowls\u2014a perfect backdrop for this moment of togetherness.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle chatter",
+      "clinking cutlery",
+      "the rustle of napkins"
+    ]
+  }
+}

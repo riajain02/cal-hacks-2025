@@ -1,0 +1,70 @@
+{
+  "session_id": "ef0ce81c-9d8b-4ef7-af3a-92dc346d3a78",
+  "success": true,
+  "perception": {
+    "session_id": "ef0ce81c-9d8b-4ef7-af3a-92dc346d3a78",
+    "objects": [
+      "multiple bowls containing cereal and fruit",
+      "glass of orange juice",
+      "mug or glass with milk or yogurt",
+      "additional tableware including spoons"
+    ],
+    "people_count": 3,
+    "people_details": [
+      {
+        "description": "person serving or enjoying cereal, exhibiting a smiling expression",
+        "position": "near the bowls",
+        "apparent_mood": "positive"
+      },
+      {
+        "description": "two other individuals enjoying the meal",
+        "position": "seated closely around the table",
+        "apparent_mood": "relaxed"
+      }
+    ],
+    "layout": {
+      "foreground": "people seated around a wooden table with food items",
+      "background": "window indicating a home or restaurant setting"
+    },
+    "scene_type": "meal setting, likely breakfast",
+    "setting": "indoor, cozy environment",
+    "colors": [
+      "browns",
+      "oranges",
+      "whites"
+    ],
+    "lighting": "warm, natural lighting from sunlight",
+    "ambient_sounds": [
+      "soft conversation",
+      "clinking of dishes",
+      "nature sounds outside from the window"
+    ]
+  },
+  "emotion": {
+    "session_id": "ef0ce81c-9d8b-4ef7-af3a-92dc346d3a78",
+    "mood": "content",
+    "emotion_tags": [
+      "happiness",
+      "relaxation",
+      "togetherness"
+    ],
+    "tone": "warm and inviting",
+    "intensity": "medium",
+    "voice_characteristics": {
+      "main_narrator": "gentle, cheerful, engaging",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "cozy and friendly atmosphere"
+  },
+  "narration": {
+    "session_id": "ef0ce81c-9d8b-4ef7-af3a-92dc346d3a78",
+    "main_narration": "In this cozy indoor setting, three individuals gather around a wooden table filled with colorful bowls of cereal and fresh fruit, creating a delightful breakfast spread. One person, positioned near the bowls, serves or enjoys their meal with a bright smile that radiates positivity. The two others sit closely together at the table, relaxed and savoring the delicious food in front of them. Warm natural light filters through the nearby window, casting a gentle glow over the scene filled with rich browns and vibrant oranges. The air is alive with soft conversation, the clinking of dishes, and distant nature sounds filtering in from outside\u2014a perfect backdrop for this moment of togetherness.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft chatter",
+      "clinking cutlery",
+      "gentle rustling of leaves outside"
+    ]
+  }
+}

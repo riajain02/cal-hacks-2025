@@ -1,0 +1,73 @@
+{
+  "session_id": "4de6b2f0-1a22-4c98-beb1-a3b7413a97d4",
+  "success": true,
+  "perception": {
+    "session_id": "4de6b2f0-1a22-4c98-beb1-a3b7413a97d4",
+    "objects": [
+      "two backpacks",
+      "grass",
+      "rocks",
+      "mountains"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person sitting with legs bent, appearing relaxed and possibly happy",
+        "position": "left",
+        "apparent_mood": "relaxed/happy"
+      },
+      {
+        "description": "person sitting slightly behind the first person",
+        "position": "right",
+        "apparent_mood": "unknown"
+      }
+    ],
+    "layout": {
+      "foreground": "two individuals seated on grassy, rocky area with backpacks",
+      "background": "mountain landscape"
+    },
+    "scene_type": "outdoor",
+    "setting": "mountainous environment",
+    "colors": [
+      "natural tones",
+      "greens",
+      "grays",
+      "earth colors",
+      "bright green",
+      "orange"
+    ],
+    "lighting": "natural light from a setting or rising sun casting a soft glow",
+    "ambient_sounds": [
+      "nature sounds",
+      "wind",
+      "birds chirping"
+    ]
+  },
+  "emotion": {
+    "session_id": "4de6b2f0-1a22-4c98-beb1-a3b7413a97d4",
+    "mood": "serene",
+    "emotion_tags": [
+      "relaxation",
+      "contentment",
+      "peacefulness"
+    ],
+    "tone": "gentle and reflective",
+    "intensity": "low to medium",
+    "voice_characteristics": {
+      "main_narrator": "soft, calming, warm",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "tranquil outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "4de6b2f0-1a22-4c98-beb1-a3b7413a97d4",
+    "main_narration": "In this serene mountainous environment, two individuals sit comfortably on a grassy, rocky area, their backpacks resting nearby. The person on the left has their legs bent and appears relaxed and happy, soaking in the tranquility of nature. Slightly behind them sits another individual, their mood indeterminate but contributing to the peaceful ambiance of the scene. The backdrop features stunning mountains painted in natural tones of green and gray, bathed in soft light from either a setting or rising sun that casts a gentle glow over everything. The air is filled with soothing sounds of nature\u2014whispers of wind through trees and birds chirping melodiously\u2014creating an inviting atmosphere perfect for reflection and contentment.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling leaves",
+      "the distant call of birds",
+      "soft whispers of the wind"
+    ]
+  }
+}

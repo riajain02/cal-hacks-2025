@@ -1,0 +1,67 @@
+{
+  "session_id": "df2a1a6f-8c34-43cf-b360-e66edb0ae24e",
+  "success": true,
+  "perception": {
+    "session_id": "df2a1a6f-8c34-43cf-b360-e66edb0ae24e",
+    "objects": [
+      "Eiffel Tower",
+      "coffee cups",
+      "hat"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person holding a coffee cup and wearing a hat",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "another person holding a coffee cup",
+        "position": "foreground",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "two people on a pathway",
+      "background": "Eiffel Tower"
+    },
+    "scene_type": "leisure outing",
+    "setting": "outdoor near a famous landmark",
+    "colors": [
+      "earthy tones",
+      "neutral tones"
+    ],
+    "lighting": "natural daylight",
+    "ambient_sounds": [
+      "people chatting",
+      "birds chirping"
+    ]
+  },
+  "emotion": {
+    "session_id": "df2a1a6f-8c34-43cf-b360-e66edb0ae24e",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "contentment",
+      "excitement"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "df2a1a6f-8c34-43cf-b360-e66edb0ae24e",
+    "main_narration": "In this lively outdoor scene near the iconic Eiffel Tower, two joyful individuals stand on a pathway, each holding a steaming coffee cup. Their cheerful expressions reflect contentment as they savor the moment together in front of one of the world's most famous landmarks. The earthy and neutral tones of their surroundings blend harmoniously with the natural daylight that bathes the area in warmth. The atmosphere is vibrant, filled with sounds of people chatting and birds chirping, creating an inviting ambiance that enhances their delightful leisure outing.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "soft chatter",
+      "the gentle fluttering of wings",
+      "distant laughter"
+    ]
+  }
+}

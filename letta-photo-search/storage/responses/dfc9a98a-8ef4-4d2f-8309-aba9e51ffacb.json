@@ -1,0 +1,75 @@
+{
+  "session_id": "dfc9a98a-8ef4-4d2f-8309-aba9e51ffacb",
+  "success": true,
+  "perception": {
+    "session_id": "dfc9a98a-8ef4-4d2f-8309-aba9e51ffacb",
+    "objects": [
+      "Eiffel Tower",
+      "trees",
+      "bushes",
+      "concrete path",
+      "sidewalk",
+      "handrails",
+      "fences",
+      "buildings"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "woman wearing a hat and seems to be in a joyful mood, possibly laughing",
+        "position": "left",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "woman smiling, holding a drink, wearing a light-colored trench coat",
+        "position": "right",
+        "apparent_mood": "smiling"
+      }
+    ],
+    "layout": {
+      "foreground": "two women walking on a path",
+      "background": "Eiffel Tower, buildings, and trees"
+    },
+    "scene_type": "casual walk in a park or pathway",
+    "setting": "outdoor",
+    "colors": [
+      "warm",
+      "natural",
+      "lush green",
+      "brownish"
+    ],
+    "lighting": "partly cloudy with soft lighting, suggesting a cool or mild day",
+    "ambient_sounds": [
+      "birds chirping",
+      "distant conversation",
+      "footsteps on the path"
+    ]
+  },
+  "emotion": {
+    "session_id": "dfc9a98a-8ef4-4d2f-8309-aba9e51ffacb",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "contentment"
+    ],
+    "tone": "light and cheerful",
+    "intensity": "medium to high",
+    "voice_characteristics": {
+      "main_narrator": "warm, engaging, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and lively outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "dfc9a98a-8ef4-4d2f-8309-aba9e51ffacb",
+    "main_narration": "In this vibrant outdoor scene, two women stroll along a concrete path, the iconic Eiffel Tower rising majestically in the background among lush green trees and charming buildings. The woman on the left, wearing a stylish hat, exudes joy as she laughs heartily, while her companion on the right beams with a smile, holding a refreshing drink in her hand and dressed in a light-colored trench coat. The atmosphere is filled with warm natural colors\u2014rich greens and earthy tones\u2014under partly cloudy skies that provide soft lighting for this delightful day. The air is alive with cheerful sounds: birds chirping nearby, distant conversations blending seamlessly into their joyful moments together as their footsteps echo softly on the path.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of leaves",
+      "lively chatter from passersby",
+      "the faint sound of footsteps"
+    ]
+  }
+}

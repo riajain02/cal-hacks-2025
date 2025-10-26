@@ -1,0 +1,66 @@
+{
+  "session_id": "d7f7d3f3-0555-433a-8841-9a4662595eef",
+  "success": true,
+  "perception": {
+    "session_id": "d7f7d3f3-0555-433a-8841-9a4662595eef",
+    "objects": [
+      "inflatable pool float shaped like a popsicle with rainbow colors",
+      "pink inflatable rings",
+      "towels",
+      "beach bag"
+    ],
+    "people_count": 4,
+    "people_details": [
+      {
+        "description": "four people jumping in the air",
+        "position": "near the water's edge",
+        "apparent_mood": "playful and lively"
+      }
+    ],
+    "layout": {
+      "foreground": "sandy beach",
+      "background": "ocean and expansive sky"
+    },
+    "scene_type": "beach setting",
+    "setting": "outdoor",
+    "colors": [
+      "warm hues",
+      "blue",
+      "soft clouds",
+      "bright colors in inflatables"
+    ],
+    "lighting": "warm, soft lighting near sunrise or sunset casting long shadows",
+    "ambient_sounds": [
+      "waves crashing",
+      "laughter",
+      "seagulls"
+    ]
+  },
+  "emotion": {
+    "session_id": "d7f7d3f3-0555-433a-8841-9a4662595eef",
+    "mood": "playful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "joy"
+    ],
+    "tone": "vibrant and energetic",
+    "intensity": "high",
+    "voice_characteristics": {
+      "main_narrator": "enthusiastic, cheerful, lively",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "fun and cheerful beach atmosphere"
+  },
+  "narration": {
+    "session_id": "d7f7d3f3-0555-433a-8841-9a4662595eef",
+    "main_narration": "In this cheerful beach setting, four friends leap joyfully near the water's edge, their playful energy perfectly captured in mid-air. The sandy beach stretches out before them, adorned with a colorful inflatable pool float shaped like a popsicle and vibrant pink rings scattered among towels and a beach bag. Warm hues from the rising or setting sun cast soft lighting across the scene, while the expansive ocean and sky create a stunning backdrop. The air is filled with laughter mingling with the sounds of waves crashing and seagulls calling, embodying an atmosphere of happiness and excitement.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "waves crashing gently",
+      "laughter echoing",
+      "the distant calls of seagulls"
+    ]
+  }
+}

@@ -10,8 +10,13 @@ from typing import List, Dict, Optional
 from pathlib import Path
 from dotenv import load_dotenv
 from urllib.parse import quote
+from openai import OpenAI
+from PIL import Image
 
 load_dotenv()
+
+# Initialize OpenAI client
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 class CLIPSearchAgent:
     """
@@ -45,6 +50,95 @@ class CLIPSearchAgent:
             print("Make sure to run populate_database.py first!")
             raise
 
+    def _generate_memory_title_and_description(self, image_path: str, query: str) -> tuple:
+        """
+        Generate evocative memory-focused title and description using GPT-4 Vision
+
+        Args:
+            image_path: Path to the image file
+            query: User's search query for context
+
+        Returns:
+            Tuple of (title, description)
+        """
+        try:
+            # Convert image to base64
+            import base64
+            from pathlib import Path
+
+            image_file_path = Path(image_path)
+            if not image_file_path.exists():
+                return self._fallback_title_description(image_path)
+
+            with open(image_file_path, "rb") as img_file:
+                image_data = base64.b64encode(img_file.read()).decode('utf-8')
+                ext = image_file_path.suffix.lower()
+                mime_type = {
+                    '.jpg': 'image/jpeg',
+                    '.jpeg': 'image/jpeg',
+                    '.png': 'image/png',
+                    '.gif': 'image/gif',
+                    '.webp': 'image/webp'
+                }.get(ext, 'image/jpeg')
+                image_url = f"data:{mime_type};base64,{image_data}"
+
+            # Call GPT-4 Vision to generate memory-focused title and description
+            response = openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"You are helping blind users discover their photo memories. Based on this image (related to user's search: '{query}'), create:\n1) A short, evocative memory title (4-6 words, past tense, nostalgic)\n2) A warm, descriptive sentence (15-25 words) that brings the memory to life\n\nExamples:\nTitle: 'That Golden Afternoon by the Lake'\nDescription: 'A serene moment captured as sunlight danced across the water, creating ripples of pure golden magic.'\n\nTitle: 'When We Laughed Until Sunset'\nDescription: 'Friends gathered around the picnic table, sharing stories and joy as the day gently faded into twilight.'\n\nFormat: TITLE: [your title]\nDESCRIPTION: [your description]"
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": image_url}
+                        }
+                    ]
+                }],
+                max_tokens=150
+            )
+
+            content = response.choices[0].message.content
+
+            # Parse response
+            lines = content.strip().split('\n')
+            title = "A Cherished Memory"
+            description = "A beautiful moment frozen in time."
+
+            for line in lines:
+                if line.startswith('TITLE:'):
+                    title = line.replace('TITLE:', '').strip()
+                elif line.startswith('DESCRIPTION:'):
+                    description = line.replace('DESCRIPTION:', '').strip()
+
+            return (title, description)
+
+        except Exception as e:
+            print(f"Error generating memory title: {e}")
+            return self._fallback_title_description(image_path)
+
+    def _fallback_title_description(self, image_path: str) -> tuple:
+        """Fallback title and description if AI generation fails"""
+        filename = Path(image_path).stem
+
+        # Create more evocative fallback titles
+        fallback_titles = [
+            "A Moment Worth Remembering",
+            "That Special Day",
+            "A Memory from the Past",
+            "When Time Stood Still",
+            "A Glimpse of Yesterday"
+        ]
+
+        import random
+        title = random.choice(fallback_titles)
+        description = f"A cherished memory captured in this photograph."
+
+        return (title, description)
+
     def search(self, query: str, top_k: int = 3) -> List[Dict]:
         """
         Search for photos using CLIP-based similarity
@@ -58,7 +152,7 @@ class CLIPSearchAgent:
         """
         # Encode the text query using CLIP
         inputs = self.processor(text=[query], return_tensors="pt", padding=True)
-        
+
         with torch.no_grad():
             text_features = self.model.get_text_features(**inputs)
             query_embedding = text_features.cpu().numpy().flatten()
@@ -73,7 +167,13 @@ class CLIPSearchAgent:
         search_results = []
         for i, (metadata, distance) in enumerate(zip(results['metadatas'][0], results['distances'][0])):
             similarity_score = 1 - distance  # Convert distance to similarity
-            
+
+            # Generate meaningful memory title and description
+            title, description = self._generate_memory_title_and_description(
+                metadata['path'],
+                query
+            )
+
             result = {
                 'id': i,
                 'filename': metadata['filename'],
@@ -81,15 +181,15 @@ class CLIPSearchAgent:
                 'image_url': f"/images/{quote(metadata['filename'])}",
                 'similarity_score': float(similarity_score),
                 'relevance_score': int(similarity_score * 100),
-                'title': metadata['filename'].replace('.jpeg', '').replace('.jpg', '').replace('.png', '').replace('-', ' ').title(),
-                'description': f"Image: {metadata['filename']}",
+                'title': title,
+                'description': description,
                 'tags': []
             }
             search_results.append(result)
 
         print(f"✓ Found {len(search_results)} results for query: '{query}'")
         for i, result in enumerate(search_results, 1):
-            print(f"  {i}. {result['filename']} (similarity: {result['similarity_score']:.3f})")
+            print(f"  {i}. {result['title']} (similarity: {result['similarity_score']:.3f})")
 
         return search_results
 

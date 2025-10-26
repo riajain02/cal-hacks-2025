@@ -1,11 +1,14 @@
 /**
- * AI Agent Photo Search - Futuristic UI
- * Shows multi-agent workflow step-by-step
+ * Synesthesia - AI Memory Assistant
+ * Clean, minimal black & white design
  */
 
-class AgentSearchApp {
+class SynesthesiaApp {
     constructor() {
         // DOM Elements
+        this.splashScreen = document.getElementById('splash-screen');
+        this.appContainer = document.getElementById('app-container');
+        this.particlesContainer = document.getElementById('particles-container');
         this.micButton = document.getElementById('mic-button');
         this.statusText = document.getElementById('status-text');
         this.transcript = document.getElementById('transcript');
@@ -41,7 +44,35 @@ class AgentSearchApp {
     }
 
     init() {
-        // Initialize speech recognition
+        this.showSplashScreen();
+        setTimeout(() => {
+            this.hideSplashScreen();
+            this.initApp();
+        }, 2500);
+    }
+
+    showSplashScreen() {
+        // Create minimal particles
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.bottom = '0';
+            particle.style.animationDelay = `${Math.random() * 12}s`;
+            this.particlesContainer.appendChild(particle);
+        }
+    }
+
+    hideSplashScreen() {
+        this.splashScreen.style.opacity = '0';
+        this.splashScreen.style.transition = 'opacity 0.8s ease';
+        setTimeout(() => {
+            this.splashScreen.style.display = 'none';
+            this.appContainer.classList.remove('hidden');
+        }, 800);
+    }
+
+    initApp() {
         this.initSpeechRecognition();
 
         // Event listeners
@@ -57,13 +88,13 @@ class AgentSearchApp {
         // Suggestion buttons
         document.querySelectorAll('.suggestion').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                this.textInput.value = e.target.dataset.query;
+                this.textInput.value = e.target.dataset.query || e.target.closest('.suggestion').dataset.query;
                 this.processQuery();
             });
         });
 
-        // Welcome audio
-        this.speak('Welcome to AI Agent Search. Click the microphone or type to begin.');
+        this.speak('Welcome to Synesthesia, your memory companion. Use your voice or keyboard to rediscover your cherished moments.');
+        this.textInput.focus();
     }
 
     initSpeechRecognition() {
@@ -83,6 +114,7 @@ class AgentSearchApp {
 
                 if (event.results[0].isFinal) {
                     this.textInput.value = transcript;
+                    this.speak(`Searching for ${transcript}`);
                     this.processQuery();
                 }
             };
@@ -90,15 +122,13 @@ class AgentSearchApp {
             this.recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
                 this.stopListening();
-                this.updateStatus('Sorry, could not understand. Please try again.');
+                this.speak('Could not understand. Please try again.');
+                this.updateStatus('Error - try again');
             };
 
             this.recognition.onend = () => {
                 this.stopListening();
             };
-        } else {
-            console.warn('Speech recognition not supported');
-            this.micButton.style.opacity = '0.5';
         }
     }
 
@@ -114,9 +144,9 @@ class AgentSearchApp {
         if (!this.recognition) return;
 
         this.isListening = true;
-        this.micButton.classList.add('listening');
-        this.statusText.textContent = 'Listening... Speak now';
-        this.statusText.classList.add('active');
+        this.micButton.classList.add('recording-active');
+        this.micButton.setAttribute('aria-pressed', 'true');
+        this.statusText.textContent = 'Listening...';
         this.transcript.textContent = '';
 
         try {
@@ -132,9 +162,9 @@ class AgentSearchApp {
             this.recognition.stop();
         }
         this.isListening = false;
-        this.micButton.classList.remove('listening');
-        this.statusText.textContent = 'Click to speak or type your query';
-        this.statusText.classList.remove('active');
+        this.micButton.classList.remove('recording-active');
+        this.micButton.setAttribute('aria-pressed', 'false');
+        this.statusText.textContent = 'Click to speak or type below';
     }
 
     updateStatus(message) {
@@ -143,23 +173,28 @@ class AgentSearchApp {
 
     async processQuery() {
         const query = this.textInput.value.trim();
-        if (!query) return;
+        if (!query) {
+            this.speak('Please enter a search query');
+            return;
+        }
 
         this.currentQuery = query;
-
-        // Transition to processing page
         this.showProcessingPage(query);
-
-        // Process through agents
         await this.runAgentWorkflow(query);
     }
 
     showProcessingPage(query) {
         this.voicePage.classList.add('hidden');
+        this.memoryPage.classList.add('hidden');
         this.processingPage.classList.remove('hidden');
-        this.queryDisplay.textContent = `"${query}"`;
+
+        if (query) {
+            this.queryDisplay.textContent = `"${query}"`;
+        }
+
         this.agentsTimeline.innerHTML = '';
         this.resultsSection.innerHTML = '';
+        window.scrollTo(0, 0);
     }
 
     showVoicePage() {
@@ -168,6 +203,8 @@ class AgentSearchApp {
         this.voicePage.classList.remove('hidden');
         this.textInput.value = '';
         this.transcript.textContent = '';
+        this.textInput.focus();
+        this.speak('Back to search');
     }
 
     showMemoryPage(photo) {
@@ -175,247 +212,206 @@ class AgentSearchApp {
         this.voicePage.classList.add('hidden');
         this.memoryPage.classList.remove('hidden');
 
-        // Set photo and query
         this.memoryQueryDisplay.textContent = photo.title;
         this.memoryPhoto.src = photo.image_url || photo.url;
         this.memoryPhoto.alt = photo.description;
-        
-        // Store image_url for story generation
-        photo.url = photo.image_url || photo.url;
 
-        // Clear previous content
         this.memoryAgentsTimeline.innerHTML = '';
         this.narrationSection.classList.add('hidden');
         document.getElementById('memory-loading').classList.remove('hidden');
 
-        // Start memory generation
+        this.speak(`Generating story for ${photo.title}`);
         this.generateMemoryStory(photo);
+        window.scrollTo(0, 0);
     }
 
     async runAgentWorkflow(query) {
-        // Step 1: Voice Processing Agent
-        const voiceResult = await this.showAgentStep({
-            name: 'Voice Processing Agent',
-            icon: '🎤',
-            status: 'Processing natural language...',
-            action: async () => {
-                const response = await fetch('/api/voice/process', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: query })
-                });
-                return await response.json();
+        try {
+            // Step 1: Voice Processing
+            const voiceResult = await this.showAgentStep({
+                name: 'Voice Processing',
+                icon: '🎤',
+                status: 'Analyzing language...',
+                action: async () => {
+                    const response = await fetch('/api/voice/process', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: query })
+                    });
+                    return await response.json();
+                }
+            });
+
+            // Step 2: Vector Search
+            const searchResult = await this.showAgentStep({
+                name: 'Vector Search',
+                icon: '🔍',
+                status: 'Searching memories...',
+                action: async () => {
+                    const response = await fetch('/api/search', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: voiceResult.data?.search_query || query,
+                            use_voice_processing: true
+                        })
+                    });
+                    return await response.json();
+                }
+            });
+
+            // Display Results
+            await this.displayResults(searchResult);
+
+            if (searchResult.success && searchResult.photos.length > 0) {
+                const count = searchResult.photos.length;
+                const topResult = searchResult.photos[0];
+                this.speak(`Found ${count} precious ${count === 1 ? 'memory' : 'memories'}. The first one is: ${topResult.title}. ${topResult.description}`);
+            } else {
+                this.speak('No memories found for that search. Try describing it differently or use different keywords.');
             }
-        });
 
-        // Step 2: Embedding Search Agent
-        const searchResult = await this.showAgentStep({
-            name: 'Embedding Search Agent',
-            icon: '🔍',
-            status: 'Computing vector embeddings...',
-            action: async () => {
-                const response = await fetch('/api/search', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        query: voiceResult.data?.search_query || query,
-                        use_voice_processing: true
-                    })
-                });
-                return await response.json();
-            }
-        });
-
-        // Step 3: Display Results
-        await this.displayResults(searchResult, voiceResult);
-
-        // Speak results
-        if (searchResult.success && searchResult.photos.length > 0) {
-            const count = searchResult.photos.length;
-            const ttsText = `I found ${count} photo${count > 1 ? 's' : ''} matching your search. ${searchResult.photos[0].title} is the top result.`;
-            this.speak(ttsText);
+        } catch (error) {
+            console.error('Workflow error:', error);
+            this.speak('An error occurred. Please try again.');
         }
     }
 
     async showAgentStep({ name, icon, status, action }) {
-        // Create agent step card
         const stepDiv = document.createElement('div');
-        stepDiv.className = 'glass-effect rounded-2xl p-6 animate-fade-in';
-        stepDiv.style.animationDelay = `${this.agentsTimeline.children.length * 0.1}s`;
+        stepDiv.className = 'glass rounded-2xl p-5 animate-fade-in';
 
         stepDiv.innerHTML = `
-            <div class="flex items-start gap-4">
-                <div class="text-4xl">${icon}</div>
+            <div class="flex items-center gap-4">
+                <div class="text-3xl">${icon}</div>
                 <div class="flex-1">
-                    <h3 class="text-xl font-semibold mb-2">${name}</h3>
-                    <div class="flex items-center gap-2 mb-2">
-                        <div class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse status-indicator"></div>
-                        <span class="text-gray-300 status-text">${status}</span>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${name}</h3>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-gray-800 animate-pulse status-indicator"></div>
+                        <span class="text-sm text-gray-600 status-text">${status}</span>
                     </div>
-                    <div class="agent-result-container mt-3"></div>
                 </div>
             </div>
         `;
 
         this.agentsTimeline.appendChild(stepDiv);
+        await this.sleep(400);
 
-        // Simulate processing time for visual effect
-        await this.sleep(800);
-
-        // Execute agent action
         const result = await action();
 
-        // Update to complete state
         const statusIndicator = stepDiv.querySelector('.status-indicator');
         const statusText = stepDiv.querySelector('.status-text');
-        const resultContainer = stepDiv.querySelector('.agent-result-container');
 
-        statusIndicator.classList.remove('bg-yellow-500', 'animate-pulse');
-        statusIndicator.classList.add('bg-green-500');
-        statusText.textContent = 'Complete';
+        statusIndicator.classList.remove('bg-gray-800', 'animate-pulse');
+        statusIndicator.classList.add('bg-gray-600');
+        statusText.textContent = '✓ Complete';
 
-        // Show result based on agent type
-        if (name === 'Voice Processing Agent' && result.success) {
-            const data = result.data;
-            resultContainer.innerHTML = `
-                <div class="bg-black/20 rounded-xl p-4 text-sm">
-                    <div class="text-gray-300 mb-2">
-                        <strong>Intent:</strong> ${data.intent}<br>
-                        <strong>Search Query:</strong> "${data.search_query}"
-                    </div>
-                    <div class="flex flex-wrap gap-2 mt-2">
-                        ${data.entities.map(e => `<span class="bg-purple-500/30 px-3 py-1 rounded-full text-xs">${e}</span>`).join('')}
-                    </div>
-                </div>
-            `;
-        } else if (name === 'Embedding Search Agent' && result.success) {
-            resultContainer.innerHTML = `
-                <div class="bg-black/20 rounded-xl p-4 text-sm">
-                    <div class="text-gray-300 mb-2">
-                        Found ${result.photos.length} matching images using 384-dimensional embeddings
-                    </div>
-                    <div class="flex flex-wrap gap-2 mt-2">
-                        ${result.photos.slice(0, 3).map(p =>
-                            `<span class="bg-pink-500/30 px-3 py-1 rounded-full text-xs">${p.title}: ${(p.similarity_score * 100).toFixed(1)}%</span>`
-                        ).join('')}
-                    </div>
-                </div>
-            `;
-        }
-
-        await this.sleep(300);
+        await this.sleep(200);
         return result;
     }
 
-    async displayResults(searchResult, voiceResult) {
+    async displayResults(searchResult) {
         if (!searchResult.success || !searchResult.photos.length) {
             this.resultsSection.innerHTML = `
-                <div class="glass-effect rounded-2xl p-8 text-center">
-                    <div class="text-5xl mb-4">🔍</div>
-                    <h3 class="text-2xl font-semibold mb-2">No Results</h3>
-                    <p class="text-gray-300">
-                        No photos found matching your query. Try a different search term.
-                    </p>
+                <div class="glass-strong rounded-2xl p-16 text-center">
+                    <div class="text-5xl mb-4 opacity-30">🔍</div>
+                    <h3 class="text-2xl font-bold mb-2 text-gray-900">No Results</h3>
+                    <p class="text-gray-600">Try a different search query</p>
                 </div>
             `;
             return;
         }
 
         const photos = searchResult.photos;
-        this.searchResults = photos; // Store for later use
+        this.searchResults = photos;
 
         this.resultsSection.innerHTML = `
-            <div class="mb-8">
-                <h3 class="text-3xl font-bold mb-2">Search Results</h3>
-                <p class="text-gray-300 text-lg">${photos.length} photos found</p>
+            <div class="mb-8 animate-fade-in">
+                <h3 class="text-3xl font-bold mb-2 text-gray-900">📸 Your Memories</h3>
+                <p class="text-gray-600">${photos.length} precious ${photos.length === 1 ? 'moment' : 'moments'} rediscovered</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="results-grid"></div>
+            <div class="space-y-3" id="results-list"></div>
         `;
 
-        const grid = document.getElementById('results-grid');
+        const list = document.getElementById('results-list');
 
         photos.forEach((photo, index) => {
-            const card = document.createElement('div');
-            card.className = 'glass-effect rounded-2xl overflow-hidden hover:scale-105 transition-transform animate-fade-in';
-            card.style.animationDelay = `${(index * 0.15) + 0.5}s`;
+            const confidence = (photo.similarity_score || 0.5) * 100;
 
-            const similarityScore = (photo.similarity_score || photo.relevance_score / 100 || 0.5) * 100;
+            const item = document.createElement('div');
+            item.className = 'experience-item glass-strong rounded-xl p-6 border-l-4 border-transparent animate-slide-in';
+            item.style.animationDelay = `${index * 0.1}s`;
 
-            card.innerHTML = `
-                <img src="${photo.url}" alt="${photo.description}" class="w-full h-48 object-cover" />
-                <div class="p-4">
-                    <h4 class="text-lg font-semibold mb-2">${photo.title}</h4>
-                    <p class="text-gray-300 text-sm mb-3">${photo.description}</p>
-                    <div class="flex flex-wrap gap-2 mb-3">
-                        ${photo.tags.map(tag => `<span class="bg-purple-500/30 px-2 py-1 rounded-full text-xs">${tag}</span>`).join('')}
-                    </div>
-                    <div class="mb-3">
-                        <div class="flex items-center justify-between text-sm text-gray-300 mb-1">
-                            <span>Relevance:</span>
-                            <span>${similarityScore.toFixed(1)}%</span>
-                        </div>
-                        <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div class="bg-gradient-to-r from-pink-500 to-purple-600 h-2 rounded-full" style="width: ${similarityScore}%"></div>
+            item.innerHTML = `
+                <div class="flex items-center justify-between gap-6">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xl font-bold text-gray-900 mb-2 truncate">${photo.title}</h4>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">${photo.description}</p>
+
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-500 uppercase tracking-wide">Match</span>
+                            <div class="flex-1 bg-gray-200 rounded-full h-2 max-w-xs overflow-hidden">
+                                <div class="h-2 rounded-full bg-gradient-to-r from-gray-800 to-gray-600 progress-fill" style="--progress-width: ${confidence}%; width: ${confidence}%"></div>
+                            </div>
+                            <span class="text-sm font-bold text-gray-900">${confidence.toFixed(0)}%</span>
                         </div>
                     </div>
-                    <button class="play-memory-button w-full bg-gradient-to-r from-pink-500 to-purple-600 py-3 rounded-xl hover:shadow-lg hover:shadow-pink-500/50 transition-all font-semibold flex items-center justify-center gap-2" data-photo-index="${index}">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="5 3 19 12 5 21 5 3"/>
-                        </svg>
-                        Generate Memory Story
+
+                    <button
+                        class="generate-btn flex-shrink-0 bg-gradient-to-r from-gray-800 to-gray-600 text-white px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 hover-lift whitespace-nowrap"
+                        data-photo-index="${index}"
+                        aria-label="Generate story for ${photo.title}"
+                    >
+                        Generate Story
                     </button>
                 </div>
             `;
 
-            // Click on image/title speaks description
-            const img = card.querySelector('img');
-            const title = card.querySelector('h4');
-            [img, title].forEach(el => {
+            // Click title/description to hear it
+            const titleEl = item.querySelector('h4');
+            const descEl = item.querySelector('p');
+            [titleEl, descEl].forEach(el => {
                 el.addEventListener('click', () => {
                     this.speak(`${photo.title}. ${photo.description}`);
                 });
+                el.style.cursor = 'pointer';
             });
 
-            // Play memory button
-            const playButton = card.querySelector('.play-memory-button');
-            if (playButton) {
-                playButton.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.showMemoryPage(photo);
-                });
-            }
+            // Generate button
+            const btn = item.querySelector('.generate-btn');
+            btn.addEventListener('click', () => {
+                this.showMemoryPage(photo);
+            });
 
-            grid.appendChild(card);
+            list.appendChild(item);
         });
     }
 
     async generateMemoryStory(photo) {
         try {
-            // Step 1: Perception Agent
+            // Show agent steps
             await this.showMemoryAgentStep({
-                name: 'Perception Agent',
+                name: 'Perception',
                 icon: '👁️',
-                status: 'Analyzing visual content...',
+                status: 'Analyzing image...',
                 timeline: this.memoryAgentsTimeline
             });
 
-            // Step 2: Emotion Agent
             await this.showMemoryAgentStep({
-                name: 'Emotion Agent',
+                name: 'Emotion',
                 icon: '💭',
-                status: 'Detecting emotions and mood...',
+                status: 'Detecting mood...',
                 timeline: this.memoryAgentsTimeline
             });
 
-            // Step 3: Narration Agent
             await this.showMemoryAgentStep({
-                name: 'Narration Agent',
+                name: 'Narration',
                 icon: '📖',
-                status: 'Generating story...',
+                status: 'Writing story...',
                 timeline: this.memoryAgentsTimeline
             });
 
-            // Call backend to generate story
+            // Call API
             const response = await fetch('/api/story/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -425,81 +421,66 @@ class AgentSearchApp {
             const result = await response.json();
 
             if (result.success) {
-                // Display narration
+                this.speak('Story complete');
                 this.displayNarration(result.narration);
-
-                // Generate audio
                 await this.generateNarrationAudio(result.narration.main_narration);
             } else {
                 throw new Error(result.message || 'Story generation failed');
             }
 
         } catch (error) {
-            console.error('Error generating memory story:', error);
-            this.narrationText.textContent = `Unable to generate story: ${error.message}. Please try again.`;
-            this.narrationSection.style.display = 'block';
+            console.error('Story error:', error);
+            this.speak('Unable to generate story. Please try again.');
+            this.narrationText.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
+            document.getElementById('memory-loading').classList.add('hidden');
+            this.narrationSection.classList.remove('hidden');
         }
     }
 
     async showMemoryAgentStep({ name, icon, status, timeline }) {
         const stepDiv = document.createElement('div');
-        stepDiv.className = 'glass-effect rounded-xl p-4 animate-fade-in';
-        stepDiv.style.animationDelay = `${timeline.children.length * 0.1}s`;
+        stepDiv.className = 'glass rounded-xl p-4 animate-fade-in';
 
         stepDiv.innerHTML = `
-            <div class="flex items-center gap-4">
-                <div class="text-3xl">${icon}</div>
+            <div class="flex items-center gap-3">
+                <div class="text-2xl">${icon}</div>
                 <div class="flex-1">
-                    <h4 class="text-lg font-semibold">${name}</h4>
-                    <div class="flex items-center gap-2 mt-1">
-                        <div class="w-2 h-2 rounded-full bg-yellow-500 animate-pulse status-indicator"></div>
-                        <span class="text-sm text-gray-300 status-text">${status}</span>
+                    <h4 class="text-sm font-semibold text-gray-900 mb-1">${name}</h4>
+                    <div class="flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 rounded-full bg-gray-800 animate-pulse status-indicator"></div>
+                        <span class="text-xs text-gray-600 status-text">${status}</span>
                     </div>
                 </div>
             </div>
         `;
 
         timeline.appendChild(stepDiv);
+        await this.sleep(1000);
 
-        // Simulate processing time
-        await this.sleep(1500);
-
-        // Update to complete
         const statusIndicator = stepDiv.querySelector('.status-indicator');
         const statusText = stepDiv.querySelector('.status-text');
 
-        statusIndicator.classList.remove('bg-yellow-500', 'animate-pulse');
-        statusIndicator.classList.add('bg-green-500');
-        statusText.textContent = 'Complete';
+        statusIndicator.classList.remove('bg-gray-800', 'animate-pulse');
+        statusIndicator.classList.add('bg-gray-600');
+        statusText.textContent = '✓ Done';
 
-        await this.sleep(300);
+        await this.sleep(150);
     }
 
     displayNarration(narrationData) {
-        // Hide loading state
         document.getElementById('memory-loading').classList.add('hidden');
 
-        let html = `<p class="text-gray-200">${narrationData.main_narration}</p>`;
+        let html = `<p class="text-gray-900 leading-relaxed">${narrationData.main_narration}</p>`;
 
-        // Add person dialogues if any
         if (narrationData.person_dialogues && narrationData.person_dialogues.length > 0) {
             narrationData.person_dialogues.forEach(dialogue => {
                 html += `
-                    <div class="mt-4 pl-4 border-l-4 border-purple-500 italic">
-                        <p class="text-gray-200">"${dialogue.dialogue}"</p>
-                        ${dialogue.emotion ? `<span class="text-pink-400 text-sm">- ${dialogue.emotion}</span>` : ''}
+                    <div class="mt-4 pl-4 border-l-2 border-gray-800 italic">
+                        <p class="text-gray-700">"${dialogue.dialogue}"</p>
+                        ${dialogue.emotion ? `<span class="text-gray-500 text-xs">— ${dialogue.emotion}</span>` : ''}
                     </div>
                 `;
             });
-        }
-
-        // Add ambient descriptions
-        if (narrationData.ambient_descriptions && narrationData.ambient_descriptions.length > 0) {
-            html += `
-                <p class="mt-6 italic text-gray-400 text-sm">
-                    Ambient atmosphere: ${narrationData.ambient_descriptions.join(', ')}
-                </p>
-            `;
         }
 
         this.narrationText.innerHTML = html;
@@ -518,42 +499,46 @@ class AgentSearchApp {
 
             if (result.success) {
                 this.currentAudioUrl = result.audio_url;
-                console.log('Audio generated:', this.currentAudioUrl);
-            } else {
-                console.error('TTS error:', result.message);
             }
         } catch (error) {
-            console.error('Error generating audio:', error);
+            console.error('TTS error:', error);
         }
     }
 
     playNarrationAudio() {
         if (!this.currentAudioUrl) {
-            console.error('No audio URL available');
+            this.speak('Audio not available yet');
             return;
         }
 
-        this.ttsAudio.src = this.currentAudioUrl;
-        this.ttsAudio.play();
+        if (this.ttsAudio.paused) {
+            this.ttsAudio.src = this.currentAudioUrl;
+            this.ttsAudio.play();
 
-        this.playAudioButton.classList.add('playing');
-        this.playAudioButton.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="6" y="4" width="4" height="16"/>
-                <rect x="14" y="4" width="4" height="16"/>
-            </svg>
-            Pause
-        `;
-
-        this.ttsAudio.onended = () => {
-            this.playAudioButton.classList.remove('playing');
             this.playAudioButton.innerHTML = `
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="5 3 19 12 5 21 5 3"/>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <rect x="6" y="4" width="4" height="16"/>
+                    <rect x="14" y="4" width="4" height="16"/>
                 </svg>
-                Play Audio Narration
+                Pause
             `;
-        };
+
+            this.ttsAudio.onended = () => {
+                this.resetAudioButton();
+            };
+        } else {
+            this.ttsAudio.pause();
+            this.resetAudioButton();
+        }
+    }
+
+    resetAudioButton() {
+        this.playAudioButton.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Play Audio
+        `;
     }
 
     speak(text) {
@@ -562,9 +547,9 @@ class AgentSearchApp {
         this.synthesis.cancel();
 
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 0.9;
+        utterance.rate = 0.95;
         utterance.pitch = 1;
-        utterance.volume = 1;
+        utterance.volume = 0.9;
 
         this.synthesis.speak(utterance);
     }
@@ -574,15 +559,29 @@ class AgentSearchApp {
     }
 }
 
-// Initialize app when DOM is ready
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    new AgentSearchApp();
+    new SynesthesiaApp();
 });
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    // Escape to go back
     if (e.key === 'Escape') {
-        document.getElementById('back-button')?.click();
+        const backBtn = document.getElementById('back-button');
+        const memoryBackBtn = document.getElementById('memory-back-button');
+
+        if (!backBtn.parentElement.classList.contains('hidden')) {
+            backBtn.click();
+        } else if (!memoryBackBtn.parentElement.classList.contains('hidden')) {
+            memoryBackBtn.click();
+        }
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const input = document.getElementById('text-input');
+        if (input && !input.closest('.hidden')) {
+            input.focus();
+        }
     }
 });

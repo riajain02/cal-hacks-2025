@@ -81,64 +81,59 @@ async def analyze_image(ctx: Context, sender: str, msg: VisionAnalysisRequest):
             ctx.logger.info(f"   ✓ Vision complete ({len(vision_desc)} chars)")
             ctx.logger.info(f"   📝 Vision preview: {vision_desc[:200]}...")
 
-        # Step 3: Letta AI structured extraction (REQUIRED - no fallback)
-        ctx.logger.info("   → Letta AI extraction (REQUIRED)")
-        ctx.logger.info(f"   Calling agent: {PERCEPTION_AGENT_ID}")
-        ctx.logger.info(f"   Input length: {len(vision_desc)} characters")
+        # Step 3: GPT-4 structured extraction (replaced Letta for reliability)
+        ctx.logger.info("   → GPT-4 structured extraction...")
+
+        extraction_prompt = f"""Extract structured perception data from this image description in VALID JSON format.
+Return ONLY the JSON object, with proper double quotes.
+
+Description: {vision_desc}
+
+Return this exact structure:
+{{
+  "objects": ["list of all objects/items seen"],
+  "people_count": number,
+  "people_details": [{{"description": "person description", "position": "location", "apparent_mood": "mood"}}],
+  "layout": {{
+    "foreground": "what's in front",
+    "background": "what's behind"
+  }},
+  "scene_type": "type of scene",
+  "setting": "indoor/outdoor description",
+  "colors": ["dominant colors"],
+  "lighting": "lighting description",
+  "ambient_sounds": ["likely sounds in this scene"]
+}}"""
 
         async with httpx.AsyncClient(timeout=60.0) as client:
-            letta_response = await client.post(
-                f"https://api.letta.com/v1/agents/{PERCEPTION_AGENT_ID}/messages",
-                headers={"Authorization": f"Bearer {LETTA_API_KEY}"},
-                json={"messages": [{"role": "user", "content": f"Extract structured data:\\n\\n{vision_desc}"}], "stream": False}
+            extract_response = await client.post(
+                "https://api.openai.com/v1/chat/completions",
+                headers={"Authorization": f"Bearer {OPENAI_API_KEY}"},
+                json={
+                    "model": "gpt-4o-mini",
+                    "messages": [{
+                        "role": "user",
+                        "content": extraction_prompt
+                    }],
+                    "response_format": {"type": "json_object"},
+                    "max_tokens": 500
+                }
             )
 
-            ctx.logger.info(f"   HTTP Status: {letta_response.status_code}")
+            if extract_response.status_code != 200:
+                ctx.logger.error(f"   ❌ GPT-4 extraction error: {extract_response.status_code}")
+                raise Exception(f"GPT-4 extraction failed: {extract_response.text}")
 
-            if letta_response.status_code != 200:
-                ctx.logger.error(f"   ❌ HTTP Error: {letta_response.status_code}")
-                ctx.logger.error(f"   Response headers: {dict(letta_response.headers)}")
-                ctx.logger.error(f"   Response body: {letta_response.text}")
-                raise Exception(f"Letta AI HTTP error {letta_response.status_code}: {letta_response.text}")
+            extract_data = extract_response.json()
+            perception_text = extract_data["choices"][0]["message"]["content"]
+            ctx.logger.info(f"   📝 Extracted content: {perception_text[:200]}...")
 
-            letta_data = letta_response.json()
-            ctx.logger.info(f"   📦 Raw API response: {json.dumps(letta_data, indent=2)}")
-
-            perception_text = next((m.get("content", "") for m in letta_data.get("messages", []) if m.get("message_type") == "assistant_message"), "{}")
-            ctx.logger.info(f"   📝 Extracted assistant content: {perception_text}")
-
-            # Parse JSON (handle mixed quotes from Letta AI)
-            json_start = perception_text.find('{')
-            json_end = perception_text.rfind('}') + 1
-            if json_start >= 0 and json_end > json_start:
-                json_content = perception_text[json_start:json_end]
-                # Fix mixed quotes and malformed strings from Letta AI
-                import re
-
-                # Strategy: Replace ALL single quotes with double quotes first,
-                # then fix apostrophes that should remain as-is
-
-                # 1. First, protect apostrophes in contractions (it's, cat's, etc.)
-                # by temporarily replacing them with a placeholder
-                json_content = re.sub(r"([a-zA-Z])'([st])\b", r"\1___APOS___\2", json_content)
-                json_content = re.sub(r"([a-zA-Z])'s\b", r"\1___APOS___s", json_content)  # Fix "cat's"
-                # 2. Now replace ALL remaining single quotes with double quotes
-                json_content = json_content.replace("'", '"')
-
-                # 3. Restore the protected apostrophes
-                json_content = json_content.replace('___APOS___', "'")
-
-                try:
-                    parsed = json.loads(json_content)
-                    ctx.logger.info("   ✓ JSON parsing successful")
-                except json.JSONDecodeError as e:
-                    ctx.logger.error(f"   ❌ JSON parsing failed even after quote fix: {e}")
-                    ctx.logger.error(f"   Fixed content: {json_content[:500]}...")
-                    raise Exception(f"Letta AI returned unparseable JSON: {json_content[:200]}...")
-            else:
-                ctx.logger.error("   ❌ No valid JSON found in assistant response")
-                ctx.logger.error(f"   Content: {perception_text}")
-                raise Exception(f"Letta AI returned invalid JSON: {perception_text}")
+            try:
+                parsed = json.loads(perception_text)
+                ctx.logger.info("   ✓ JSON parsing successful")
+            except json.JSONDecodeError as e:
+                ctx.logger.error(f"   ❌ JSON parsing failed: {e}")
+                raise Exception(f"Failed to parse extraction JSON: {perception_text[:200]}...")
 
         # Flatten layout if Letta returns nested objects
         layout = parsed.get("layout", {})

@@ -1,0 +1,69 @@
+{
+  "session_id": "9bd9a301-5105-4062-9ad7-d3c27a563233",
+  "success": true,
+  "perception": {
+    "session_id": "9bd9a301-5105-4062-9ad7-d3c27a563233",
+    "objects": [
+      "green backpack",
+      "orange backpack",
+      "grass",
+      "rocks",
+      "mountains"
+    ],
+    "people_count": 2,
+    "people_details": [
+      {
+        "description": "person with short hair",
+        "position": "foreground, seated",
+        "apparent_mood": "relaxed or happy"
+      },
+      {
+        "description": "person with cap and beard",
+        "position": "foreground, seated",
+        "apparent_mood": "contemplative or content"
+      }
+    ],
+    "layout": {
+      "foreground": "sitting closely together | situated directly behind them",
+      "background": "forming an expansive view"
+    },
+    "scene_type": "outdoor_adventure",
+    "setting": "hiking or outdoor setting",
+    "colors": [
+      "blue",
+      "white",
+      "orange",
+      "pink",
+      "earthy tones"
+    ],
+    "lighting": "soft natural light suggesting early morning or late afternoon",
+    "ambient_sounds": []
+  },
+  "emotion": {
+    "session_id": "9bd9a301-5105-4062-9ad7-d3c27a563233",
+    "mood": "serene",
+    "emotion_tags": [
+      "contentment",
+      "relaxation",
+      "happiness"
+    ],
+    "tone": "gentle and reflective",
+    "intensity": "low to medium",
+    "voice_characteristics": {
+      "main_narrator": "calm, soothing, warm",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "peaceful outdoor atmosphere"
+  },
+  "narration": {
+    "session_id": "9bd9a301-5105-4062-9ad7-d3c27a563233",
+    "main_narration": "In this serene outdoor adventure scene, two individuals sit closely together on a patch of grass, their backpacks\u2014a vibrant green and an orange\u2014resting beside them. The person with short hair appears relaxed and happy, while the individual with a cap and beard reflects a contemplative contentment as they gaze at the expansive view before them. Soft natural light bathes the landscape in warm tones of blue, white, pink, and earthy colors, suggesting it is either early morning or late afternoon. This peaceful atmosphere invites a deep sense of relaxation and happiness amidst nature's beauty.",
+    "person_dialogues": [],
+    "ambient_descriptions": [
+      "gentle rustling of grass",
+      "distant sounds of birds",
+      "soft whispers of wind"
+    ]
+  }
+}

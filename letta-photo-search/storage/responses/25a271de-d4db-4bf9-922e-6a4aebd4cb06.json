@@ -1,0 +1,77 @@
+{
+  "session_id": "25a271de-d4db-4bf9-922e-6a4aebd4cb06",
+  "success": true,
+  "perception": {
+    "session_id": "25a271de-d4db-4bf9-922e-6a4aebd4cb06",
+    "objects": [
+      "inflatable swim rings",
+      "inflatable surfboard or float",
+      "beach"
+    ],
+    "people_count": 4,
+    "people_details": [
+      {
+        "description": "individual jumping mid-air",
+        "position": "center",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual jumping mid-air",
+        "position": "center",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual jumping mid-air",
+        "position": "center",
+        "apparent_mood": "joyful"
+      },
+      {
+        "description": "individual jumping mid-air",
+        "position": "center",
+        "apparent_mood": "joyful"
+      }
+    ],
+    "layout": {
+      "foreground": "people jumping",
+      "background": "ocean or sea, sky"
+    },
+    "scene_type": "leisure activity",
+    "setting": "outdoor beach",
+    "colors": [
+      "pink",
+      "rainbow",
+      "golden-beige",
+      "blue",
+      "white"
+    ],
+    "lighting": "soft ambient light with golden tone, late afternoon",
+    "ambient_sounds": [
+      "waves",
+      "laughter",
+      "seagulls"
+    ]
+  },
+  "emotion": {
+    "session_id": "25a271de-d4db-4bf9-922e-6a4aebd4cb06",
+    "mood": "joyful",
+    "emotion_tags": [
+      "happiness",
+      "excitement",
+      "playfulness"
+    ],
+    "tone": "lively and energetic",
+    "intensity": "high",
+    "voice_characteristics": {
+      "main_narrator": "enthusiastic, bright, animated",
+      "person_1": null,
+      "person_2": null
+    },
+    "ambient_mood": "vibrant and fun beach atmosphere"
+  },
+  "narration": {
+    "session_id": "25a271de-d4db-4bf9-922e-6a4aebd4cb06",
+    "main_narration": "Scene description unavailable.",
+    "person_dialogues": [],
+    "ambient_descriptions": []
+  }
+}
